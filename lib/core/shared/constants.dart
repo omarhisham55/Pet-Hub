@@ -14,6 +14,10 @@ class Constants {
   static void replaceWith(BuildContext context, String route) =>
       Navigator.pushReplacementNamed(context, route);
   static void replaceWithAndRemoveUntil(BuildContext context, String route) =>
-      Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        route,
+        (finalRoute) => route == finalRoute.settings.name,
+      );
   static void pop(BuildContext context) => Navigator.pop(context);
 }

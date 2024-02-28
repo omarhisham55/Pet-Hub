@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
@@ -16,8 +16,9 @@ class HomePageManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
       builder: (context, state) {
+        ProfileSetupCubit manager = ProfileSetupCubit.get(context);
         return AdvancedDrawer(
-          controller: ProfileSetupCubit.get(context).drawerScaffoldKey,
+          controller: manager.drawerScaffoldKey,
           backdrop: Container(
             width: double.infinity,
             height: double.infinity,
@@ -35,9 +36,7 @@ class HomePageManager extends StatelessWidget {
             appBar: twoTitleAppbar(
               context: context,
               leading: GestureDetector(
-                onTap: () => ProfileSetupCubit.get(context)
-                    .drawerScaffoldKey
-                    .toggleDrawer(),
+                onTap: () => manager.drawerScaffoldKey.toggleDrawer(),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: CircleAvatar(
@@ -51,7 +50,9 @@ class HomePageManager extends StatelessWidget {
               titleStyle: Theme.of(context).textTheme.bodyMedium,
               subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: SharedModeColors.black,
+                    color: ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? SharedModeColors.black
+                        : SharedModeColors.white,
                   ),
               actions: [
                 GestureDetector(
@@ -59,8 +60,13 @@ class HomePageManager extends StatelessWidget {
                   child: const Icon(Icons.search),
                 ),
                 Container(
-                  decoration:
-                      const BoxDecoration(border: Border(left: BorderSide())),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          left: BorderSide(
+                    color: ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? SharedModeColors.black
+                        : SharedModeColors.white,
+                  ))),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   margin: const EdgeInsets.only(left: 10),
                   child: GestureDetector(
@@ -70,7 +76,7 @@ class HomePageManager extends StatelessWidget {
                 ),
               ],
             ),
-            body: LocalSharedPreferences.getLocalPreferences('profileSetUp')
+            body: manager.numberOfPets != 0
                 ? const HomePageProfile()
                 : const EmptyProfileStartUp(),
           ),

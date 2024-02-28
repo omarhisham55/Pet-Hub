@@ -4,6 +4,7 @@ import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/breed.dart';
+import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/category.dart';
 // import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/caretakes.dart';
 import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/important_dates.dart';
 import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/name.dart';
@@ -11,6 +12,7 @@ import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_bo
 import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/weight.dart';
 
 Map<String, StatelessWidget> bodyContent = {
+  'Category': const Category(),
   'Breed': const Breed(),
   'Name': const PetName(),
   'Size': const PetSize(),
@@ -59,7 +61,9 @@ class SetProfileBodyMainContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (bodyContent.keys.toList()[manager.setupPetProfileCurrentStep] == 'Name')
+                if (bodyContent.keys
+                        .toList()[manager.setupPetProfileCurrentStep] ==
+                    'Name')
                   GestureDetector(
                     onTap: () {},
                     child: Container(

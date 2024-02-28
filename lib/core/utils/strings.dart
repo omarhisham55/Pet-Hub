@@ -21,5 +21,6 @@ class RegistrationStrings {
 class SharedPreferencesKeys {
   static const String onBoarderComplete = 'onBoarderComplete';
   static const String createAccountComplete = 'createAccountComplete';
+  static const String numberOfPets = 'numberOfPets';
   static const String darkTheme = 'darkTheme';
 }

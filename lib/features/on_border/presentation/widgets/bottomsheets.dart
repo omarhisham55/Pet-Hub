@@ -36,7 +36,7 @@ Widget _defaultBottomsheet({
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 margin: const EdgeInsets.only(top: 40),
                 decoration: BoxDecoration(
-                  color: SharedModeColors.white,
+                  color: Theme.of(context).bottomSheetTheme.backgroundColor,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(24),
                   ),
@@ -83,7 +83,8 @@ Widget _defaultBottomsheet({
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundColor: SharedModeColors.white,
+                backgroundColor:
+                    Theme.of(context).bottomSheetTheme.backgroundColor,
                 child: Icon(icon),
               )
             ],

@@ -7,7 +7,7 @@ import 'package:pet_app/core/utils/image_manager.dart';
 class HealthPetProfile extends StatelessWidget {
   const HealthPetProfile({super.key});
 
-  static const Map<int, List<dynamic>> items = {
+  static Map<int, List<dynamic>> items = {
     0: [HealthImages.insurance, 'Insurance'],
     1: [HealthImages.vaccines, 'Vaccines'],
     2: [HealthImages.antiParasiticalTreatment, 'Anti-parasitical treatments'],

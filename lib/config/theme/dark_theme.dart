@@ -44,4 +44,7 @@ ThemeData darkThemeData = ThemeData(
     headlineSmall: TextStyle(color: SharedModeColors.darkBackground),
   ),
   fontFamily: 'Noto Sans',
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: SharedModeColors.darkBackground,
+  ),
 );

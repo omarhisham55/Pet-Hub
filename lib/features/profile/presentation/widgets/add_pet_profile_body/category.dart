@@ -5,8 +5,8 @@ import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
-class Breed extends StatelessWidget {
-  const Breed({super.key});
+class Category extends StatelessWidget {
+  const Category({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class Breed extends StatelessWidget {
             SearchBar(
               backgroundColor: MaterialStatePropertyAll(SharedModeColors.white),
               elevation: const MaterialStatePropertyAll(0),
-              hintText: 'Search by breed',
+              hintText: 'Search by vaccine type',
               hintStyle: MaterialStatePropertyAll(
                 Theme.of(context)
                     .textTheme
@@ -41,8 +41,7 @@ class Breed extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              children: PetsImages
-                  .pets[ProfileSetupCubit.get(context).category]!.entries
+              children: PetsImages.pets.entries
                   .map((pet) => _gridViewItem(context, pet))
                   .toList(),
             ),
@@ -52,26 +51,30 @@ class Breed extends StatelessWidget {
     );
   }
 
-  Widget _gridViewItem(BuildContext context, MapEntry<String, String> pet) {
+  Widget _gridViewItem(
+    BuildContext context,
+    MapEntry<String, Map<String, String>> category,
+  ) {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
-        builder: (context, state) {
-      return ModedContainer(
-        padding: const EdgeInsets.only(bottom: 0, top: 20),
-        onTap: () => ProfileSetupCubit.get(context).changeDetailedCategory(pet.key),
-        selectedContainer:
-            ProfileSetupCubit.get(context).detailedCategory == pet.key
-                ? SharedModeColors.grey600
-                : null,
-        child: Column(
-          children: [
-            Text(
-              pet.key,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Expanded(child: Image.asset(pet.value)),
-          ],
-        ),
-      );
-    });
+      builder: (context, state) {
+        return ModedContainer(
+          onTap: () =>
+              ProfileSetupCubit.get(context).changeCategory(category.key),
+          selectedContainer:
+              ProfileSetupCubit.get(context).category == category.key
+                  ? SharedModeColors.grey600
+                  : null,
+          child: Column(
+            children: [
+              Text(
+                category.key,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Expanded(child: Image.asset(category.value.values.first)),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

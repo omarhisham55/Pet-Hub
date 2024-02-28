@@ -16,7 +16,8 @@ class AddNewPetProfile extends StatelessWidget {
       ),
       body: profile(context),
       bottomSheet: GlobalButton(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(20),
         text: 'Add to account',
         onPressed: () =>
             ProfileSetupCubit.get(context).addNewPetProfile(context),
@@ -24,7 +25,7 @@ class AddNewPetProfile extends StatelessWidget {
     );
   }
 
-  Widget profile(BuildContext context, {bool? canEdit}) {
+  Widget profile(BuildContext context, {bool? canEdit = false}) {
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.only(bottom: 60),
