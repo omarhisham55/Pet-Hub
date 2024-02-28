@@ -18,13 +18,17 @@ class LocalSharedPreferences {
     };
   }
 
-  static dynamic getLocalPreferences(String key) {
+  static dynamic getLocalPreferences(String key, {dynamic fallBack = false}) {
     return sharedPreferences.containsKey(key)
         ? sharedPreferences.get(key)
-        : false;
+        : fallBack;
   }
 
   static bool darkTheme() {
     return getLocalPreferences(SharedPreferencesKeys.darkTheme);
+  }
+
+  static int numberOfPets() {
+    return getLocalPreferences(SharedPreferencesKeys.numberOfPets, fallBack: 0);
   }
 }

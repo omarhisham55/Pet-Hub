@@ -12,7 +12,11 @@ String themeImage(String folderPath) {
 
 final String splashPath = themeImage('splash_screen');
 const String settingsPath = '$baseSharedImgPath/settings';
+const String birdsPath = '$baseSharedImgPath/pets/birds';
+const String catsPath = '$baseSharedImgPath/pets/cats';
 const String dogsPath = '$baseSharedImgPath/pets/dogs';
+const String hamstersPath = '$baseSharedImgPath/pets/hamsters';
+const String turtlesPath = '$baseSharedImgPath/pets/turtles';
 final String profileSetupPath = themeImage('profile');
 final String profilehealthPath = themeImage('profile/health');
 final String profileNutritionPath = themeImage('profile/nutrition');
@@ -72,7 +76,7 @@ class SettingsImages {
 }
 
 class PetsImages {
-  static Map<String, dynamic> pets = {
+  static Map<String, Map<String, String>> pets = {
     'Dogs': {
       'AfghanHound': '$dogsPath/afghanHound.png',
       'Akita': '$dogsPath/akita.png',
@@ -81,13 +85,21 @@ class PetsImages {
       'BorderCollie': '$dogsPath/borderCollie.png',
       'Boxer': '$dogsPath/boxer.png',
       'ChowChow': '$dogsPath/chowChow.png',
-      'Dalmtaian': '$dogsPath/dalmtaian.png',
+      'Dalmatian': '$dogsPath/dalmatian.png',
       'MixedBreed': '$dogsPath/mixedBreed.png',
       'Samoyed': '$dogsPath/samoyed.png',
     },
-    'Cats': {},
-    'Birds': {},
-    'Turtles': {},
-    'Hamsters': {},
+    'Cats': {
+      'Cat': '$catsPath/cat.png',
+    },
+    'Birds': {
+      'Bird': '$birdsPath/bird.png',
+    },
+    'Turtles': {
+      'Turtle': '$turtlesPath/turtle.png',
+    },
+    'Hamsters': {
+      'Hamster': '$hamstersPath/hamster.png',
+    },
   };
 }

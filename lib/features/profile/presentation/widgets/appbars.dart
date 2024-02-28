@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
@@ -30,7 +31,9 @@ AppBar twoTitleAppbar({
             style: titleStyle ??
                 Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: SharedModeColors.black,
+                      color: ThemeManager.currentTheme == ThemeState.lightTheme
+                          ? SharedModeColors.black
+                          : SharedModeColors.white,
                     ),
           ),
           if (subTitle!.isNotEmpty)

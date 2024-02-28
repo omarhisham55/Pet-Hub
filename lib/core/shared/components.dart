@@ -181,12 +181,9 @@ Widget slideToContinueButton(BuildContext context, ProfileSetupCubit manager) {
       ),
       Draggable(
         axis: Axis.horizontal,
-        onDragUpdate: (details) {
-          // if (details.globalPosition.dx < 0) {}
-          if (details.globalPosition.dx > 340) {
-            Constants.navigateTo(context, Routes.addPetProfile);
-          }
-        },
+        onDragUpdate: (details) => details.globalPosition.dx > 340
+            ? Constants.navigateTo(context, Routes.addPetProfile)
+            : null,
         childWhenDragging: Container(),
         feedbackOffset: Offset.infinite,
         feedback: Container(

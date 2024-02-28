@@ -37,7 +37,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/sharedImages/settings/
+    - assets/images/sharedImages/pets/birds/
+    - assets/images/sharedImages/pets/cats/
     - assets/images/sharedImages/pets/dogs/
+    - assets/images/sharedImages/pets/hamsters/
+    - assets/images/sharedImages/pets/turtles/
     - assets/images/lightImages/splash_screen/
     - assets/images/lightImages/profile/
     - assets/images/lightImages/profile/health/

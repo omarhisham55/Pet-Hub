@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/config/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
 class ProfileDrawer extends StatelessWidget {
@@ -44,7 +46,7 @@ class ProfileDrawer extends StatelessWidget {
                             'add new',
                             () => Constants.navigateTo(
                               context,
-                              Routes.addNewPetProfile,
+                              Routes.addPetProfile,
                             ),
                             Icons.add,
                           );
@@ -56,7 +58,9 @@ class ProfileDrawer extends StatelessWidget {
                             ProfileSetupCubit.get(context)
                                 .changePetProfileView(0);
                             Constants.navigateTo(
-                                context, Routes.viewPetProfile);
+                              context,
+                              Routes.viewPetProfile,
+                            );
                           },
                         );
                       },
@@ -65,9 +69,11 @@ class ProfileDrawer extends StatelessWidget {
                 },
               ),
               const Divider(height: 50),
-              const TextWithIcon(
+              TextWithIcon(
                 text: 'Dashboard',
                 icon: Icons.dashboard_customize_outlined,
+                onTap: () => LocalSharedPreferences.sharedPreferences
+                    .remove(SharedPreferencesKeys.numberOfPets),
               ),
               TextWithIcon(
                 text: 'Contacts',

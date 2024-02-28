@@ -10,6 +10,7 @@ import 'package:pet_app/config/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:ruler_scale_picker/ruler_scale_picker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -20,8 +21,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
 
   static ProfileSetupCubit get(context) => BlocProvider.of(context);
 
-  bool isProfileSet = false;
-  int numberOfPets = 1;
+  int numberOfPets = LocalSharedPreferences.numberOfPets();
   PageController pageController = PageController();
   AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
 
@@ -40,22 +40,23 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   late double slideXpos = slidePosition.dx;
   late double slideYpos = slidePosition.dy;
 
-  final int setupPetProfileMaxSteps = 5;
+  final int setupPetProfileMaxSteps = 6;
   int setupPetProfileCurrentStep = 0;
 
   void addNewPetProfile(BuildContext context) {
-    isProfileSet = true;
-    LocalSharedPreferences.saveLocalPreferences('profileSetUp', isProfileSet);
-    numberOfPets++;
-    Constants.pop(context);
+    LocalSharedPreferences.saveLocalPreferences(
+      SharedPreferencesKeys.numberOfPets,
+      numberOfPets++,
+    );
+    setupPetProfileCurrentStep = 0;
+    Constants.replaceWithAndRemoveUntil(context, Routes.homePageProfile);
     emit(StepsState(step: numberOfPets));
   }
 
   //* first entry steps
   void petProfileNextStep(BuildContext context) {
     if (setupPetProfileCurrentStep + 1 == setupPetProfileMaxSteps) {
-      setupPetProfileCurrentStep = 0;
-      addNewPetProfile(context);
+      Constants.navigateTo(context, Routes.addNewPetProfile);
     } else {
       setupPetProfileCurrentStep++;
     }
@@ -69,6 +70,19 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
     }
     setupPetProfileCurrentStep--;
     emit(StepsState(step: setupPetProfileCurrentStep));
+  }
+
+  //* change category
+  String? category;
+  String? detailedCategory;
+  void changeCategory(String category) {
+    this.category = category;
+    emit(ChangeFocus(index: this.category.hashCode));
+  }
+
+  void changeDetailedCategory(String category) {
+    detailedCategory = category;
+    emit(ChangeFocus(index: detailedCategory.hashCode));
   }
 
   //* petName page
