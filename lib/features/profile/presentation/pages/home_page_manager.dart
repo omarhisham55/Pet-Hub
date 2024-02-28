@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
@@ -51,7 +52,9 @@ class HomePageManager extends StatelessWidget {
               titleStyle: Theme.of(context).textTheme.bodyMedium,
               subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: SharedModeColors.black,
+                    color: ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? SharedModeColors.black
+                        : SharedModeColors.white,
                   ),
               actions: [
                 GestureDetector(
@@ -59,8 +62,13 @@ class HomePageManager extends StatelessWidget {
                   child: const Icon(Icons.search),
                 ),
                 Container(
-                  decoration:
-                      const BoxDecoration(border: Border(left: BorderSide())),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          left: BorderSide(
+                    color: ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? SharedModeColors.black
+                        : SharedModeColors.white,
+                  ))),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   margin: const EdgeInsets.only(left: 10),
                   child: GestureDetector(

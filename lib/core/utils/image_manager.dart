@@ -2,6 +2,7 @@ import 'package:pet_app/config/preferences/shared_preferences.dart';
 
 const baseLightImgPath = 'assets/images/lightImages';
 const baseDarkImgPath = 'assets/images/darkImages';
+const baseSharedImgPath = 'assets/images/sharedImages';
 
 String themeImage(String folderPath) {
   return LocalSharedPreferences.darkTheme()
@@ -10,7 +11,8 @@ String themeImage(String folderPath) {
 }
 
 final String splashPath = themeImage('splash_screen');
-final String settingsPath = themeImage('settings');
+const String settingsPath = '$baseSharedImgPath/settings';
+const String dogsPath = '$baseSharedImgPath/pets/dogs';
 final String profileSetupPath = themeImage('profile');
 final String profilehealthPath = themeImage('profile/health');
 final String profileNutritionPath = themeImage('profile/nutrition');
@@ -59,12 +61,33 @@ class ActivitiesImages {
 }
 
 class SettingsImages {
-  static final String timeZone = '$settingsPath/timeZone.png';
-  static final String language = '$settingsPath/language.png';
-  static final String darkMode = '$settingsPath/darkMode.png';
-  static final String locationAccess = '$settingsPath/locationAccess.png';
-  static final String photoAccess = '$settingsPath/photoAccess.png';
-  static final String appNotifications = '$settingsPath/appNotifications.png';
-  static final String emailNotifications =
+  static const String timeZone = '$settingsPath/timeZone.png';
+  static const String language = '$settingsPath/language.png';
+  static const String darkMode = '$settingsPath/darkMode.png';
+  static const String locationAccess = '$settingsPath/locationAccess.png';
+  static const String photoAccess = '$settingsPath/photoAccess.png';
+  static const String appNotifications = '$settingsPath/appNotifications.png';
+  static const String emailNotifications =
       '$settingsPath/emailNotifications.png';
+}
+
+class PetsImages {
+  static Map<String, dynamic> pets = {
+    'Dogs': {
+      'AfghanHound': '$dogsPath/afghanHound.png',
+      'Akita': '$dogsPath/akita.png',
+      'Beagle': '$dogsPath/beagle.png',
+      'BichonFrise': '$dogsPath/bichonFrise.png',
+      'BorderCollie': '$dogsPath/borderCollie.png',
+      'Boxer': '$dogsPath/boxer.png',
+      'ChowChow': '$dogsPath/chowChow.png',
+      'Dalmtaian': '$dogsPath/dalmtaian.png',
+      'MixedBreed': '$dogsPath/mixedBreed.png',
+      'Samoyed': '$dogsPath/samoyed.png',
+    },
+    'Cats': {},
+    'Birds': {},
+    'Turtles': {},
+    'Hamsters': {},
+  };
 }

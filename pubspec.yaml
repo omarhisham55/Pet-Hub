@@ -36,14 +36,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/sharedImages/settings/
+    - assets/images/sharedImages/pets/dogs/
     - assets/images/lightImages/splash_screen/
-    - assets/images/lightImages/settings/
     - assets/images/lightImages/profile/
     - assets/images/lightImages/profile/health/
     - assets/images/lightImages/profile/nutrition/
     - assets/images/lightImages/profile/activities/
     - assets/images/darkImages/splash_screen/
-    - assets/images/darkImages/settings/
     - assets/images/darkImages/profile/
     - assets/images/darkImages/profile/health/
     - assets/images/darkImages/profile/nutrition/
