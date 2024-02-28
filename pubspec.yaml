@@ -36,12 +36,18 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/splash_screen/
-    - assets/images/settings/
-    - assets/images/profile/
-    - assets/images/profile/health/
-    - assets/images/profile/nutrition/
-    - assets/images/profile/activities/
+    - assets/images/lightImages/splash_screen/
+    - assets/images/lightImages/settings/
+    - assets/images/lightImages/profile/
+    - assets/images/lightImages/profile/health/
+    - assets/images/lightImages/profile/nutrition/
+    - assets/images/lightImages/profile/activities/
+    - assets/images/darkImages/splash_screen/
+    - assets/images/darkImages/settings/
+    - assets/images/darkImages/profile/
+    - assets/images/darkImages/profile/health/
+    - assets/images/darkImages/profile/nutrition/
+    - assets/images/darkImages/profile/activities/
   fonts:
     - family: Catamaran
       fonts:
