@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/shared/components.dart';
-import 'package:pet_app/core/utils/colors.dart';
 
 class BookADate extends StatelessWidget {
   const BookADate({super.key});
@@ -50,14 +49,9 @@ class BookADate extends StatelessWidget {
           child: ListView.separated(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Container(
+            itemBuilder: (context, index) => ModedContainer(
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: SharedModeColors.white,
-                boxShadow: const [BoxShadow(blurRadius: .01)],
-              ),
               child: Column(
                 children: [
                   Text((index + 1).toString()),
@@ -85,15 +79,11 @@ class BookADate extends StatelessWidget {
         Wrap(
           children: List.generate(
             8,
-            (index) => Container(
-              margin: const EdgeInsets.all(5),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: SharedModeColors.white,
-                boxShadow: const [BoxShadow(blurRadius: .01)],
-              ),
-              child: const Text('09:00'),
+            (index) => const ModedContainer(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              borderRadius: 10,
+              child: Text('09:00'),
             ),
           ),
         ),
@@ -113,14 +103,9 @@ class BookADate extends StatelessWidget {
         const SizedBox(height: 10),
         ...List.generate(
           3,
-          (index) => Container(
+          (index) => ModedContainer(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             margin: const EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-              color: SharedModeColors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [BoxShadow(blurRadius: .2)],
-            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

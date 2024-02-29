@@ -28,19 +28,7 @@ class TricksActivity extends StatelessWidget {
   Widget _yourTricks(BuildContext context, String trick, String date) {
     Widget trick(BuildContext context) => GestureDetector(
           onTap: () {},
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: SharedModeColors.white,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: .2,
-                  color: SharedModeColors.grey500,
-                ),
-              ],
-              borderRadius: BorderRadius.circular(16),
-            ),
+          child: ModedContainer(
             child: Row(
               children: [
                 Expanded(
@@ -90,18 +78,9 @@ class TricksActivity extends StatelessWidget {
   }
 
   Widget _learnMore(BuildContext context) {
-    Widget skillItem(BuildContext context) => Container(
+    Widget skillItem(BuildContext context) => ModedContainer(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: SharedModeColors.white,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: .2,
-                color: SharedModeColors.grey500,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(16),
-          ),
+          margin: EdgeInsets.zero,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -154,7 +133,7 @@ class TricksActivity extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'See all',
+                    'See all ',
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!

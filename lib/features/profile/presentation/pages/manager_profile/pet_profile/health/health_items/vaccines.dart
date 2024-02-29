@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/bottom_sheets/vaccine_bottomsheet.dart';
@@ -12,12 +13,13 @@ class Vaccines extends StatelessWidget {
     return SlidingUpPanel(
       controller: ProfileSetupCubit.get(context).panelVaccineController,
       minHeight: 0,
+      color: Theme.of(context).bottomSheetTheme.backgroundColor ??
+          SharedModeColors.grey500,
       borderRadius: BorderRadius.circular(24),
       panel: const VaccineBottomSheetDetails(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16),
-          color: SharedModeColors.grey150,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -25,8 +27,8 @@ class Vaccines extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SearchBar(
-                      backgroundColor:
-                          MaterialStatePropertyAll(SharedModeColors.white),
+                      backgroundColor: MaterialStatePropertyAll(
+                          Theme.of(context).bottomSheetTheme.backgroundColor),
                       elevation: const MaterialStatePropertyAll(0),
                       hintText: 'Search by vaccine type',
                       hintStyle: MaterialStatePropertyAll(
@@ -99,39 +101,33 @@ class Vaccines extends StatelessWidget {
   }
 
   Widget _vaccineitem(BuildContext context) {
-    return GestureDetector(
+    return ModedContainer(
       onTap: () => ProfileSetupCubit.get(context).panelVaccineController.open(),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: SharedModeColors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'vaccine name',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.calendar_today_outlined,
-                  color: SharedModeColors.grey500,
-                ),
-                Text(
-                  ' date ',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '| dr name',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'vaccine name',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.calendar_today_outlined,
+                color: SharedModeColors.grey500,
+              ),
+              Text(
+                ' date ',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              Text(
+                '| dr name',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/utils/colors.dart';
@@ -17,22 +16,9 @@ class HomePageManager extends StatelessWidget {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
       builder: (context, state) {
         ProfileSetupCubit manager = ProfileSetupCubit.get(context);
-        return AdvancedDrawer(
-          controller: manager.drawerScaffoldKey,
-          backdrop: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).drawerTheme.backgroundColor,
-            ),
-          ),
-          drawer: const ProfileDrawer(),
-          openScale: .8,
-          openRatio: .6,
-          childDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Scaffold(
+        return AdvancedPetDrawer(
+          controller: manager,
+          scaffold: Scaffold(
             appBar: twoTitleAppbar(
               context: context,
               leading: GestureDetector(
@@ -46,14 +32,10 @@ class HomePageManager extends StatelessWidget {
                 ),
               ),
               title: 'Hello, ',
+              titleAlignment: CrossAxisAlignment.start,
+              boldTitle: false,
+              boldSubTitle: true,
               subTitle: 'User',
-              titleStyle: Theme.of(context).textTheme.bodyMedium,
-              subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: ThemeManager.currentTheme == ThemeState.lightTheme
-                        ? SharedModeColors.black
-                        : SharedModeColors.white,
-                  ),
               actions: [
                 GestureDetector(
                   onTap: () {},

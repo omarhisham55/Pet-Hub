@@ -34,7 +34,8 @@ ThemeData darkThemeData = ThemeData(
       fontWeight: FontWeight.w700,
       fontFamily: 'Catamaran',
     ),
-    bodyLarge: const TextStyle(
+    bodyLarge: TextStyle(
+      color: SharedModeColors.white,
       fontWeight: FontWeight.w700,
     ),
     bodyMedium: TextStyle(

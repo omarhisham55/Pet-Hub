@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
@@ -7,6 +8,37 @@ import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+
+class AdvancedPetDrawer extends StatelessWidget {
+  final Scaffold scaffold;
+  final ProfileSetupCubit controller;
+  const AdvancedPetDrawer({
+    super.key,
+    required this.scaffold,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AdvancedDrawer(
+      // controller: controller.drawerScaffoldKey,
+      backdrop: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).drawerTheme.backgroundColor,
+        ),
+      ),
+      drawer: const ProfileDrawer(),
+      openScale: .8,
+      openRatio: .6,
+      childDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: scaffold,
+    );
+  }
+}
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});

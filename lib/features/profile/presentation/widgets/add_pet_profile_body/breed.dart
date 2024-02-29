@@ -57,7 +57,8 @@ class Breed extends StatelessWidget {
         builder: (context, state) {
       return ModedContainer(
         padding: const EdgeInsets.only(bottom: 0, top: 20),
-        onTap: () => ProfileSetupCubit.get(context).changeDetailedCategory(pet.key),
+        onTap: () =>
+            ProfileSetupCubit.get(context).changeDetailedCategory(pet.key),
         selectedContainer:
             ProfileSetupCubit.get(context).detailedCategory == pet.key
                 ? SharedModeColors.grey600

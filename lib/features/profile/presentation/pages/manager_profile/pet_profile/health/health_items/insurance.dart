@@ -23,7 +23,8 @@ class Insurance extends StatelessWidget {
           onPanelClosed: () => manager.changePanel(),
           panel: _insurancePanel(context, manager),
           color: manager.isInsurancePanelOpen
-              ? SharedModeColors.white
+              ? Theme.of(context).bottomSheetTheme.backgroundColor ??
+                  SharedModeColors.grey500
               : Colors.transparent,
           boxShadow: const [],
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
@@ -107,10 +108,7 @@ class Insurance extends StatelessWidget {
                     children: [
                       Text(
                         'Add Insurance',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: SharedModeColors.black,
-                            ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       Text(
                         insuranceBottomSheets(manager.insuranceCurrentStep)[0],

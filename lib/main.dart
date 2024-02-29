@@ -29,12 +29,14 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ThemeManager, ThemeState>(
         builder: (context, state) {
           ThemeManager.currentTheme = state;
-          return MaterialApp(
-            title: MainStrings.title,
-            theme: state.themeData,
-            onGenerateRoute: (settings) =>
-                OnGenerateRoute.onGenerateRoute(settings),
-            debugShowCheckedModeBanner: false,
+          return SafeArea(
+            child: MaterialApp(
+              title: MainStrings.title,
+              theme: state.themeData,
+              onGenerateRoute: (settings) =>
+                  OnGenerateRoute.onGenerateRoute(settings),
+              debugShowCheckedModeBanner: false,
+            ),
           );
         },
       ),

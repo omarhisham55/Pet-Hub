@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/shared/components.dart';
-import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
@@ -14,6 +13,8 @@ class Recipes extends StatelessWidget {
         context: context,
         title: 'Pet Profile',
         subTitle: 'Recipes',
+        boldTitle: false,
+        boldSubTitle: true,
         titleAlignment: CrossAxisAlignment.start,
       ),
       body: Padding(
@@ -33,15 +34,9 @@ class Recipes extends StatelessWidget {
 
   Widget _recipeGridView(BuildContext context) {
     Widget recipeGridViewItem(BuildContext context, int index) {
-      return Container(
+      return ModedContainer(
         padding: const EdgeInsets.only(bottom: 10, left: 15),
-        decoration: BoxDecoration(
-          color: SharedModeColors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(blurRadius: .2, color: SharedModeColors.grey500)
-          ],
-        ),
+        margin: EdgeInsets.zero,
         child: Column(
           children: [
             Expanded(child: Image.asset(NutritionImages.recipe[index])),

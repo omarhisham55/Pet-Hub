@@ -4,7 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
-import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
@@ -18,13 +17,8 @@ class OpenMaps extends StatelessWidget {
     return Scaffold(
       appBar: twoTitleAppbar(
           context: context,
-          title: title,
-          subTitle: subTitle,
-          titleStyle: Theme.of(context).textTheme.bodyMedium,
-          subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: SharedModeColors.black,
-              ),
+          title: subTitle,
+          subTitle: title,
           titleAlignment: CrossAxisAlignment.start),
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -50,13 +44,10 @@ class OpenMaps extends StatelessWidget {
   }
 
   Widget _loactionDetails(BuildContext context) {
-    return Container(
+    return ModedContainer(
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: SharedModeColors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
+      borderRadius: 24,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

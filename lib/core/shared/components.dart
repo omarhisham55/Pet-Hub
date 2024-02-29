@@ -70,7 +70,7 @@ class OutlinedGlobalButton extends StatelessWidget {
     required this.onPressed,
     this.margin = EdgeInsets.zero,
     this.padding,
-    this.textColor = Colors.white,
+    this.textColor,
     this.color,
     this.style,
     this.border,
@@ -78,11 +78,41 @@ class OutlinedGlobalButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlobalButton(
+    return Container(
+      width: double.infinity,
+      margin: margin,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(
+                color: ThemeManager.currentTheme == ThemeState.lightTheme
+                    ? SharedModeColors.blue500
+                    : SharedModeColors.white,
+              ),
+            ),
+          ),
+        ),
+        child: Padding(
+          padding: padding ?? const EdgeInsets.all(15),
+          child: Text(
+            text,
+            style: style ??
+                Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: textColor),
+          ),
+        ),
+      ),
+    );
+    /*   return GlobalButton(
       text: text,
       onPressed: onPressed,
       border: border ?? BorderSide(color: SharedModeColors.blue500),
-      color: SharedModeColors.white,
+      color: Colors.transparent,
       style: Theme.of(context)
           .textTheme
           .titleMedium!
@@ -91,6 +121,7 @@ class OutlinedGlobalButton extends StatelessWidget {
       padding: padding,
       textColor: textColor,
     );
+   */
   }
 }
 
@@ -674,18 +705,9 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ModedContainer(
+      margin: EdgeInsets.zero,
       padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: SharedModeColors.white,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: .2,
-            color: SharedModeColors.grey500,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(16),
-      ),
       child: Row(
         children: [
           const CircleAvatar(),
@@ -729,8 +751,10 @@ class ModedContainer extends StatelessWidget {
   final Widget child;
   final Function()? onTap;
   final double? borderRadius;
+  final double? height;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
+  final BoxBorder? border;
   final Color? lightThemeColor;
   final Color? darkThemeColor;
   final Color? selectedContainer;
@@ -739,8 +763,10 @@ class ModedContainer extends StatelessWidget {
     required this.child,
     this.onTap,
     this.borderRadius = 16,
+    this.height,
     this.margin,
     this.padding,
+    this.border,
     this.lightThemeColor,
     this.darkThemeColor,
     this.selectedContainer,
@@ -751,10 +777,12 @@ class ModedContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: height,
         margin: margin ?? const EdgeInsets.all(10),
         padding: padding ?? const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius!),
+          border: border,
           color: selectedContainer ??
               (ThemeManager.currentTheme == ThemeState.lightTheme
                   ? lightThemeColor ?? SharedModeColors.white

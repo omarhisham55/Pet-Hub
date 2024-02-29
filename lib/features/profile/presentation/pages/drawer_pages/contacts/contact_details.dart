@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
@@ -27,6 +29,7 @@ class ContactDetails extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            _contactTitle(context),
             _review(context),
             _contactInfo(context),
             _contactLocation(context),
@@ -39,20 +42,17 @@ class ContactDetails extends StatelessWidget {
     );
   }
 
-  /* Widget _contactTitle(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: SharedModeColors.white,
-        borderRadius: BorderRadius.circular(24),
-        // boxShadow: const [BoxShadow(blurRadius: .2)],
-      ),
+  Widget _contactTitle(BuildContext context) {
+    return ModedContainer(
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(left: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
+          Expanded(
+            flex: 2,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Shining Fur Salon',
@@ -65,13 +65,17 @@ class ContactDetails extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: Image.asset(ProfileImages.haircutSalon)),
+          Expanded(
+              child: Image.asset(
+            ProfileImages.haircutSalon,
+            height: 80,
+            fit: BoxFit.cover,
+          )),
         ],
       ),
     );
   }
 
- */
   Widget _review(BuildContext context) {
     return Row(
       children: [
@@ -110,10 +114,12 @@ class ContactDetails extends StatelessWidget {
                 ),
                 Text(
                   '079 1234 7777',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: SharedModeColors.black),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color:
+                            ThemeManager.currentTheme == ThemeState.lightTheme
+                                ? SharedModeColors.black
+                                : SharedModeColors.white,
+                      ),
                 ),
               ],
             ),
@@ -133,10 +139,12 @@ class ContactDetails extends StatelessWidget {
                 ),
                 Text(
                   'contactshinnyfun@gmail.com',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: SharedModeColors.black),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color:
+                            ThemeManager.currentTheme == ThemeState.lightTheme
+                                ? SharedModeColors.black
+                                : SharedModeColors.white,
+                      ),
                 ),
               ],
             ),
@@ -232,14 +240,9 @@ class ContactDetails extends StatelessWidget {
         const SizedBox(height: 10),
         ...List.generate(
           3,
-          (index) => Container(
+          (index) => ModedContainer(
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             margin: const EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-              color: SharedModeColors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [BoxShadow(blurRadius: .2)],
-            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

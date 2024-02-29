@@ -17,47 +17,38 @@ class Contacts extends StatelessWidget {
       };
   Widget contactsBody(BuildContext context, String title) {
     Widget contactItem(BuildContext context, dynamic item) {
-      return GestureDetector(
+      return ModedContainer(
         onTap: () => Constants.navigateTo(context, Routes.contactsDetails),
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: SharedModeColors.white,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: .2,
-                color: SharedModeColors.grey500,
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            const CircleAvatar(),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Name',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    'email',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-            ],
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              const CircleAvatar(),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Name',
-                      style: Theme.of(context).textTheme.titleMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      'email',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.adaptive.arrow_forward_outlined),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.adaptive.arrow_forward_outlined,
+              color: SharedModeColors.grey500,
+            ),
+          ],
         ),
       );
     }
@@ -144,7 +135,7 @@ class Contacts extends StatelessWidget {
       borderRadius: 8,
       selectedContainer: manager.currentContactCategorySelection == index
           ? SharedModeColors.yellow500
-          : SharedModeColors.grey150,
+          : null,
       child: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -33,7 +34,8 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   }
 
   //* slide to contiune button
-  final GlobalKey slideToContinueKey = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> slideToContinueKey =
+      GlobalKey<State<StatefulWidget>>();
   late RenderBox renderBox =
       slideToContinueKey.currentContext!.findRenderObject() as RenderBox;
   late Offset slidePosition = renderBox.localToGlobal(Offset.zero);
@@ -46,8 +48,9 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   void addNewPetProfile(BuildContext context) {
     LocalSharedPreferences.saveLocalPreferences(
       SharedPreferencesKeys.numberOfPets,
-      numberOfPets++,
+      ++numberOfPets,
     );
+    drawerScaffoldKey.hideDrawer();
     setupPetProfileCurrentStep = 0;
     Constants.replaceWithAndRemoveUntil(context, Routes.homePageProfile);
     emit(StepsState(step: numberOfPets));
@@ -167,6 +170,28 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   void changePetProfileView(int index) {
     currentProfileSection = index;
     emit(ChangeViewState(page: currentProfileSection));
+  }
+
+  //* add pet profile continue button
+  void petProfileContinueButton(BuildContext context) {
+    switch (setupPetProfileCurrentStep) {
+      case 0:
+        category != null ? petProfileNextStep(context) : null;
+        break;
+      case 1:
+        detailedCategory != null ? petProfileNextStep(context) : null;
+        break;
+      case 2:
+        petNameController.text.isEmpty ? null : petProfileNextStep(context);
+        break;
+      case 3:
+      // break;
+      case 4:
+      // break;
+      case 5:
+        petProfileNextStep(context);
+        break;
+    }
   }
 
 //* HEALTH

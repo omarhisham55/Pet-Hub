@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
@@ -19,12 +20,11 @@ class ViewPetProfile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10),
             child: MaterialButton(
-              color: SharedModeColors.grey150,
+              color: ThemeManager.currentTheme == ThemeState.lightTheme
+                  ? SharedModeColors.grey150
+                  : SharedModeColors.grey800,
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
-                side: BorderSide(
-                  color: SharedModeColors.grey200,
-                ),
               ),
               elevation: 0,
               onPressed: () {},
@@ -108,25 +108,21 @@ class ViewPetProfile extends StatelessWidget {
     int index,
     ProfileSetupCubit manager,
   ) {
-    return GestureDetector(
+    return ModedContainer(
       onTap: () => manager.changePetProfileView(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: SharedModeColors.grey200),
-          color: manager.currentProfileSection == index
-              ? SharedModeColors.yellow500
-              : SharedModeColors.grey150,
-        ),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: manager.currentProfileSection == index
-                    ? SharedModeColors.white
-                    : null,
-              ),
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      margin: EdgeInsets.zero,
+      borderRadius: 8,
+      selectedContainer: manager.currentProfileSection == index
+          ? SharedModeColors.yellow500
+          : null,
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color: manager.currentProfileSection == index
+                  ? SharedModeColors.white
+                  : null,
+            ),
       ),
     );
   }

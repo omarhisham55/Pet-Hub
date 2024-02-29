@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
@@ -30,30 +31,24 @@ class InsurancePackages extends StatelessWidget {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
       builder: (context, state) {
         ProfileSetupCubit manager = ProfileSetupCubit.get(context);
-        return GestureDetector(
+        return ModedContainer(
           onTap: () => manager.changeInsurancePackage(index),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            margin: const EdgeInsets.symmetric(vertical: 15),
-            decoration: BoxDecoration(
-              color: SharedModeColors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: manager.insurancePackage == index
-                  ? Border.all(color: SharedModeColors.blue500, width: 2)
-                  : null,
-              boxShadow: const [BoxShadow(blurRadius: 1)],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.umbrella_outlined),
-                Text(
-                  'Basic Pack',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const Text('\$ 20 /month'),
-              ],
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          margin: const EdgeInsets.symmetric(vertical: 15),
+          borderRadius: 20,
+          border: manager.insurancePackage == index
+              ? Border.all(color: SharedModeColors.blue500, width: 2)
+              : null,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(Icons.umbrella_outlined),
+              Text(
+                'Basic Pack',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const Text('\$ 20 /month'),
+            ],
           ),
         );
       },
