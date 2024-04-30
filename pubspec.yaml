@@ -9,6 +9,7 @@ environment:
 dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
+  desktop_window: ^0.4.0
   draggable_widget: ^2.0.0
   equatable: ^2.0.5
   flutter:
@@ -20,6 +21,7 @@ dependencies:
   google_maps_flutter_web: ^0.5.4+3
   intl: ^0.19.0
   qr_flutter: ^4.1.0
+  responsive_builder: ^0.7.0
   ruler_scale_picker: ^0.1.0
   shared_preferences: ^2.2.2
   sliding_up_panel: ^2.0.0+1
@@ -29,9 +31,9 @@ dependencies:
   wave: ^0.2.2
 
 dev_dependencies:
+  flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true

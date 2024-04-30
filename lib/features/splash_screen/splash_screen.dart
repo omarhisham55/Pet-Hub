@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/constants.dart';
@@ -33,22 +32,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Image.asset(SplashImages.logo),
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Hero(
-              tag: 'dogBG',
-              child: Image.asset(
-                SplashImages.background,
-                width: double.infinity,
-                fit: BoxFit.fitWidth,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(child: Image.asset(SplashImages.logo)),
+            Expanded(
+              flex: 2,
+              child: Hero(
+                tag: 'dogBG',
+                child: Image.asset(
+                  SplashImages.background,
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/on_border/presentation/cubit/on_border_cubit.dart';
+import 'package:pet_app/features/on_border/presentation/pages/on_border_screen.dart';
 
 Widget _defaultBottomsheet({
   required BuildContext context,
@@ -22,78 +23,78 @@ Widget _defaultBottomsheet({
   Widget? child = const SizedBox(),
 }) {
   return KeyboardVisibilityBuilder(
-      controller: manager.keyboardController,
-      builder: (context, isKeyboardVisible) {
-        return Padding(
-          padding: manager.keyboardController.isVisible
-              ? const EdgeInsets.only(bottom: 200)
-              : EdgeInsets.zero,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                margin: const EdgeInsets.only(top: 40),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).bottomSheetTheme.backgroundColor,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(24),
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        subTitle,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
-                    child!,
-                    GlobalButton(
-                      text: buttonText,
-                      onPressed: buttonAction,
-                      margin: const EdgeInsets.only(bottom: 10, top: 30),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(underButtonText),
-                        GestureDetector(
-                          onTap: underButtonAction,
-                          child: Text(
-                            underButtonTextButton!,
-                            style: TextStyle(
-                              color: underButtonTextButtonColor ??
-                                  SharedModeColors.blue500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+    controller: manager.keyboardController,
+    builder: (context, isKeyboardVisible) {
+      return Padding(
+        padding: manager.keyboardController.isVisible
+            ? const EdgeInsets.only(bottom: 200)
+            : EdgeInsets.zero,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              margin: const EdgeInsets.only(top: 40),
+              decoration: BoxDecoration(
+                color: Theme.of(context).bottomSheetTheme.backgroundColor,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
                 ),
               ),
-              CircleAvatar(
-                radius: 40,
-                backgroundColor:
-                    Theme.of(context).bottomSheetTheme.backgroundColor,
-                child: Icon(icon),
-              )
-            ],
-          ),
-        );
-      });
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      subTitle,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  child!,
+                  GlobalButton(
+                    text: buttonText,
+                    onPressed: buttonAction,
+                    margin: const EdgeInsets.only(bottom: 10, top: 30),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(underButtonText),
+                      GestureDetector(
+                        onTap: underButtonAction,
+                        child: Text(
+                          underButtonTextButton!,
+                          style: TextStyle(
+                            color: underButtonTextButtonColor ??
+                                SharedModeColors.blue500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            CircleAvatar(
+              radius: 40,
+              backgroundColor:
+                  Theme.of(context).bottomSheetTheme.backgroundColor,
+              child: Icon(icon),
+            )
+          ],
+        ),
+      );
+    },
+  );
 }
 
-Widget onBoardingBuilder(BuildContext context) {
+Widget onBoardingBuilder(BuildContext context, [bool? isDesktop = false]) {
   return PopScope(
     canPop: false,
     child: _defaultBottomsheet(
@@ -108,13 +109,15 @@ Widget onBoardingBuilder(BuildContext context) {
       underButtonTextButtonColor: SharedModeColors.grey500,
       underButtonAction: () => OnBorderCubit.get(context)
           .finishOnBoarding(context: context, signUpLater: true),
-      buttonAction: () => OnBorderCubit.get(context).changeOnBorder(
-        context,
-        createAccountBuilder(
-          context,
-          OnBorderCubit.get(context),
-        ),
-      ),
+      buttonAction: () => isDesktop!
+          ? OnBorderScreen.toggleWidget()
+          : OnBorderCubit.get(context).changeOnBorder(
+              context,
+              createAccountBuilder(
+                context,
+                OnBorderCubit.get(context),
+              ),
+            ),
     ),
   );
 }
