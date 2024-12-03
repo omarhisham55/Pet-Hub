@@ -7,19 +7,31 @@ environment:
   sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
-  carousel_slider: ^4.2.1
+  animate_do: ^3.3.4
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
+  cloud_firestore: ^5.5.0
   cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
   desktop_window: ^0.4.0
   draggable_widget: ^2.0.0
   equatable: ^2.0.5
+  firebase_auth: ^5.3.3
+  firebase_core: ^3.8.0
   flutter:
     sdk: flutter
   flutter_advanced_drawer: ^1.3.5
   flutter_bloc: ^8.1.3
   flutter_keyboard_visibility: ^6.0.0
+  flutter_svg: ^2.0.16
+  fluttertoast: ^8.2.8
+  get_it: ^8.0.2
   google_maps_flutter: ^2.5.3
   google_maps_flutter_web: ^0.5.4+3
+  internet_connection_checker: ^1.0.0+1
   intl: ^0.19.0
+  logger: ^2.5.0
+  lottie: ^3.1.3
   qr_flutter: ^4.1.0
   responsive_builder: ^0.7.0
   ruler_scale_picker: ^0.1.0
@@ -38,6 +50,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/sharedImages/
     - assets/images/sharedImages/settings/
     - assets/images/sharedImages/pets/birds/
     - assets/images/sharedImages/pets/cats/
@@ -54,6 +67,7 @@ flutter:
     - assets/images/darkImages/profile/health/
     - assets/images/darkImages/profile/nutrition/
     - assets/images/darkImages/profile/activities/
+    - assets/images/lottie/
   fonts:
     - family: Catamaran
       fonts:

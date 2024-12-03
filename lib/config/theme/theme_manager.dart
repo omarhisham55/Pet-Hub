@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/theme/dark_theme.dart';
 import 'package:pet_app/config/theme/light_theme.dart';
-import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/core/shared/constants/constants.dart';
 
 enum ThemeEvent { lightTheme, darkTheme }
 
@@ -24,7 +24,7 @@ class ThemeState extends Equatable {
 class ThemeManager extends Cubit<ThemeState> {
   ThemeManager()
       : super(
-          LocalSharedPreferences.darkTheme()
+          LocalSharedPreferences.isDarkTheme()
               ? ThemeState.darkTheme
               : ThemeState.lightTheme,
         );
@@ -36,13 +36,11 @@ class ThemeManager extends Cubit<ThemeState> {
   void toggleTheme(ThemeEvent event) {
     switch (event) {
       case ThemeEvent.lightTheme:
-        LocalSharedPreferences.saveLocalPreferences(
-            SharedPreferencesKeys.darkTheme, false);
+        LocalSharedPreferences.write(Constants.localIsDarkTheme, false);
         emit(ThemeState.lightTheme);
         break;
       case ThemeEvent.darkTheme:
-        LocalSharedPreferences.saveLocalPreferences(
-            SharedPreferencesKeys.darkTheme, true);
+        LocalSharedPreferences.write(Constants.localIsDarkTheme, true);
         emit(ThemeState.darkTheme);
         break;
     }

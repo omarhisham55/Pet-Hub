@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/utils/strings.dart';
-import 'package:pet_app/features/on_border/presentation/pages/on_border_screen.dart';
+import 'package:pet_app/core/error/page_not_found.dart';
+import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
 import 'package:pet_app/features/profile/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/calendar.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/book_a_date.dart';
@@ -20,7 +20,7 @@ import 'package:pet_app/features/splash_screen/splash_screen.dart';
 
 class Routes {
   static const String splashScreen = '/';
-  static const String onBorder = '/onBorder';
+  static const String onBording = '/onBorder';
   static const String homePageProfile = '/homePageProfile';
   static const String addPetProfile = '/AddPetProfile';
   static const String shareProfile = '/ShareProfile';
@@ -47,8 +47,8 @@ class Routes {
             builder: (context) => const SplashScreen(),
             settings: settings,
           ),
-      onBorder: (settings) => MaterialPageRoute(
-            builder: (context) => const OnBorderScreen(),
+      onBording: (settings) => MaterialPageRoute(
+            builder: (context) => const OnBordingScreen(),
             settings: settings,
           ),
       homePageProfile: (settings) => MaterialPageRoute(
@@ -132,14 +132,7 @@ class Routes {
 
   Route<dynamic> undefinedRoute() {
     return MaterialPageRoute(
-      builder: (_) => Scaffold(
-        body: Center(
-          child: Text(
-            MainStrings.undefinedRoute,
-            style: Theme.of(_).textTheme.displayMedium,
-          ),
-        ),
-      ),
+      builder: (_) => const PageNotFound(),
     );
   }
 }

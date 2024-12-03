@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pet_app/config/routes/routes.dart';
-import 'package:pet_app/core/shared/constants.dart';
+import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
+import 'package:pet_app/core/shared/constants/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,10 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer(
-      const Duration(seconds: 2),
-      () => Constants.replaceWith(context, Routes.onBorder),
-    );
+    _timer = Timer(const Duration(seconds: 2), _initializeAuthGate);
   }
 
   @override
@@ -29,25 +28,33 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
+  Future<void> _initializeAuthGate() async {
+    final bool isAuthenticated = await AuthGateChecks.isAuthenticatedCheck();
+    final bool isOnBoardingComplete =
+        await AuthGateChecks.isOnBoardingCompleteCheck();
+    if (isOnBoardingComplete && isAuthenticated) {
+      Constants.navigateTo(context, Routes.homePageProfile);
+    } else {
+      Constants.navigateTo(context, Routes.onBording);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(child: Image.asset(SplashImages.logo)),
-            Expanded(
-              flex: 2,
-              child: Hero(
-                tag: 'dogBG',
-                child: Image.asset(
-                  SplashImages.background,
-                  fit: BoxFit.fitHeight,
-                ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(child: Image.asset(SplashImages.logo)),
+              Expanded(
+                flex: 2,
+                child: Lottie.asset(LoadingLotties.walkingDog),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
