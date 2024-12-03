@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/shared/components.dart';
+import 'package:pet_app/core/utils/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatelessWidget {
@@ -29,6 +30,19 @@ class Calendar extends StatelessWidget {
       firstDay: DateTime(DateTime.now().year - 1),
       lastDay: DateTime(DateTime.now().year + 3),
       focusedDay: DateTime.now(),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        leftChevronIcon: Icon(
+          Icons.chevron_left_sharp,
+          color: SharedModeColors.grey500,
+        ),
+        rightChevronIcon: Icon(
+          Icons.chevron_right_sharp,
+          color: SharedModeColors.grey500,
+        ),
+      ),
     );
   }
 

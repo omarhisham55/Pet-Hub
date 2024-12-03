@@ -17,7 +17,7 @@ class Constants {
       Navigator.pushNamedAndRemoveUntil(
         context,
         route,
-        (finalRoute) => route == finalRoute.settings.name,
+        (route) => false,
       );
   static void pop(BuildContext context) => Navigator.pop(context);
 }

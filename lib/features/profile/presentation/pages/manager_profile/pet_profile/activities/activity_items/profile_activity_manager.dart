@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class ProfileActivityManager extends StatelessWidget {
@@ -15,15 +14,13 @@ class ProfileActivityManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: twoTitleAppbar(
-          context: context,
-          title: 'Pet Profile',
-          subTitle: subTitle,
-          titleStyle: Theme.of(context).textTheme.bodyMedium,
-          subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: SharedModeColors.black,
-              ),
-          titleAlignment: CrossAxisAlignment.start),
+        context: context,
+        title: 'Pet Profile',
+        subTitle: subTitle,
+        boldTitle: false,
+        boldSubTitle: true,
+        titleAlignment: CrossAxisAlignment.start,
+      ),
       body: body,
     );
   }

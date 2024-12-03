@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/health_items/insurance.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/health_items/vaccines.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
@@ -16,11 +15,8 @@ class PetProfileHealthDetails extends StatelessWidget {
         title: 'Pet Profile',
         subTitle: subTitle,
         titleAlignment: CrossAxisAlignment.start,
-        titleStyle: Theme.of(context).textTheme.bodyMedium,
-        subTitleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: SharedModeColors.black,
-            ),
+        boldTitle: false,
+        boldSubTitle: true,
       ),
       body: _selectedHealthItem(),
     );

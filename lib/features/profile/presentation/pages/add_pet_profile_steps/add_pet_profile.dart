@@ -53,15 +53,7 @@ class AddPetProfile extends StatelessWidget {
                 padding: const EdgeInsets.all(25),
                 child: GlobalButton(
                   text: 'Continue',
-                  onPressed: () {
-                    bodyContent.keys
-                                .toList()[manager.setupPetProfileCurrentStep] ==
-                            'Name'
-                        ? manager.petNameController.text.isEmpty
-                            ? null
-                            : manager.petProfileNextStep(context)
-                        : manager.petProfileNextStep(context);
-                  },
+                  onPressed: () => manager.petProfileContinueButton(context),
                   color: bodyContent.keys
                               .toList()[manager.setupPetProfileCurrentStep] ==
                           'Name'

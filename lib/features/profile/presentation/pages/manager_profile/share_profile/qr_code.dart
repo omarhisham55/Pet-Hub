@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
@@ -14,20 +16,31 @@ class QRCodeScan extends StatelessWidget {
         context: context,
         title: 'Sharing profiles',
         subTitle: 'shared pet name',
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             _qrCode(context),
-            const Row(
+            Row(
               children: [
-                Expanded(child: Divider()),
-                Padding(
+                Expanded(
+                    child: Divider(
+                  color: ThemeManager.currentTheme != ThemeState.lightTheme
+                      ? SharedModeColors.grey200
+                      : SharedModeColors.grey800,
+                )),
+                const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   child: Text('or'),
                 ),
-                Expanded(child: Divider()),
+                Expanded(
+                    child: Divider(
+                  color: ThemeManager.currentTheme != ThemeState.lightTheme
+                      ? SharedModeColors.grey200
+                      : SharedModeColors.grey800,
+                )),
               ],
             ),
             _shareLink(context),
@@ -41,17 +54,9 @@ class QRCodeScan extends StatelessWidget {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        Container(
-          width: double.infinity,
+        ModedContainer(
           margin: const EdgeInsets.only(top: 80),
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: SharedModeColors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(color: SharedModeColors.grey200, blurRadius: 5),
-            ],
-          ),
           child: Padding(
             padding: const EdgeInsets.only(top: 60),
             child: QrImageView(
@@ -65,7 +70,10 @@ class QRCodeScan extends StatelessWidget {
           child: Column(
             children: [
               CircleAvatar(
-                backgroundColor: SharedModeColors.white,
+                backgroundColor:
+                    ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? SharedModeColors.grey200
+                        : SharedModeColors.grey800,
                 radius: 50,
                 child: ClipOval(
                   child: Image.asset(
@@ -86,14 +94,7 @@ class QRCodeScan extends StatelessWidget {
   }
 
   Widget _shareLink(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: SharedModeColors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: SharedModeColors.grey200, blurRadius: 5),
-        ],
-      ),
+    return ModedContainer(
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [

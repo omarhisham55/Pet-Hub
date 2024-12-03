@@ -12,8 +12,12 @@ AppBar twoTitleAppbar({
   String? subTitle = '',
   Widget? leading,
   bool? centerTitle = false,
-  TextStyle? titleStyle,
-  TextStyle? subTitleStyle,
+  bool? boldTitle = true,
+  bool? boldSubTitle = false,
+  Color? lightColorTitle,
+  Color? darkColorTitle,
+  Color? lightColorSubTitle,
+  Color? darkColorSubTitle,
   List<Widget>? actions,
   double? elevation,
   CrossAxisAlignment? titleAlignment = CrossAxisAlignment.center,
@@ -28,18 +32,29 @@ AppBar twoTitleAppbar({
         children: [
           Text(
             title,
-            style: titleStyle ??
-                Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
+            style: subTitle!.isEmpty
+                ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: boldTitle! ? FontWeight.bold : null,
                       color: ThemeManager.currentTheme == ThemeState.lightTheme
-                          ? SharedModeColors.black
-                          : SharedModeColors.white,
+                          ? lightColorTitle ?? SharedModeColors.black
+                          : darkColorTitle ?? SharedModeColors.white,
+                    )
+                : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: boldTitle! ? FontWeight.bold : null,
+                      color: ThemeManager.currentTheme == ThemeState.lightTheme
+                          ? lightColorTitle ?? SharedModeColors.black
+                          : darkColorTitle ?? SharedModeColors.white,
                     ),
           ),
-          if (subTitle!.isNotEmpty)
+          if (subTitle.isNotEmpty)
             Text(
               subTitle,
-              style: subTitleStyle ?? Theme.of(context).textTheme.bodyMedium!,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: boldSubTitle! ? FontWeight.bold : null,
+                    color: ThemeManager.currentTheme == ThemeState.lightTheme
+                        ? lightColorSubTitle ?? SharedModeColors.black
+                        : darkColorSubTitle ?? SharedModeColors.white,
+                  ),
             ),
         ],
       ),

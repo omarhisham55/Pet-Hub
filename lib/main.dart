@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/responsive/responsive_manager.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/bloc_observer.dart';
@@ -11,6 +12,7 @@ import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
+  await ResponsiveManager.desktopConstraints();
   await LocalSharedPreferences.init();
   runApp(const MyApp());
 }

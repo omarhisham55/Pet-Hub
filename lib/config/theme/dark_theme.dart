@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pet_app/core/utils/colors.dart';
 
 ThemeData darkThemeData = ThemeData(
-  scaffoldBackgroundColor: SharedModeColors.darkBackground,
+  scaffoldBackgroundColor: SharedModeColors.grey1000,
   iconTheme: IconThemeData(
     color: SharedModeColors.blue500,
   ),
@@ -34,7 +34,8 @@ ThemeData darkThemeData = ThemeData(
       fontWeight: FontWeight.w700,
       fontFamily: 'Catamaran',
     ),
-    bodyLarge: const TextStyle(
+    bodyLarge: TextStyle(
+      color: SharedModeColors.white,
       fontWeight: FontWeight.w700,
     ),
     bodyMedium: TextStyle(

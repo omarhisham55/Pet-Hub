@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/routes/routes.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
@@ -33,44 +34,32 @@ class NutritionPetProfile extends StatelessWidget {
       Function() onTap, {
       IconData? icon,
     }) {
-      return GestureDetector(
+      return ModedContainer(
         onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: SharedModeColors.white,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: .2,
-                color: SharedModeColors.grey500,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Image.asset(
-                img,
-                fit: BoxFit.cover,
-              )),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 10,
-                  ),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Expanded(
+                child: Image.asset(
+              img,
+              fit: BoxFit.cover,
+            )),
+            Expanded(
+              flex: 2,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 10,
+                ),
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
-              if (icon != null) Icon(icon),
-            ],
-          ),
+            ),
+            if (icon != null) Icon(icon),
+          ],
         ),
       );
     }
@@ -121,18 +110,9 @@ class NutritionPetProfile extends StatelessWidget {
 
   Widget _schedualedMeals(BuildContext context) {
     Widget schedualedMealItem(BuildContext context, int index) {
-      return Container(
+      return ModedContainer(
+        margin: EdgeInsets.zero,
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: SharedModeColors.white,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: .2,
-              color: SharedModeColors.grey500,
-            ),
-          ],
-          borderRadius: BorderRadius.circular(16),
-        ),
         child: Row(
           children: [
             Expanded(
@@ -168,7 +148,7 @@ class NutritionPetProfile extends StatelessWidget {
             ),
             BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
               builder: (context, state) {
-                return Switch(
+                return settingSwitch(
                   value: ProfileSetupCubit.get(context).isSwitchedOn[index],
                   onChanged: (value) =>
                       ProfileSetupCubit.get(context).toggleSwitch(index),

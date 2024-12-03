@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
-import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/tricks.dart';
@@ -31,7 +31,7 @@ class ActivitiesPetProfile extends StatelessWidget {
     BuildContext context,
     MapEntry<String, dynamic> activity,
   ) {
-    return GestureDetector(
+    return ModedContainer(
       onTap: () => Constants.navigateTo(
         context,
         Routes.intoActivities,
@@ -40,27 +40,17 @@ class ActivitiesPetProfile extends StatelessWidget {
           body: activity.value,
         ),
       ),
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: SharedModeColors.white,
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: .2,
-              color: SharedModeColors.grey500,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Image.asset(ProfileImages.healthCard),
-            Text(
-              activity.key,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
-        ),
+      margin: const EdgeInsets.all(10),
+      padding: EdgeInsets.zero,
+      borderRadius: 22,
+      child: Row(
+        children: [
+          Image.asset(ProfileImages.healthCard),
+          Text(
+            activity.key,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
       ),
     );
   }

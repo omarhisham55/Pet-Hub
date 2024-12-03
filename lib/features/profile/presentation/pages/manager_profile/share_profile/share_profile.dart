@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
+import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/shared/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
@@ -11,7 +12,6 @@ class ShareProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SharedModeColors.white,
       appBar: twoTitleAppbar(
         context: context,
         title: 'Sharing Profiles',
@@ -23,18 +23,16 @@ class ShareProfile extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Container(
+              ModedContainer(
                 margin: const EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: SharedModeColors.grey200,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                borderRadius: 30,
+                darkThemeColor: SharedModeColors.grey1000,
+                lightThemeColor: SharedModeColors.grey200,
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: SharedModeColors.yellow500,
                           borderRadius: BorderRadius.circular(16),
@@ -83,44 +81,34 @@ class ShareProfile extends StatelessWidget {
   Widget _petProfile(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
-      child: InkWell(
+      child: ModedContainer(
         onTap: () => Constants.navigateTo(context, Routes.qrCodeScan),
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          decoration: BoxDecoration(
-            color: SharedModeColors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(color: SharedModeColors.grey200, blurRadius: 10),
-            ],
-          ),
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            children: [
-              const CircleAvatar(
-                radius: 35,
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          children: [
+            const CircleAvatar(
+              radius: 35,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pet Name',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Row(
+                    children: [
+                      Text('Dog | '),
+                      Text('Border Collie'),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pet Name',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const Row(
-                      children: [
-                        Text('Dog | '),
-                        Text('Border Collie'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.male),
-            ],
-          ),
+            ),
+            const Icon(Icons.male),
+          ],
         ),
       ),
     );
