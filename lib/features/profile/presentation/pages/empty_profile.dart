@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/shared/components.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/profile/presentation/widgets/slide_to_continue_button.dart';
 
 class EmptyProfileStartUp extends StatelessWidget {
   const EmptyProfileStartUp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ProfileSetupCubit manager = ProfileSetupCubit.get(context);
     return Padding(
       padding: const EdgeInsets.all(30),
       child: Column(
@@ -37,7 +35,7 @@ class EmptyProfileStartUp extends StatelessWidget {
               ],
             ),
           ),
-          slideToContinueButton(context, manager),
+          const SlideToContinueButton(),
         ],
       ),
     );

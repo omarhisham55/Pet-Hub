@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/shared/components.dart';
+import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
 
 class WalkActivity extends StatelessWidget {

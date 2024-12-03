@@ -1,30 +1,62 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/services/di/dpi.dart';
+import 'package:pet_app/config/services/firebase/user_firestore.dart';
+import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
-import 'package:pet_app/core/shared/constants.dart';
-import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/core/shared/constants/constants.dart';
+import 'package:pet_app/core/shared/constants/usecase.dart';
+import 'package:pet_app/features/onbording/domain/entities/user.dart';
+import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
+import 'package:pet_app/features/profile/domain/usecases/get_pets_categories_usecase.dart';
 import 'package:ruler_scale_picker/ruler_scale_picker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'profile_setup_state.dart';
 
 class ProfileSetupCubit extends Cubit<ProfileSetupState> {
-  ProfileSetupCubit() : super(ProfileSetupInitial());
+  final GetPetsCategoriesUsecase getPetsCategoriesUsecase;
+  ProfileSetupCubit(this.getPetsCategoriesUsecase)
+      : super(ProfileSetupInitial());
 
   static ProfileSetupCubit get(context) => BlocProvider.of(context);
 
+  List<PetCategory> petsCategories = [];
   int numberOfPets = LocalSharedPreferences.numberOfPets();
   PageController pageController = PageController();
   AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
+  User? user;
+
+  void getUser() async {
+    user = await dpi<UserFirestore>().get(
+      LocalSharedPreferences.read(
+        Constants.localUserId,
+        fallBack: '',
+      ),
+    );
+  }
+
+  void getPetsCategories() async {
+    emit(LoadingPetsCategories());
+    petsCategories = [];
+    final result = await getPetsCategoriesUsecase(NoParams());
+    emit(
+      result.fold(
+        (l) => ErrorPetsCategories(l.message),
+        (r) {
+          petsCategories = r;
+          logger.d('${r.length} ${r.map((p) => p.breeds.length).toList()}');
+          return SuccessPetsCategories(r);
+        },
+      ),
+    );
+  }
 
   //* Contacts
   int currentContactCategorySelection = 0;
@@ -46,8 +78,8 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   int setupPetProfileCurrentStep = 0;
 
   void addNewPetProfile(BuildContext context) {
-    LocalSharedPreferences.saveLocalPreferences(
-      SharedPreferencesKeys.numberOfPets,
+    LocalSharedPreferences.write(
+      Constants.localNumberOfPets,
       ++numberOfPets,
     );
     drawerScaffoldKey.hideDrawer();
@@ -77,15 +109,15 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
 
   //* change category
   String? category;
-  String? detailedCategory;
+  String? breed;
   void changeCategory(String category) {
     this.category = category;
-    emit(ChangeFocus(index: this.category.hashCode));
+    emit(ChangeFocus(categoryId: this.category));
   }
 
-  void changeDetailedCategory(String category) {
-    detailedCategory = category;
-    emit(ChangeFocus(index: detailedCategory.hashCode));
+  void changeBreed(String category) {
+    breed = category;
+    emit(ChangeFocus(categoryId: breed));
   }
 
   //* petName page
@@ -179,7 +211,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
         category != null ? petProfileNextStep(context) : null;
         break;
       case 1:
-        detailedCategory != null ? petProfileNextStep(context) : null;
+        breed != null ? petProfileNextStep(context) : null;
         break;
       case 2:
         petNameController.text.isEmpty ? null : petProfileNextStep(context);
@@ -258,7 +290,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   }
 
   //*SETTINGS
-  bool darkModeSwitch = LocalSharedPreferences.darkTheme();
+  bool darkModeSwitch = LocalSharedPreferences.isDarkTheme();
   void darkModeSwitchAction(BuildContext context) {
     darkModeSwitch = !darkModeSwitch;
     darkModeSwitch

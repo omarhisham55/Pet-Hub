@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/config/routes/routes.dart';
-import 'package:pet_app/core/shared/components.dart';
-import 'package:pet_app/core/shared/constants.dart';
+import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 

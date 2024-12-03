@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/core/shared/components.dart';
+import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/add_pet_profile_body/body_manager.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
@@ -52,7 +53,7 @@ class AddPetProfile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(25),
                 child: GlobalButton(
-                  text: 'Continue',
+                  text: MainStrings.continueString,
                   onPressed: () => manager.petProfileContinueButton(context),
                   color: bodyContent.keys
                               .toList()[manager.setupPetProfileCurrentStep] ==
