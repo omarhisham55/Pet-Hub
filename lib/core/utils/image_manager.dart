@@ -1,16 +1,18 @@
-import 'package:pet_app/config/preferences/shared_preferences.dart';
+import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 
 const baseLightImgPath = 'assets/images/lightImages';
 const baseDarkImgPath = 'assets/images/darkImages';
 const baseSharedImgPath = 'assets/images/sharedImages';
+const baseLottiesPath = 'assets/images/lottie';
 
 String themeImage(String folderPath) {
-  return LocalSharedPreferences.darkTheme()
+  return LocalSharedPreferences.isDarkTheme()
       ? '$baseDarkImgPath/$folderPath'
       : '$baseLightImgPath/$folderPath';
 }
 
 final String splashPath = themeImage('splash_screen');
+const String noImage = '$baseSharedImgPath/noImage.png';
 const String settingsPath = '$baseSharedImgPath/settings';
 const String birdsPath = '$baseSharedImgPath/pets/birds';
 const String catsPath = '$baseSharedImgPath/pets/cats';
@@ -25,6 +27,12 @@ final String profileActivitiesPath = themeImage('profile/activities');
 class SplashImages {
   static final String logo = '$splashPath/logo.png';
   static final String background = '$splashPath/bg.png';
+}
+
+class LoadingLotties {
+  static final String error = '$baseLottiesPath/error.json';
+  static final String paws = '$baseLottiesPath/paws.json';
+  static final String walkingDog = '$baseLottiesPath/walking_dog.json';
 }
 
 class ProfileImages {
@@ -73,33 +81,4 @@ class SettingsImages {
   static const String appNotifications = '$settingsPath/appNotifications.png';
   static const String emailNotifications =
       '$settingsPath/emailNotifications.png';
-}
-
-class PetsImages {
-  static Map<String, Map<String, String>> pets = {
-    'Dogs': {
-      'AfghanHound': '$dogsPath/afghanHound.png',
-      'Akita': '$dogsPath/akita.png',
-      'Beagle': '$dogsPath/beagle.png',
-      'BichonFrise': '$dogsPath/bichonFrise.png',
-      'BorderCollie': '$dogsPath/borderCollie.png',
-      'Boxer': '$dogsPath/boxer.png',
-      'ChowChow': '$dogsPath/chowChow.png',
-      'Dalmatian': '$dogsPath/dalmatian.png',
-      'MixedBreed': '$dogsPath/mixedBreed.png',
-      'Samoyed': '$dogsPath/samoyed.png',
-    },
-    'Cats': {
-      'Cat': '$catsPath/cat.png',
-    },
-    'Birds': {
-      'Bird': '$birdsPath/bird.png',
-    },
-    'Turtles': {
-      'Turtle': '$turtlesPath/turtle.png',
-    },
-    'Hamsters': {
-      'Hamster': '$hamstersPath/hamster.png',
-    },
-  };
 }
