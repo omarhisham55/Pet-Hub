@@ -22,7 +22,7 @@ class HomePageManager extends StatelessWidget {
             appBar: twoTitleAppbar(
               context: context,
               leading: GestureDetector(
-                onTap: () => manager.drawerScaffoldKey.toggleDrawer(),
+                onTap: manager.drawerScaffoldKey.showDrawer,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: CircleAvatar(
@@ -52,7 +52,7 @@ class HomePageManager extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   margin: const EdgeInsets.only(left: 10),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: manager.drawerScaffoldKey.showDrawer,
                     child: const Icon(Icons.menu),
                   ),
                 ),

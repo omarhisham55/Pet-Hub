@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/core/shared/components.dart';
+import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
