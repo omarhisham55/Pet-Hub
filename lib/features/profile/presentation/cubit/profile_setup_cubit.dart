@@ -1,61 +1,52 @@
 import 'dart:collection';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/config/services/firebase/user_firestore.dart';
 import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
-import 'package:pet_app/core/shared/constants/usecase.dart';
+import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
 import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
-import 'package:pet_app/features/profile/domain/usecases/get_pets_categories_usecase.dart';
-import 'package:ruler_scale_picker/ruler_scale_picker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'profile_setup_state.dart';
 
 class ProfileSetupCubit extends Cubit<ProfileSetupState> {
-  final GetPetsCategoriesUsecase getPetsCategoriesUsecase;
-  ProfileSetupCubit(this.getPetsCategoriesUsecase)
-      : super(ProfileSetupInitial());
+  ProfileSetupCubit() : super(ProfileSetupInitial());
 
   static ProfileSetupCubit get(context) => BlocProvider.of(context);
 
-  List<PetCategory> petsCategories = [];
-  int numberOfPets = LocalSharedPreferences.numberOfPets();
-  PageController pageController = PageController();
-  AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
   User? user;
 
+  PageController petProfilesCarouselController = PageController();
+
+  AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
+
   void getUser() async {
+    emit(SavedUserFound(user: user, responseStatus: ResponseStatus.loading));
+    log('Getting user from local...');
     user = await dpi<UserFirestore>().get(
       LocalSharedPreferences.read(
         Constants.localUserId,
         fallBack: '',
       ),
     );
-  }
-
-  void getPetsCategories() async {
-    emit(LoadingPetsCategories());
-    petsCategories = [];
-    final result = await getPetsCategoriesUsecase(NoParams());
-    emit(
-      result.fold(
-        (l) => ErrorPetsCategories(l.message),
-        (r) {
-          petsCategories = r;
-          logger.d('${r.length} ${r.map((p) => p.breeds.length).toList()}');
-          return SuccessPetsCategories(r);
-        },
-      ),
-    );
+    if (user != null) {
+      emit(SavedUserFound(user: user!, responseStatus: ResponseStatus.success));
+    } else {
+      emit(SavedUserFound(
+        user: user!,
+        responseStatus: ResponseStatus.error,
+        errorMessage: 'No user found',
+      ));
+    }
   }
 
   //* Contacts
@@ -74,156 +65,12 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   late double slideXpos = slidePosition.dx;
   late double slideYpos = slidePosition.dy;
 
-  final int setupPetProfileMaxSteps = 6;
-  int setupPetProfileCurrentStep = 0;
-
-  void addNewPetProfile(BuildContext context) {
-    LocalSharedPreferences.write(
-      Constants.localNumberOfPets,
-      ++numberOfPets,
-    );
-    drawerScaffoldKey.hideDrawer();
-    setupPetProfileCurrentStep = 0;
-    Constants.replaceWithAndRemoveUntil(context, Routes.homePageProfile);
-    emit(StepsState(step: numberOfPets));
-  }
-
-  //* first entry steps
-  void petProfileNextStep(BuildContext context) {
-    if (setupPetProfileCurrentStep + 1 == setupPetProfileMaxSteps) {
-      Constants.navigateTo(context, Routes.addNewPetProfile);
-    } else {
-      setupPetProfileCurrentStep++;
-    }
-    emit(StepsState(step: setupPetProfileCurrentStep));
-  }
-
-  void petProfilePrevStep(BuildContext context) {
-    if (setupPetProfileCurrentStep == 0) {
-      Constants.pop(context);
-      return;
-    }
-    setupPetProfileCurrentStep--;
-    emit(StepsState(step: setupPetProfileCurrentStep));
-  }
-
-  //* change category
-  String? category;
-  String? breed;
-  void changeCategory(String category) {
-    this.category = category;
-    emit(ChangeFocus(categoryId: this.category));
-  }
-
-  void changeBreed(String category) {
-    breed = category;
-    emit(ChangeFocus(categoryId: breed));
-  }
-
-  //* petName page
-  final TextEditingController petNameController = TextEditingController();
-  void nameChange() {
-    emit(NameChange(step: petNameController.text));
-  }
-
-  //* petSize page
-  int carouselIndex = 0;
-  void changeFocus(int index) {
-    carouselIndex = index;
-    emit(ChangeFocus(index: index));
-  }
-
-  //* weight page
-  RulerScalePickerController<int> scalePickerController =
-      NumericRulerScalePickerController(
-    lastValue: 120,
-    firstValue: 0,
-  );
-  String selectedUnit = 'kg';
-  void changeUnit(value) {
-    selectedUnit = value;
-    emit(ChangeUnit(unit: selectedUnit));
-  }
-
-  String birthDate = '';
-  String petAge = '';
-  String petAdoptionAge = '';
-  String adoptionDate = '';
-  void openBirthCalendar(BuildContext context) async {
-    late DateTime? date;
-    date = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (date != null) {
-      if (date.year != DateTime.now().year) {
-        petAge = "${(DateTime.now().year - date.year).toString()} y.o";
-      } else if (date.month != DateTime.now().month) {
-        petAge = "${(DateTime.now().month - date.month).toString()} months";
-      } else {
-        petAge = "${(DateTime.now().day - date.day).toString()} days";
-      }
-    }
-    birthDate = DateFormat('d MMM yyyy').format(
-      date ?? DateTime.now(),
-    );
-    emit(ChangeDate(date: birthDate.codeUnits.toString()));
-  }
-
-  void openAdoptionCalendar(BuildContext context) async {
-    late DateTime? date;
-    date = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (date != null) {
-      if (date.year != DateTime.now().year) {
-        petAdoptionAge =
-            "${(DateTime.now().year - date.year).toString()} years ago";
-      } else if (date.month != DateTime.now().month) {
-        petAdoptionAge =
-            "${(DateTime.now().month - date.month).toString()} months ago";
-      } else {
-        petAdoptionAge =
-            "${(DateTime.now().day - date.day).toString()} days ago";
-      }
-    }
-    adoptionDate = DateFormat('d MMM yyyy').format(
-      date ?? DateTime.now(),
-    );
-    emit(ChangeDate(date: adoptionDate.hashCode.toString()));
-  }
-
 //* pet profile sections
   final ScrollController infoListController = ScrollController();
   int currentProfileSection = 0;
   void changePetProfileView(int index) {
     currentProfileSection = index;
     emit(ChangeViewState(page: currentProfileSection));
-  }
-
-  //* add pet profile continue button
-  void petProfileContinueButton(BuildContext context) {
-    switch (setupPetProfileCurrentStep) {
-      case 0:
-        category != null ? petProfileNextStep(context) : null;
-        break;
-      case 1:
-        breed != null ? petProfileNextStep(context) : null;
-        break;
-      case 2:
-        petNameController.text.isEmpty ? null : petProfileNextStep(context);
-        break;
-      case 3:
-      // break;
-      case 4:
-      // break;
-      case 5:
-        petProfileNextStep(context);
-        break;
-    }
   }
 
 //* HEALTH
@@ -263,7 +110,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   int insurancePackage = 0;
   void changeInsurancePackage(int index) {
     insurancePackage = index;
-    emit(ChangeFocus(index: insurancePackage));
+    emit(ChangeFocusState(unit: insurancePackage));
   }
 
   //* vaccines

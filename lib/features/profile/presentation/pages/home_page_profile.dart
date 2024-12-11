@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/image_handler.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
@@ -25,95 +28,106 @@ class HomePageProfile extends StatelessWidget {
   }
 
   Widget _petCarousel(BuildContext context) {
+    final cubit = context.read<ProfileSetupCubit>();
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Active pet profile',
+            MainStrings.activePetProfile,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              SmoothPageIndicator(
-                axisDirection: Axis.vertical,
-                controller: ProfileSetupCubit.get(context).pageController,
-                count: ProfileSetupCubit.get(context).numberOfPets,
-                effect: const ExpandingDotsEffect(
-                  expansionFactor: 3,
-                  dotHeight: 10,
-                  dotWidth: 10,
+          if (cubit.user?.ownedPets.length != null)
+            Row(
+              children: [
+                SmoothPageIndicator(
+                  axisDirection: Axis.vertical,
+                  controller: cubit.petProfilesCarouselController,
+                  count: cubit.user?.ownedPets.length ?? 0,
+                  effect: const ExpandingDotsEffect(
+                    expansionFactor: 3,
+                    dotHeight: 10,
+                    dotWidth: 10,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: SizedBox(
-                  height: 170,
-                  child: StackedCardCarousel(
-                    pageController:
-                        ProfileSetupCubit.get(context).pageController,
-                    type: StackedCardCarouselType.fadeOutStack,
-                    initialOffset: 0,
-                    items: List.generate(
-                      ProfileSetupCubit.get(context).numberOfPets,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          ProfileSetupCubit.get(context)
-                              .changePetProfileView(0);
-                          Constants.navigateTo(context, Routes.viewPetProfile);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: SharedModeColors.blue500,
-                          ),
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          padding: const EdgeInsets.all(20),
-                          height: 150,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: SizedBox(
+                    height: 170,
+                    child: StackedCardCarousel(
+                      pageController: cubit.petProfilesCarouselController,
+                      type: StackedCardCarouselType.fadeOutStack,
+                      initialOffset: 0,
+                      items: cubit.user?.ownedPets.map((pet) {
+                            return GestureDetector(
+                              onTap: () {
+                                cubit.changePetProfileView(0);
+                                Constants.navigateTo(
+                                  context,
+                                  Routes.viewPetProfile,
+                                  arguments: pet,
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: SharedModeColors.blue500,
+                                ),
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.all(20),
+                                height: 150,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      'Makki',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            pet.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '${pet.category} | ',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium,
+                                              ),
+                                              Text(
+                                                pet.breed,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Dog | ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                        Text(
-                                          'Border Collie',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: ImageHandler(
+                                        imageBytes: pet.imgUrl,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Image.asset(ProfileImages.noProfileSetup),
-                            ],
-                          ),
-                        ),
-                      ),
+                            );
+                          }).toList() ??
+                          [],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

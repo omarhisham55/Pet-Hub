@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/profile/domain/entities/pet.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/set_view_profile_content.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class ViewPetProfile extends StatelessWidget {
-  const ViewPetProfile({super.key});
+  final Pet pet;
+  const ViewPetProfile({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: twoTitleAppbar(
         context: context,
-        title: 'Pet Profile',
+        title: MainStrings.addProfile,
         actions: [
           Padding(
             padding: const EdgeInsets.all(10),
@@ -28,7 +32,7 @@ class ViewPetProfile extends StatelessWidget {
               ),
               elevation: 0,
               onPressed: () {},
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircleAvatar(
@@ -36,7 +40,7 @@ class ViewPetProfile extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.all(8),
-                    child: Text('Maxi'),
+                    child: Text(pet.name),
                   ),
                   Icon(Icons.keyboard_arrow_down)
                 ],
@@ -49,9 +53,10 @@ class ViewPetProfile extends StatelessWidget {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(20),
         child: GlobalButton(
-          text: 'Edit',
-          onPressed: () =>
-              ProfileSetupCubit.get(context).addNewPetProfile(context),
+          text: MainStrings.edit,
+          onPressed: () {
+            // return ProfileSetupCubit.get(context).addNewPetProfile(context);
+          },
         ),
       ),
     );

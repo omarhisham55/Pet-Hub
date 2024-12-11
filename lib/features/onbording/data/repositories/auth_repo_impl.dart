@@ -6,6 +6,7 @@ import 'package:pet_app/core/error/failure.dart';
 import 'package:pet_app/core/shared/constants/internet_check.dart';
 import 'package:pet_app/core/shared/constants/mixins.dart';
 import 'package:pet_app/features/onbording/data/datasources/auth_datasource.dart';
+import 'package:pet_app/features/onbording/data/models/user_model.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
 import 'package:pet_app/features/onbording/domain/repositories/auth_repo.dart';
 
@@ -43,6 +44,19 @@ class AuthRepoImpl extends AuthRepo with NetworkCheckMixin {
       return Left(
         ServerFailure.fromFirebase(FirebaseExceptions.fromFirebaseException(e)),
       );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> updateUser(UserModel user) async {
+    try {
+      final result = await authDatasource.updateUser(user);
+      if (result != null) {
+        return Right(result);
+      }
+      return Left(ServerFailure(message: 'Error getting user'));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

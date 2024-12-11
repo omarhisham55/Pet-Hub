@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:pet_app/features/profile/domain/entities/pet.dart';
 
 class PetModel extends Pet {
@@ -5,12 +10,15 @@ class PetModel extends Pet {
     required super.id,
     required super.name,
     required super.category,
-    required super.imgUrl,
     required super.breed,
     required super.size,
+    required super.gender,
     required super.weight,
+    required super.age,
     required super.birthDate,
-    required super.adpotionDate,
+    required super.adoptionAge,
+    required super.adoptionDate,
+    super.imgUrl,
   });
 
   factory PetModel.fromJson(Map<String, dynamic> json) {
@@ -18,24 +26,34 @@ class PetModel extends Pet {
       id: json['id'],
       name: json['name'],
       category: json['category'],
-      imgUrl: json['imgUrl'],
       breed: json['breed'],
       size: json['size'],
+      age: json['age'],
+      gender: json['gender'],
       weight: json['weight'],
       birthDate: json['birthDate'],
-      adpotionDate: json['adoptionDate'],
+      adoptionAge: json['adoptionAge'],
+      adoptionDate: json['adoptionDate'],
+      imgUrl: base64Decode(json['imgUrl']??''),
     );
+  }
+
+  Future<Uint8List> toBytes(XFile img) async {
+    return await File(img.path).readAsBytes();
   }
 
   Map<String, dynamic> toMap() => {
         'id': id,
         'name': name,
         'category': category,
-        'imgUrl': imgUrl,
         'breed': breed,
         'size': size,
+        'gender': gender,
         'weight': weight,
+        'age': age,
         'birthDate': birthDate,
-        'adoptionDate': adpotionDate,
+        'adoptionAge': adoptionAge,
+        'adoptionDate': adoptionDate,
+        if (imgUrl != null) 'imgUrl': base64Encode(imgUrl!.toList()),
       };
 }

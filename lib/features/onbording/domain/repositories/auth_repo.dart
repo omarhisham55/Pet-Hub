@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:pet_app/core/error/failure.dart';
+import 'package:pet_app/features/onbording/data/models/user_model.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
 
 abstract class AuthRepo {
@@ -8,4 +9,5 @@ abstract class AuthRepo {
     String password,
   );
   Future<Either<Failure, User>> loginWithEmail(String email, String password);
+  Future<Either<Failure, User>> updateUser(UserModel user);
 }

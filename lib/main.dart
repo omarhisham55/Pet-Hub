@@ -8,6 +8,7 @@ import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/bloc_observer.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/core/shared/constants/firebase_options.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => dpi<ThemeManager>()),
         BlocProvider(create: (context) => dpi<OnBordingCubit>()),
         BlocProvider(create: (context) => dpi<ProfileSetupCubit>()..getUser()),
+        BlocProvider(create: (context) => dpi<AddPetBloc>()),
       ],
       child: BlocBuilder<ThemeManager, ThemeState>(
         builder: (context, state) {

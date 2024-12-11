@@ -4,12 +4,13 @@ import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 
 AppBar twoTitleAppbar({
   required BuildContext context,
   required String title,
-  String? subTitle = '',
+  String subTitle = '',
   Widget? leading,
   bool? centerTitle = false,
   bool? boldTitle = true,
@@ -20,7 +21,7 @@ AppBar twoTitleAppbar({
   Color? darkColorSubTitle,
   List<Widget>? actions,
   double? elevation,
-  CrossAxisAlignment? titleAlignment = CrossAxisAlignment.center,
+  CrossAxisAlignment titleAlignment = CrossAxisAlignment.center,
 }) =>
     AppBar(
       leading: leading,
@@ -28,11 +29,11 @@ AppBar twoTitleAppbar({
       centerTitle: centerTitle,
       toolbarHeight: 80,
       title: Column(
-        crossAxisAlignment: titleAlignment!,
+        crossAxisAlignment: titleAlignment,
         children: [
           Text(
             title,
-            style: subTitle!.isEmpty
+            style: subTitle.isEmpty
                 ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: boldTitle! ? FontWeight.bold : null,
                       color: ThemeManager.currentTheme == ThemeState.lightTheme
@@ -59,7 +60,7 @@ AppBar twoTitleAppbar({
         ],
       ),
       actions: actions,
-      bottom: title == 'Add Pet Profile'
+      bottom: title == MainStrings.addPetProfile
           //Todo add loading percentage progress bar indicator instead
           ? PreferredSize(
               preferredSize: const Size.fromHeight(10),
@@ -74,21 +75,16 @@ AppBar twoTitleAppbar({
                       borderRadius: BorderRadius.circular(24),
                     ),
                   ),
-                  BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+                  BlocBuilder<AddPetBloc, AddPetState>(
                     builder: (context, state) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: AnimatedContainer(
-                          duration: const Duration(seconds: 1),
-                          child: LinearProgressIndicator(
-                            borderRadius: BorderRadius.circular(24),
-                            minHeight: 8,
-                            value: ProfileSetupCubit.get(context)
-                                    .setupPetProfileCurrentStep /
-                                ProfileSetupCubit.get(context)
-                                    .setupPetProfileMaxSteps,
-                            color: SharedModeColors.yellow500,
-                          ),
+                        child: LinearProgressIndicator(
+                          borderRadius: BorderRadius.circular(24),
+                          minHeight: 8,
+                          value:
+                              state.progress.order / AddPetStep.values.length,
+                          color: SharedModeColors.yellow500,
                         ),
                       );
                     },

@@ -6,16 +6,16 @@ import 'package:pet_app/core/shared/components/image_handler.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 
 class Breed extends StatelessWidget {
   const Breed({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ProfileSetupCubit>();
+    final cubit = context.read<AddPetBloc>();
     List<PetBreedCategory> breed = cubit.petsCategories
-        .where((element) => element.category == cubit.category)
+        .where((element) => element.category == cubit.state.category)
         .first
         .breeds;
     return SingleChildScrollView(
@@ -26,7 +26,7 @@ class Breed extends StatelessWidget {
             SearchBar(
               backgroundColor: WidgetStatePropertyAll(SharedModeColors.white),
               elevation: const WidgetStatePropertyAll(0),
-              hintText: 'Search by breed',
+              hintText: MainStrings.addPetBreedHint,
               hintStyle: WidgetStatePropertyAll(
                 Theme.of(context)
                     .textTheme
@@ -65,24 +65,25 @@ class Breed extends StatelessWidget {
   }
 
   Widget _gridViewItem(BuildContext context, PetBreedCategory pet) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
-        builder: (context, state) {
-      final cubit = context.read<ProfileSetupCubit>();
-      return ModedContainer(
-        padding: const EdgeInsets.only(bottom: 0, top: 20),
-        onTap: () => cubit.changeBreed(pet.breed),
-        selectedContainer:
-            cubit.breed == pet.breed ? SharedModeColors.grey600 : null,
-        child: Column(
-          children: [
-            Text(
-              pet.breed,
-              style: Theme.of(context).textTheme.titleMedium,
+    return BlocSelector<AddPetBloc, AddPetState, String>(
+        selector: (state) => state.breed,
+        builder: (context, selectedBreed) {
+          final cubit = context.read<AddPetBloc>();
+          final bool isSelected = selectedBreed == pet.breed;
+          return ModedContainer(
+            padding: const EdgeInsets.only(bottom: 0, top: 20),
+            onTap: () => cubit.add(ChangeItemEvent(item: pet.breed)),
+            selectedContainer: isSelected ? SharedModeColors.grey600 : null,
+            child: Column(
+              children: [
+                Text(
+                  pet.breed,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Expanded(child: ImageHandler(imageBytes: pet.imgUrl)),
+              ],
             ),
-            Expanded(child: ImageHandler(image: pet.imgUrl)),
-          ],
-        ),
-      );
-    });
+          );
+        });
   }
 }
