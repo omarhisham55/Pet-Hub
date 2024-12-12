@@ -4,28 +4,32 @@ import 'package:lottie/lottie.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/components/error_and_retry.dart';
 import 'package:pet_app/core/shared/components/image_handler.dart';
+import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 
 class Category extends StatelessWidget {
   const Category({super.key});
 
+  void _refresh(BuildContext context) {
+    context.read<AddPetBloc>().add(GetCategoriesEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+    return BlocSelector<AddPetBloc, AddPetState, ResponseStatus>(
+      selector: (state) => state.responseStatus ?? ResponseStatus.success,
       builder: (context, state) {
-        final cubit = context.read<ProfileSetupCubit>();
-        if (state is LoadingPetsCategories) {
-          return Lottie.asset(LoadingLotties.paws);
-        } else if (state is ErrorPetsCategories) {
+        final cubit = context.read<AddPetBloc>();
+        if (state == ResponseStatus.error) {
           return ErrorWidgetAndRetry(
-            errorMessage: state.error,
-            retryFunction: context.read<ProfileSetupCubit>().getPetsCategories,
+            errorMessage: (state as AddPetState).messageError ?? '',
+            retryFunction: () => _refresh(context),
           );
-        } else {
+        } else if (cubit.petsCategories.isNotEmpty) {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -35,7 +39,7 @@ class Category extends StatelessWidget {
                     backgroundColor:
                         WidgetStatePropertyAll(SharedModeColors.white),
                     elevation: const WidgetStatePropertyAll(0),
-                    hintText: 'Search by pet type',
+                    hintText: MainStrings.addPetCategoryHint,
                     hintStyle: WidgetStatePropertyAll(
                       Theme.of(context)
                           .textTheme
@@ -57,7 +61,7 @@ class Category extends StatelessWidget {
                   cubit.petsCategories.isEmpty
                       ? ErrorWidgetAndRetry(
                           errorMessage: ErrorStrings.emptyList,
-                          retryFunction: () {},
+                          retryFunction: () => _refresh(context),
                         )
                       : GridView.count(
                           shrinkWrap: true,
@@ -71,6 +75,8 @@ class Category extends StatelessWidget {
               ),
             ),
           );
+        } else {
+          return Lottie.asset(LoadingLotties.paws);
         }
       },
     );
@@ -78,23 +84,23 @@ class Category extends StatelessWidget {
 
   Widget _gridViewItem(
     BuildContext context,
-    PetCategory category,
+    PetCategory pet,
   ) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
-      builder: (context, state) {
-        final cubit = context.read<ProfileSetupCubit>();
+    return BlocSelector<AddPetBloc, AddPetState, String>(
+      selector: (state) => state.category,
+      builder: (context, selectedCategory) {
+        final AddPetBloc cubit = context.read<AddPetBloc>();
+        final bool isSelected = selectedCategory == pet.category;
         return ModedContainer(
-          onTap: () => cubit.changeCategory(category.category),
-          selectedContainer: cubit.category == category.category
-              ? SharedModeColors.grey600
-              : null,
+          onTap: () => cubit.add(ChangeItemEvent(item: pet.category)),
+          selectedContainer: isSelected ? SharedModeColors.grey600 : null,
           child: Column(
             children: [
               Text(
-                category.category,
+                pet.category,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              Expanded(child: ImageHandler(image: category.imgUrl)),
+              Expanded(child: ImageHandler(imageBytes: pet.imgUrl)),
             ],
           ),
         );

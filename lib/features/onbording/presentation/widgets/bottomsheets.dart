@@ -13,9 +13,9 @@ Widget onBoardingBuilder(BuildContext context, [bool? isDesktop = false]) {
       context: context,
       manager: OnBordingCubit.get(context),
       icon: Icons.keyboard_double_arrow_left,
-      title: OnBoardingStrings.boardingTitle,
-      subTitle: OnBoardingStrings.boardingcontent,
-      buttonText: RegistrationStrings.getStarted,
+      title: MainStrings.boardingTitle,
+      subTitle: MainStrings.boardingcontent,
+      buttonText: MainStrings.getStarted,
       // underButtonText: '',
       // underButtonTextButton: 'Sign up later',
       // underButtonTextButtonColor: SharedModeColors.grey500,
@@ -47,8 +47,8 @@ Widget createAccountBuilder(BuildContext context) {
           manager: manager,
           isLoading: manager.state is AuthLoading,
           icon: Icons.person_4_outlined,
-          title: RegistrationStrings.createAccount,
-          subTitle: RegistrationStrings.welcome,
+          title: MainStrings.createAccount,
+          subTitle: MainStrings.welcome,
           child: BlocBuilder<OnBordingCubit, OnBordingState>(
             builder: (context, state) {
               return Form(
@@ -56,12 +56,12 @@ Widget createAccountBuilder(BuildContext context) {
                 child: Column(
                   children: [
                     GlobalTextField(
-                      hintText: RegistrationStrings.emailHintText,
+                      hintText: MainStrings.emailHintText,
                       controller: manager.emailController,
                       focusNode: emailFocusNode,
                       onEditingComplete: FocusScope.of(context).nextFocus,
                       validator: (value) => value!.isEmpty
-                          ? RegistrationStrings.emailValidatorText
+                          ? MainStrings.emailValidatorText
                           : null,
                     ),
                     BlocBuilder<OnBordingCubit, OnBordingState>(
@@ -69,11 +69,11 @@ Widget createAccountBuilder(BuildContext context) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: GlobalTextField(
-                            hintText: RegistrationStrings.passwordHintText,
+                            hintText: MainStrings.passwordHintText,
                             controller: manager.passwordController,
                             focusNode: passwordFocusNode,
                             validator: (value) => value!.length < 6
-                                ? RegistrationStrings.passwordValidatorText
+                                ? MainStrings.passwordValidatorText
                                 : null,
                             isObscured: manager.isObscured,
                             suffix: IconButton(
@@ -103,7 +103,7 @@ Widget createAccountBuilder(BuildContext context) {
                             side: BorderSide(color: SharedModeColors.grey200),
                           );
                         }),
-                        const Text(RegistrationStrings.termsAndConditions),
+                        const Text(MainStrings.termsAndConditions),
                       ],
                     ),
                   ],
@@ -111,9 +111,9 @@ Widget createAccountBuilder(BuildContext context) {
               );
             },
           ),
-          buttonText: RegistrationStrings.createAccount,
-          underButtonText: RegistrationStrings.alreadyHaveAccount,
-          underButtonTextButton: RegistrationStrings.loginHere,
+          buttonText: MainStrings.createAccount,
+          underButtonText: MainStrings.alreadyHaveAccount,
+          underButtonTextButton: MainStrings.loginHere,
           underButtonAction: () {},
           buttonAction: manager.login,
         ),

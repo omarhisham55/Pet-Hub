@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/image_handler.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/profile/domain/entities/pet.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
 class AdvancedPetDrawer extends StatelessWidget {
@@ -54,44 +57,45 @@ class ProfileDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Your Pets',
+                MainStrings.drawerYourPets,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: SharedModeColors.white,
                     ),
               ),
               BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
                 builder: (context, state) {
+                  final cubit = context.read<ProfileSetupCubit>();
+                  final addPetCubit = context.read<AddPetBloc>();
+                  final int petsLength = cubit.user?.ownedPets.length ?? 0;
                   return SizedBox(
                     height: 100,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount:
-                          ProfileSetupCubit.get(context).numberOfPets + 1,
+                      itemCount: petsLength + 1,
                       itemBuilder: (context, index) {
-                        if (ProfileSetupCubit.get(context).numberOfPets == 0 ||
-                            ProfileSetupCubit.get(context).numberOfPets ==
-                                index) {
-                          return _petItem(
-                            context,
-                            'add new',
-                            () => Constants.navigateTo(
-                              context,
-                              Routes.addPetProfile,
-                            ),
-                            Icons.add,
-                          );
-                        }
+                        final bool isLast =
+                            petsLength == 0 || petsLength == index;
                         return _petItem(
-                          context,
-                          'pet name',
-                          () {
-                            ProfileSetupCubit.get(context)
-                                .changePetProfileView(0);
-                            Constants.navigateTo(
-                              context,
-                              Routes.viewPetProfile,
-                            );
+                          context: context,
+                          pet: !isLast ? cubit.user?.ownedPets[index] : null,
+                          onTap: () {
+                            isLast
+                                ? {
+                                    addPetCubit.add(GetCategoriesEvent()),
+                                    Constants.navigateTo(
+                                      context,
+                                      Routes.addPetProfile,
+                                    ),
+                                  }
+                                : {
+                                    ProfileSetupCubit.get(context)
+                                        .changePetProfileView(0),
+                                    Constants.navigateTo(
+                                      context,
+                                      Routes.viewPetProfile,
+                                    ),
+                                  };
                           },
                         );
                       },
@@ -100,31 +104,43 @@ class ProfileDrawer extends StatelessWidget {
                 },
               ),
               const Divider(height: 50),
-              TextWithIcon(
-                text: 'Dashboard',
-                icon: Icons.dashboard_customize_outlined,
-                onTap: () =>
-                    LocalSharedPreferences.remove(Constants.localNumberOfPets),
-              ),
-              TextWithIcon(
-                text: 'Contacts',
-                icon: Icons.contacts_outlined,
-                onTap: () => Constants.navigateTo(context, Routes.contacts),
-              ),
-              TextWithIcon(
-                text: 'Calendar',
-                icon: Icons.calendar_today_rounded,
-                onTap: () => Constants.navigateTo(context, Routes.calendar),
-              ),
-              const Divider(height: 50),
-              const TextWithIcon(
-                text: 'Account',
-                icon: Icons.person_outlined,
-              ),
-              TextWithIcon(
-                text: 'Settings',
-                icon: Icons.settings_outlined,
-                onTap: () => Constants.navigateTo(context, Routes.settings),
+              ...MainStrings.drawerTitles.entries.map(
+                (title) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (title.key ==
+                          MainStrings.drawerTitles.keys.toList()[3])
+                        const Divider(height: 50),
+                      TextWithIcon(
+                        text: title.key,
+                        icon: title.value,
+                        onTap: () {
+                          final String? route = () {
+                            if (title.key ==
+                                MainStrings.drawerTitles.keys.toList()[0])
+                              return null;
+                            else if (title.key ==
+                                MainStrings.drawerTitles.keys.toList()[1])
+                              return Routes.contacts;
+                            else if (title.key ==
+                                MainStrings.drawerTitles.keys.toList()[2])
+                              return Routes.calendar;
+                            else if (title.key ==
+                                MainStrings.drawerTitles.keys.toList()[3])
+                              return null;
+                            else if (title.key ==
+                                MainStrings.drawerTitles.keys.toList()[4])
+                              return Routes.settings;
+                          }();
+                          if (route != null) {
+                            Constants.navigateTo(context, route);
+                          }
+                        },
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
@@ -133,26 +149,36 @@ class ProfileDrawer extends StatelessWidget {
     );
   }
 
-  Widget _petItem(
-    BuildContext context,
-    String name,
-    Function() onTap, [
-    IconData icon = Icons.person,
-  ]) {
+  Widget _petItem({
+    required BuildContext context,
+    required Function() onTap,
+    Pet? pet,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: onTap,
-            child: CircleAvatar(
-              radius: 30,
-              child: Icon(icon),
+          ClipOval(
+            child: GestureDetector(
+              onTap: onTap,
+              child: pet != null
+                  ? ImageHandler(
+                      imageBytes: pet.imgUrl,
+                      width: 60,
+                      height: 60,
+                      color: SharedModeColors.grey300,
+                    )
+                  : Container(
+                      child: Icon(Icons.add),
+                      width: 60,
+                      height: 60,
+                      color: SharedModeColors.grey300,
+                    ),
             ),
           ),
           const SizedBox(height: 10),
           Text(
-            name,
+            pet?.name ?? MainStrings.drawerAddNew,
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: SharedModeColors.white,
                 ),

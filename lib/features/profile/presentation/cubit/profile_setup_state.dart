@@ -9,6 +9,20 @@ abstract class ProfileSetupState extends Equatable {
 
 class ProfileSetupInitial extends ProfileSetupState {}
 
+class SavedUserFound extends ProfileSetupState {
+  final User? user;
+  final String errorMessage;
+  final ResponseStatus responseStatus;
+
+  const SavedUserFound({
+    required this.user,
+    required this.responseStatus,
+    this.errorMessage = '',
+  });
+  @override
+  List<Object?> get props => [user];
+}
+
 class LoadingPetsCategories extends ProfileSetupState {
   const LoadingPetsCategories();
 }
@@ -35,29 +49,12 @@ class StepsState extends ProfileSetupState {
   List<Object> get props => [step];
 }
 
-class NameChange extends ProfileSetupState {
-  final String step;
+class ChangeFocusState extends ProfileSetupState {
+  final int unit;
 
-  const NameChange({required this.step});
+  const ChangeFocusState({required this.unit});
   @override
-  List<Object> get props => [step];
-}
-
-class ChangeFocus extends ProfileSetupState {
-  final String? categoryId;
-  final int? index;
-
-  const ChangeFocus({this.categoryId, this.index});
-  @override
-  List<Object?> get props => [categoryId, index];
-}
-
-class ChangeUnit extends ProfileSetupState {
-  final String unit;
-
-  const ChangeUnit({required this.unit});
-  @override
-  List<Object> get props => [unit];
+  List<Object?> get props => [unit];
 }
 
 class ChangeDate extends ProfileSetupState {

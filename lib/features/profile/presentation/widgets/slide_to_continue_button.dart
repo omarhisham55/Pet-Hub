@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
 class SlideToContinueButton extends StatelessWidget {
@@ -11,6 +12,7 @@ class SlideToContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileSteupCubit = context.read<ProfileSetupCubit>();
+    final addPetCubit = context.read<AddPetBloc>();
     return Stack(
       children: [
         Container(
@@ -35,7 +37,7 @@ class SlideToContinueButton extends StatelessWidget {
           axis: Axis.horizontal,
           onDragUpdate: (details) => details.globalPosition.dx > 340
               ? {
-                  profileSteupCubit.getPetsCategories(),
+                  addPetCubit.add(GetCategoriesEvent()),
                   Constants.navigateTo(context, Routes.addPetProfile)
                 }
               : null,

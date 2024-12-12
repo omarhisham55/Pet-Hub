@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
 
 class PetCategoryModel extends PetCategory {
@@ -13,7 +14,7 @@ class PetCategoryModel extends PetCategory {
       PetCategoryModel(
         id: json['id'],
         category: json['category'],
-        imgUrl: json['imgUrl'],
+        imgUrl: base64Decode(json['imgUrl']),
         breeds: breed,
       );
 }
@@ -29,6 +30,6 @@ class PetBreedCategoryModel extends PetBreedCategory {
       PetBreedCategoryModel(
         id: json['id'],
         breed: json['breed'],
-        imgUrl: json['imgUrl'],
+        imgUrl: base64Decode(json['imgUrl']),
       );
 }

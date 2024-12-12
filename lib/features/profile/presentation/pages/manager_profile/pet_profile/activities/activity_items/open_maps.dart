@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
@@ -78,11 +79,11 @@ class OpenMaps extends StatelessWidget {
             ],
           ),
           const Divider(),
-          detailRow(context, 'Start Time', '09:30'),
+          CustomDetailedRow(value: MapEntry('Start Time', '09:30')),
           const Divider(),
-          detailRow(context, 'Distance', '2,7km'),
+          CustomDetailedRow(value: MapEntry('Distance', '2,7km')),
           const Divider(),
-          detailRow(context, 'Timer', '32:12min'),
+          CustomDetailedRow(value: MapEntry('Timer', '32:12min')),
         ],
       ),
     );

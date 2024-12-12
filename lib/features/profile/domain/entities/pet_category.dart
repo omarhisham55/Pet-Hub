@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 
 class PetCategory extends Equatable {
   final String id;
   final String category;
-  final String imgUrl;
+  final Uint8List imgUrl;
   final List<PetBreedCategory> breeds;
 
   PetCategory({
@@ -19,7 +21,7 @@ class PetCategory extends Equatable {
 class PetBreedCategory extends Equatable {
   final String id;
   final String breed;
-  final String imgUrl;
+  final Uint8List imgUrl;
 
   PetBreedCategory({
     required this.id,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
@@ -100,7 +102,7 @@ class ContactDetails extends StatelessWidget {
     return Column(
       children: [
         shadedDivider(),
-        detailRow(context, 'Contact', '-'),
+        CustomDetailedRow(value: MapEntry('Contact', '-')),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +161,7 @@ class ContactDetails extends StatelessWidget {
   Widget _contactLocation(BuildContext context) {
     return Column(
       children: [
-        detailRow(context, 'Location', '-'),
+        CustomDetailedRow(value: MapEntry('Location', '-')),
         const SizedBox(height: 10),
         textSnap(
           context: context,
@@ -197,7 +199,7 @@ class ContactDetails extends StatelessWidget {
   Widget _availability(BuildContext context) {
     return Column(
       children: [
-        detailRow(context, 'Availability', '-'),
+        CustomDetailedRow(value: MapEntry('Availability', '-')),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
@@ -236,7 +238,7 @@ class ContactDetails extends StatelessWidget {
   Widget _services(BuildContext context) {
     return Column(
       children: [
-        detailRow(context, 'Services', '-'),
+        CustomDetailedRow(value: MapEntry('Services', '-')),
         const SizedBox(height: 10),
         ...List.generate(
           3,

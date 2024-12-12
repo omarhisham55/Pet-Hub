@@ -13,7 +13,7 @@ class UserFirestore {
         .collection(Constants.firestoreUserCollection)
         .doc(id)
         .get();
-    logger.d('response.data(): ${response.data()}');
+    logger.f('current user: ${response.data()}');
     if (response.data() != null) {
       return UserModel.fromJson(response.data()!);
     }

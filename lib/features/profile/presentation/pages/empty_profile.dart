@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/widgets/slide_to_continue_button.dart';
 
 class EmptyProfileStartUp extends StatelessWidget {
@@ -21,18 +22,20 @@ class EmptyProfileStartUp extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Text(
-                  'Uh Oh!',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Text(
-                  'Looks like you have no profiles set up at this moment, add your pet now',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: MainStrings.userEmptyPets.split('\n')[0]+ '\n',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  TextSpan(
+                    text: MainStrings.userEmptyPets.split('\n')[1],
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
           const SlideToContinueButton(),

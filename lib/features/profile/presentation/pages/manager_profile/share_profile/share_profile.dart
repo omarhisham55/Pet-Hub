@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
@@ -64,7 +65,8 @@ class ShareProfile extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: ProfileSetupCubit.get(context).numberOfPets,
+                itemCount:
+                    context.read<ProfileSetupCubit>().user?.ownedPets.length,
                 itemBuilder: (context, index) => _petProfile(context),
               ),
               const Text(

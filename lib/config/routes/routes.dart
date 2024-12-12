@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
+import 'package:pet_app/features/profile/domain/entities/pet.dart';
 import 'package:pet_app/features/profile/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/calendar.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/book_a_date.dart';
@@ -72,7 +73,8 @@ class Routes {
             settings: settings,
           ),
       viewPetProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const ViewPetProfile(),
+            builder: (context) =>
+                ViewPetProfile(pet: settings.arguments as Pet),
             settings: settings,
           ),
       petProfileHealthDetails: (settings) => MaterialPageRoute(

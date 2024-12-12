@@ -13,11 +13,13 @@ import 'package:pet_app/features/onbording/data/repositories/auth_repo_impl.dart
 import 'package:pet_app/features/onbording/domain/repositories/auth_repo.dart';
 import 'package:pet_app/features/onbording/domain/usecases/create_account_usecase.dart';
 import 'package:pet_app/features/onbording/domain/usecases/login_usecase.dart';
+import 'package:pet_app/features/onbording/domain/usecases/update_user_usecase.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
 import 'package:pet_app/features/profile/data/datasources/pets_categories_datasource.dart';
 import 'package:pet_app/features/profile/data/repositories/pets_categories_repo_impl.dart';
 import 'package:pet_app/features/profile/domain/repositories/pets_categories_repo.dart';
 import 'package:pet_app/features/profile/domain/usecases/get_pets_categories_usecase.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
 final dpi = GetIt.instance;
@@ -49,12 +51,13 @@ class Dpi {
   void registerCubits() {
     dpi.registerLazySingleton(() => ThemeManager());
     dpi.registerLazySingleton(() => OnBordingCubit(dpi(), dpi()));
-    dpi.registerLazySingleton(() => ProfileSetupCubit(dpi()));
+    dpi.registerLazySingleton(() => ProfileSetupCubit());
+    dpi.registerLazySingleton(() => AddPetBloc(dpi(), dpi()));
   }
 
   void registerDatasources() {
     dpi.registerLazySingleton<AuthDatasource>(
-        () => AuthDatasourceImpl(client: dpi()));
+        () => AuthDatasourceImpl(client: dpi(), userFirestore: dpi()));
     dpi.registerLazySingleton<PetsCategoriesDatasource>(
         () => PetsCategoriesDatasourceImpl(categoryFirestore: dpi()));
   }
@@ -69,6 +72,7 @@ class Dpi {
   void registerUsecases() {
     dpi.registerLazySingleton(() => CreateAccountUsecase(authRepo: dpi()));
     dpi.registerLazySingleton(() => LoginUsecase(authRepo: dpi()));
+    dpi.registerLazySingleton(() => UpdateUserUsecase(authRepo: dpi()));
     dpi.registerLazySingleton(
         () => GetPetsCategoriesUsecase(petsCategoriesRepo: dpi()));
   }
