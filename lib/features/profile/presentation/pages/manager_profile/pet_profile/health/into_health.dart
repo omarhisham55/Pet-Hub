@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/health_items/insurance.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/health_items/vaccines.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class PetProfileHealthDetails extends StatelessWidget {
   final String subTitle;
@@ -10,8 +10,7 @@ class PetProfileHealthDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-        context: context,
+      appBar: TwoTitleAppbar(
         title: 'Pet Profile',
         subTitle: subTitle,
         titleAlignment: CrossAxisAlignment.start,

@@ -59,7 +59,9 @@ class HomePageProfile extends StatelessWidget {
                   child: StackedCardCarousel(
                     pageController: cubit.petProfilesCarouselController,
                     type: StackedCardCarouselType.cardsStack,
-                    initialOffset: 0,
+                    initialOffset: cubit
+                        .petProfilesCarouselController.initialPage
+                        .toDouble(),
                     items: cubit.user?.ownedPets.map((pet) {
                           return _carouselPetItem(
                             context: context,
@@ -118,24 +120,17 @@ class HomePageProfile extends StatelessWidget {
                     pet.name,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        '${pet.category} | ',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text(
-                        pet.breed,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
+                  Text(
+                    '${pet.category} | ${pet.breed}',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),
             ),
-            Expanded(
+            ClipOval(
               child: ImageHandler(
                 imageBytes: pet.imgUrl,
+                width: 100,
               ),
             ),
           ],

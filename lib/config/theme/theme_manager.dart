@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/services/preferences/shared_preferences.dart';
-import 'package:pet_app/config/theme/dark_theme.dart';
-import 'package:pet_app/config/theme/light_theme.dart';
+import 'package:pet_app/config/theme/themes.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 
 enum ThemeEvent { lightTheme, darkTheme }

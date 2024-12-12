@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pet_app/config/services/di/dpi.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/components/date_row.dart';
@@ -14,7 +15,6 @@ import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 part 'package:pet_app/features/profile/presentation/widgets/add_pet_profile/add_pet_profile_widgets/add_pet_caretakers.dart';
 part 'package:pet_app/features/profile/presentation/widgets/add_pet_profile/add_pet_profile_widgets/add_pet_details.dart';
@@ -40,8 +40,7 @@ class AddNewPetProfile extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: twoTitleAppbar(
-          context: context,
+        appBar: TwoTitleAppbar(
           title: MainStrings.addProfile,
           centerTitle: true,
         ),

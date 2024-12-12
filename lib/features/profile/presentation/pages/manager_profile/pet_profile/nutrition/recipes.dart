@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_outlined_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class Recipes extends StatelessWidget {
   const Recipes({super.key});
@@ -10,8 +10,7 @@ class Recipes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-        context: context,
+      appBar: TwoTitleAppbar(
         title: 'Pet Profile',
         subTitle: 'Recipes',
         boldTitle: false,

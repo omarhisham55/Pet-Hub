@@ -46,7 +46,7 @@ class SharedModeColors {
   static Color green700 = HexColor('#2F855A');
   static Color green500 = HexColor('#48BB78');
   static Color green300 = HexColor('#9AE6B4');
-  static Color green100 = HexColor('#FOFFF4');
+  static Color green100 = HexColor('#F0FFF4');
   static Color red900 = HexColor('#B71C1C');
   static Color red700 = HexColor('#D32F2F');
   static Color red500 = HexColor('#F44336');

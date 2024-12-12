@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
-import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/home_page_profile.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 import 'package:pet_app/features/profile/presentation/widgets/bottom_nav_bar.dart';
 import 'package:pet_app/features/profile/presentation/widgets/drawer.dart';
 
@@ -23,8 +21,7 @@ class HomePageManager extends StatelessWidget {
         return AdvancedPetDrawer(
           controller: cubit,
           scaffold: Scaffold(
-            appBar: twoTitleAppbar(
-              context: context,
+            appBar: TwoTitleAppbar(
               leading: GestureDetector(
                 onTap: cubit.drawerScaffoldKey.showDrawer,
                 child: Padding(
@@ -65,9 +62,7 @@ class HomePageManager extends StatelessWidget {
             ),
             body: cubit.user == null
                 ? Lottie.asset(LoadingLotties.paws)
-                : cubit.user!.ownedPets.isNotEmpty
-                    ? const HomePageProfile()
-                    : const EmptyProfileStartUp(),
+                : cubit.pages[cubit.currentBottomSheetIndex],
             bottomNavigationBar: const BottomNavBar(),
           ),
         );
