@@ -9,6 +9,7 @@ import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.
 import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
 import 'package:pet_app/features/profile/presentation/pages/home_page_profile.dart';
 import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
+import 'package:pet_app/features/profile/presentation/widgets/bottom_nav_bar.dart';
 import 'package:pet_app/features/profile/presentation/widgets/drawer.dart';
 
 class HomePageManager extends StatelessWidget {
@@ -67,6 +68,7 @@ class HomePageManager extends StatelessWidget {
                 : cubit.user!.ownedPets.isNotEmpty
                     ? const HomePageProfile()
                     : const EmptyProfileStartUp(),
+            bottomNavigationBar: const BottomNavBar(),
           ),
         );
       },
