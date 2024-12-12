@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
@@ -8,7 +9,6 @@ import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/domain/entities/pet.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/set_view_profile_content.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class ViewPetProfile extends StatelessWidget {
   final Pet pet;
@@ -17,8 +17,7 @@ class ViewPetProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-        context: context,
+      appBar: TwoTitleAppbar(
         title: MainStrings.addProfile,
         actions: [
           Padding(

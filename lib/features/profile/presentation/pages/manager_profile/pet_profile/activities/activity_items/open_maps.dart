@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/config/routes/routes.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class OpenMaps extends StatelessWidget {
   final String title;
@@ -16,8 +16,7 @@ class OpenMaps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-          context: context,
+      appBar: TwoTitleAppbar(
           title: subTitle,
           subTitle: title,
           titleAlignment: CrossAxisAlignment.start),

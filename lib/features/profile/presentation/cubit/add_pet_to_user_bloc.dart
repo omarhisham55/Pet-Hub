@@ -276,7 +276,6 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
       name: user.name,
       ownedPets: pets,
     );
-    logger.t(editedUser.ownedPets);
     final response = await updateUserUsecase(editedUser);
     response.fold(
       (l) => emit(state.copyWith(

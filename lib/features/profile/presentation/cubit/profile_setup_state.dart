@@ -23,22 +23,11 @@ class SavedUserFound extends ProfileSetupState {
   List<Object?> get props => [user];
 }
 
-class LoadingPetsCategories extends ProfileSetupState {
-  const LoadingPetsCategories();
-}
-
-class ErrorPetsCategories extends ProfileSetupState {
-  final String error;
-  const ErrorPetsCategories(this.error);
+class ChangeBottomCurrentIndexState extends ProfileSetupState {
+  final int index;
+  const ChangeBottomCurrentIndexState(this.index);
   @override
-  List<Object> get props => [error];
-}
-
-class SuccessPetsCategories extends ProfileSetupState {
-  final List<PetCategory> pets;
-  const SuccessPetsCategories(this.pets);
-  @override
-  List<Object> get props => [pets];
+  List<Object> get props => [index];
 }
 
 class StepsState extends ProfileSetupState {

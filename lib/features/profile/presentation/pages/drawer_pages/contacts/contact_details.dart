@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/appbars/contact_sliver_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
@@ -8,7 +9,6 @@ import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 
 class ContactDetails extends StatelessWidget {
   const ContactDetails({super.key});
@@ -18,7 +18,7 @@ class ContactDetails extends StatelessWidget {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          contactAppbar(context),
+          ContactSliverAppbar(),
         ],
         body: _buildBody(context),
       ),

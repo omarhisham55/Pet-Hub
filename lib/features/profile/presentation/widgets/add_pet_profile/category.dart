@@ -24,6 +24,7 @@ class Category extends StatelessWidget {
       selector: (state) => state.responseStatus ?? ResponseStatus.success,
       builder: (context, state) {
         final cubit = context.read<AddPetBloc>();
+        Future.microtask(() => cubit.add(GetCategoriesEvent()));
         if (state == ResponseStatus.error) {
           return ErrorWidgetAndRetry(
             errorMessage: (state as AddPetState).messageError ?? '',

@@ -14,6 +14,14 @@ class MainStrings {
   static String ageMonths(bool past) => past ? 'months ago' : 'months';
   static String ageDays(bool past) => past ? 'days ago' : 'days';
 
+  //? navbar strings
+  static const Map<String, IconData> bottomNavbarItems = {
+    'Home': Icons.pets_outlined,
+    'Health': Icons.health_and_safety_outlined,
+    'Appointments': Icons.app_registration_outlined,
+    'Store': Icons.store_mall_directory_outlined,
+  };
+
   //? onboarding strings
   static const String boardingTitle = 'Personalized Pet Profiles';
   static const String boardingcontent =

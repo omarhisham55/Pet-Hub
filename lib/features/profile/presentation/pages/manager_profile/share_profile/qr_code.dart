@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRCodeScan extends StatelessWidget {
@@ -12,8 +12,7 @@ class QRCodeScan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-        context: context,
+      appBar: TwoTitleAppbar(
         title: 'Sharing profiles',
         subTitle: 'shared pet name',
         centerTitle: true,

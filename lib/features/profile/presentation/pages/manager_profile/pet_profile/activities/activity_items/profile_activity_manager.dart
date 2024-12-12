@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/features/profile/presentation/widgets/appbars.dart';
+import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 
 class ProfileActivityManager extends StatelessWidget {
   final String subTitle;
@@ -13,8 +13,7 @@ class ProfileActivityManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: twoTitleAppbar(
-        context: context,
+      appBar: TwoTitleAppbar(
         title: 'Pet Profile',
         subTitle: subTitle,
         boldTitle: false,

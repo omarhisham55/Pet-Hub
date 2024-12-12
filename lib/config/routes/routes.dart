@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
 import 'package:pet_app/features/profile/domain/entities/pet.dart';
+import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/calendar.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/book_a_date.dart';
@@ -57,7 +60,10 @@ class Routes {
             settings: settings,
           ),
       addPetProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const AddPetProfile(),
+            builder: (context) => BlocProvider(
+              create: (context) => dpi<AddPetBloc>(),
+              child: const AddPetProfile(),
+            ),
             settings: settings,
           ),
       shareProfile: (settings) => MaterialPageRoute(

@@ -8,7 +8,6 @@ import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/profile/domain/entities/pet.dart';
-import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
 
 class AdvancedPetDrawer extends StatelessWidget {
@@ -65,7 +64,6 @@ class ProfileDrawer extends StatelessWidget {
               BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
                 builder: (context, state) {
                   final cubit = context.read<ProfileSetupCubit>();
-                  final addPetCubit = context.read<AddPetBloc>();
                   final int petsLength = cubit.user?.ownedPets.length ?? 0;
                   return SizedBox(
                     height: 100,
@@ -81,19 +79,17 @@ class ProfileDrawer extends StatelessWidget {
                           pet: !isLast ? cubit.user?.ownedPets[index] : null,
                           onTap: () {
                             isLast
-                                ? {
-                                    addPetCubit.add(GetCategoriesEvent()),
-                                    Constants.navigateTo(
-                                      context,
-                                      Routes.addPetProfile,
-                                    ),
-                                  }
+                                ? Constants.navigateTo(
+                                    context,
+                                    Routes.addPetProfile,
+                                  )
                                 : {
                                     ProfileSetupCubit.get(context)
                                         .changePetProfileView(0),
                                     Constants.navigateTo(
                                       context,
                                       Routes.viewPetProfile,
+                                      arguments: cubit.user?.ownedPets[index],
                                     ),
                                   };
                           },

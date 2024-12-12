@@ -59,6 +59,7 @@ Widget createAccountBuilder(BuildContext context) {
                       hintText: MainStrings.emailHintText,
                       controller: manager.emailController,
                       focusNode: emailFocusNode,
+                      keyboardType: TextInputType.emailAddress,
                       onEditingComplete: FocusScope.of(context).nextFocus,
                       validator: (value) => value!.isEmpty
                           ? MainStrings.emailValidatorText

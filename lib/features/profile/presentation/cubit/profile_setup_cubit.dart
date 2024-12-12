@@ -12,8 +12,12 @@ import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
+import 'package:pet_app/features/appointments/presentation/pages/pet_appointment_page.dart';
+import 'package:pet_app/features/health/presentation/pages/pet_health_page.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
-import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
+import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
+import 'package:pet_app/features/profile/presentation/pages/home_page_profile.dart';
+import 'package:pet_app/features/store/presentation/pages/pet_store_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'profile_setup_state.dart';
@@ -25,9 +29,20 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
 
   User? user;
 
-  PageController petProfilesCarouselController = PageController();
+  late final PageController petProfilesCarouselController =
+      PageController(initialPage: user?.ownedPets.length ?? 1 - 1);
 
-  AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
+  final AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
+  int currentBottomSheetIndex = 0;
+
+  late final List<Widget> pages = [
+    user!.ownedPets.isNotEmpty
+        ? const HomePageProfile()
+        : const EmptyProfileStartUp(),
+    PetHealthPage(),
+    PetAppointmentPage(),
+    PetStorePage(),
+  ];
 
   void getUser() async {
     emit(SavedUserFound(user: user, responseStatus: ResponseStatus.loading));
@@ -47,6 +62,11 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
         errorMessage: 'No user found',
       ));
     }
+  }
+
+  void changeBottomSheet(int index) {
+    currentBottomSheetIndex = index;
+    emit(ChangeBottomCurrentIndexState(index));
   }
 
   //* Contacts
