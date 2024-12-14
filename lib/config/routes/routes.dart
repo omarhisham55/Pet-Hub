@@ -11,7 +11,7 @@ import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contact
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contact_details.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contacts.dart';
 import 'package:pet_app/features/profile/presentation/pages/drawer_pages/settings.dart';
-import 'package:pet_app/features/profile/presentation/pages/home_page_manager.dart';
+import 'package:pet_app/features/profile/presentation/pages/navigation_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
 import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/add_profile.dart';
@@ -56,7 +56,7 @@ class Routes {
             settings: settings,
           ),
       homePageProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const HomePageManager(),
+            builder: (context) => const NavigationManager(),
             settings: settings,
           ),
       addPetProfile: (settings) => MaterialPageRoute(

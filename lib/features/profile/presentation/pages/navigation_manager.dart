@@ -10,8 +10,8 @@ import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.
 import 'package:pet_app/features/profile/presentation/widgets/bottom_nav_bar.dart';
 import 'package:pet_app/features/profile/presentation/widgets/drawer.dart';
 
-class HomePageManager extends StatelessWidget {
-  const HomePageManager({super.key});
+class NavigationManager extends StatelessWidget {
+  const NavigationManager({super.key});
 
   @override
   Widget build(BuildContext context) {
