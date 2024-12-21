@@ -4,10 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:pet_app/config/services/firebase/categories_firestore.dart';
 import 'package:pet_app/config/services/firebase/firebase_service.dart';
+import 'package:pet_app/config/services/firebase/product_firestore.dart';
 import 'package:pet_app/config/services/firebase/user_firestore.dart';
 import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/internet_check.dart';
+import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
+import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
 import 'package:pet_app/features/onbording/data/datasources/auth_datasource.dart';
 import 'package:pet_app/features/onbording/data/repositories/auth_repo_impl.dart';
 import 'package:pet_app/features/onbording/domain/repositories/auth_repo.dart';
@@ -21,6 +24,14 @@ import 'package:pet_app/features/profile/domain/repositories/pets_categories_rep
 import 'package:pet_app/features/profile/domain/usecases/get_pets_categories_usecase.dart';
 import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/store/data/datasources/products_datasource.dart';
+import 'package:pet_app/features/store/data/repositories/product_repo_impl.dart';
+import 'package:pet_app/features/store/domain/repositories/product_repo.dart';
+import 'package:pet_app/features/store/domain/usecases/add_comment_to_product_usecase.dart';
+import 'package:pet_app/features/store/domain/usecases/add_product_usecase.dart';
+import 'package:pet_app/features/store/domain/usecases/get_product_categories_usecase.dart';
+import 'package:pet_app/features/store/domain/usecases/get_products_usecase.dart';
+import 'package:pet_app/features/store/presentation/cubit/pet_store_cubit.dart';
 
 final dpi = GetIt.instance;
 
@@ -44,6 +55,8 @@ class Dpi {
         () => UserFirestore(client: FirebaseFirestore.instance));
     dpi.registerLazySingleton<CategoryFirestore>(
         () => CategoryFirestore(client: FirebaseFirestore.instance));
+    dpi.registerLazySingleton<ProductFirestore>(
+        () => ProductFirestore(client: FirebaseFirestore.instance));
 
     dpi.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
   }
@@ -51,8 +64,11 @@ class Dpi {
   void registerCubits() {
     dpi.registerLazySingleton(() => ThemeManager());
     dpi.registerLazySingleton(() => OnBordingCubit(dpi(), dpi()));
-    dpi.registerLazySingleton(() => ProfileSetupCubit());
     dpi.registerLazySingleton(() => AddPetBloc(dpi(), dpi()));
+    dpi.registerLazySingleton(() => ProfileSetupCubit());
+    dpi.registerLazySingleton(() => HealthCubit());
+    dpi.registerLazySingleton(() => AppointmentsCubit());
+    dpi.registerLazySingleton(() => PetStoreCubit(dpi(), dpi(), dpi(), dpi()));
   }
 
   void registerDatasources() {
@@ -60,6 +76,8 @@ class Dpi {
         () => AuthDatasourceImpl(client: dpi(), userFirestore: dpi()));
     dpi.registerLazySingleton<PetsCategoriesDatasource>(
         () => PetsCategoriesDatasourceImpl(categoryFirestore: dpi()));
+    dpi.registerLazySingleton<ProductsDatasource>(() => ProductsDatasourceImpl(
+        categoryFirestore: dpi(), productFirestore: dpi()));
   }
 
   void registerRepos() {
@@ -67,6 +85,8 @@ class Dpi {
         () => AuthRepoImpl(authDatasource: dpi(), connection: dpi()));
     dpi.registerLazySingleton<PetsCategoriesRepo>(() => PetsCategoriesRepoImpl(
         petsCategoriesDatasource: dpi(), network: dpi()));
+    dpi.registerLazySingleton<ProductsRepo>(
+        () => ProductsRepoImpl(productsDatasource: dpi(), network: dpi()));
   }
 
   void registerUsecases() {
@@ -75,5 +95,11 @@ class Dpi {
     dpi.registerLazySingleton(() => UpdateUserUsecase(authRepo: dpi()));
     dpi.registerLazySingleton(
         () => GetPetsCategoriesUsecase(petsCategoriesRepo: dpi()));
+    dpi.registerLazySingleton(
+        () => GetProductCategoriesUsecase(productsRepo: dpi()));
+    dpi.registerLazySingleton(() => GetProductsUsecase(productsRepo: dpi()));
+    dpi.registerLazySingleton(() => AddProductUsecase(productsRepo: dpi()));
+    dpi.registerLazySingleton(
+        () => AddCommentToProductUsecase(productsRepo: dpi()));
   }
 }

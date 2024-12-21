@@ -17,6 +17,7 @@ import 'package:pet_app/features/health/presentation/pages/pet_health_page.dart'
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
 import 'package:pet_app/features/profile/presentation/pages/empty_profile.dart';
 import 'package:pet_app/features/profile/presentation/pages/home_page_profile.dart';
+import 'package:pet_app/features/store/presentation/cubit/pet_store_cubit.dart';
 import 'package:pet_app/features/store/presentation/pages/pet_store_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -65,6 +66,13 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   }
 
   void changeBottomSheet(int index) {
+    switch (index) {
+      case 3:
+        if (currentBottomSheetIndex == index) {
+          dpi<PetStoreCubit>().add(GetProductCategoriesEvent());
+        }
+        break;
+    }
     currentBottomSheetIndex = index;
     emit(ChangeBottomCurrentIndexState(index));
   }

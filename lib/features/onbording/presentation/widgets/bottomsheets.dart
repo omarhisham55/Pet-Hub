@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/shared/components/bottom_sheets/base_bottom_sheet.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/text_fields/global_text_field.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';

@@ -17,6 +17,11 @@ ThemeData darkThemeData = ThemeData(
   drawerTheme: DrawerThemeData(
     backgroundColor: SharedModeColors.grey1000,
   ),
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(
+      iconColor: WidgetStatePropertyAll(SharedModeColors.white),
+    ),
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: SharedModeColors.darkBackground,
     type: BottomNavigationBarType.fixed,
@@ -72,6 +77,11 @@ ThemeData lightThemeData = ThemeData(
   ),
   drawerTheme: DrawerThemeData(
     backgroundColor: SharedModeColors.grey800,
+  ),
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(
+      iconColor: WidgetStatePropertyAll(SharedModeColors.black),
+    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: SharedModeColors.lightBackground,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Constants {
   static final String dogBG = 'dogBG';
@@ -13,24 +14,22 @@ class Constants {
   static const String firestoreCategoriesCollection = 'categories';
   static const String firestorePetsCollection = 'pets';
   static const String firestorePetsBreedsCollection = 'breeds';
+  static const String firestoreProductsCollection = 'products';
+  static const String firestoreProductsCommentsAndReviewsCollection =
+      'comments&reviews';
 
   static void navigateTo(
     BuildContext context,
     String route, {
     dynamic arguments,
   }) =>
-      Navigator.pushNamed(
-        context,
-        route,
-        arguments: arguments,
-      );
+      GoRouter.of(context).push(route, extra: arguments);
+
   static void replaceWith(BuildContext context, String route) =>
-      Navigator.pushReplacementNamed(context, route);
+      GoRouter.of(context).pushReplacement(route);
+
   static void replaceWithAndRemoveUntil(BuildContext context, String route) =>
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        route,
-        (route) => false,
-      );
-  static void pop(BuildContext context) => Navigator.pop(context);
+      GoRouter.of(context).replace(route);
+
+  static void pop(BuildContext context) => GoRouter.of(context).pop();
 }
