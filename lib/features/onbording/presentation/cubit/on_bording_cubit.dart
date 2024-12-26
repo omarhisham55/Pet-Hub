@@ -82,7 +82,7 @@ class OnBordingCubit extends Cubit<OnBordingState> {
     LocalSharedPreferences.write(Constants.localIsOnBoardingComplete, true);
     LocalSharedPreferences.write(Constants.localIsCreateAccountComplete, true);
     LocalSharedPreferences.write(Constants.localUserId, userId);
-    Constants.replaceWithAndRemoveUntil(context, Routes.homePageProfile);
+    Constants.replaceWithAndRemoveUntil(context, Routes.navigationManager);
   }
 
   void createAccount() async {
