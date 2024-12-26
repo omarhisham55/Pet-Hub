@@ -64,7 +64,7 @@ class ViewPetProfile extends StatelessWidget {
   Widget _profile(BuildContext context) {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
       builder: (context, state) {
-        ProfileSetupCubit manager = ProfileSetupCubit.get(context);
+        final ProfileSetupCubit manager = context.read()<ProfileSetupCubit>();
         WidgetsBinding.instance.addPostFrameCallback((_) {
           manager.infoListController.jumpTo(manager.currentProfileSection * 50);
         });
