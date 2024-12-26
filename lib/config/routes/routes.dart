@@ -5,6 +5,7 @@ import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
 import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
 import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
+import 'package:pet_app/features/home/presentation/pages/navigation_manager.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
 import 'package:pet_app/features/home/domain/entities/pet.dart';
@@ -16,7 +17,6 @@ import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/b
 import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contact_details.dart';
 import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contacts.dart';
 import 'package:pet_app/features/home/presentation/pages/drawer_pages/settings.dart';
-import 'package:pet_app/features/home/presentation/pages/home_page_manager.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
@@ -84,7 +84,7 @@ class Routes {
         routes: [
           GoRoute(
             path: homePageProfile,
-            builder: (context, state) => const HomePageManager(),
+            builder: (context, state) => const NavigationManager(),
           ),
           GoRoute(
             path: productDetailsPage,
