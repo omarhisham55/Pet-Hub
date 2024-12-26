@@ -1,3 +1,3 @@
 enum ToastStates { success, error, warning }
 
-enum ResponseStatus { loading, success, error }
+enum ResponseStatus { initial, loading, success, error }

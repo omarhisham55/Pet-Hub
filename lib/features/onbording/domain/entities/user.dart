@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:pet_app/features/profile/data/models/pet_model.dart';
+import 'package:pet_app/features/home/data/models/pet_model.dart';
 
 class User extends Equatable {
   final String id;

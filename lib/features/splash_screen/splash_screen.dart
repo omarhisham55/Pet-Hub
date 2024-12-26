@@ -33,9 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
     final bool isOnBoardingComplete =
         await AuthGateChecks.isOnBoardingCompleteCheck();
     if (isOnBoardingComplete && isAuthenticated) {
-      Constants.navigateTo(context, Routes.homePageProfile);
+      Constants.replaceWith(context, Routes.homePageProfile);
     } else {
-      Constants.navigateTo(context, Routes.onBording);
+      Constants.replaceWith(context, Routes.onBording);
     }
   }
 

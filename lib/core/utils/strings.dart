@@ -5,11 +5,13 @@ class MainStrings {
   static const String undefinedRoute = 'undefined route';
   static const String retry = 'Retry';
   static const String edit = 'Edit';
+  static const String submit = 'Submit';
   static const String continueString = 'Continue';
   static const String kg = 'Kg';
   static const String lbs = 'lbs';
   static const String male = 'Male';
   static const String female = 'Female';
+  static const String seeMore = 'See more';
   static String ageYears(bool past) => past ? 'years ago' : 'yeard old';
   static String ageMonths(bool past) => past ? 'months ago' : 'months';
   static String ageDays(bool past) => past ? 'days ago' : 'days';
@@ -83,6 +85,22 @@ class MainStrings {
   static const String userEmptyPets =
       'Uh Oh!\nLooks like you have no profiles set up at this moment, add your pet now';
   static const String activePetProfile = 'Active pet profile';
+
+  //? store strings
+  static const String noCategories =
+      'An error happened while fetching categories';
+  static const String emptyProductsFilteredByCategry =
+      'No products for this category!';
+  static const String productDetailAppbarTitle = 'Product details';
+  static const String similarProductsTitle = 'Similar Products';
+  static const String noSimilarProducts = 'No similar products found';
+  static const String commentReviewsTitle = 'Comments & Reviews';
+  static const String addCommentHint = 'Add your comment...';
+  static const String ratingDialogTitle = 'This comment requires a rating';
+  static const String commentAdded = 'Comment added';
+  static const String emptyComments =
+      'No comments found for this product!\nBe the first to comment.';
+  static const String addToCart = 'Add to cart';
 
   //? drawer strings
   static const String drawerYourPets = 'Your Pets';
