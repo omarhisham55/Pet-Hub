@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
+import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
+import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
+import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
-import 'package:pet_app/features/profile/domain/entities/pet.dart';
-import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/profile/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/calendar.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/book_a_date.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contact_details.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contacts.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/settings.dart';
-import 'package:pet_app/features/profile/presentation/pages/home_page_manager.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/add_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/into_health.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/nutrition/recipes.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/view_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/share_profile/qr_code.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/share_profile/share_profile.dart';
+import 'package:pet_app/features/home/domain/entities/pet.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/calendar.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/book_a_date.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contact_details.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contacts.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/settings.dart';
+import 'package:pet_app/features/home/presentation/pages/home_page_manager.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/health/into_health.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/nutrition/recipes.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/view_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/share_profile/qr_code.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/share_profile/share_profile.dart';
 import 'package:pet_app/features/splash_screen/splash_screen.dart';
+import 'package:pet_app/features/store/presentation/cubit/pet_store_cubit.dart';
+import 'package:pet_app/features/store/presentation/pages/product_details_page.dart';
 
 class Routes {
   static const String splashScreen = '/';
-  static const String onBording = '/onBorder';
-  static const String homePageProfile = '/homePageProfile';
+  static const String onBording = '/OnBorder';
   static const String addPetProfile = '/AddPetProfile';
+  static const String homePageProfile = '/HomePageProfile';
+  static const String productDetailsPage = '/ProductDetailsPage';
   static const String shareProfile = '/ShareProfile';
   static const String qrCodeScan = '/qrCodeScan';
   static const String addNewPetProfile = '/addNewPetProfile';
@@ -45,112 +53,120 @@ class Routes {
 
   factory Routes() => Routes._();
 
-  Map<String, Route<dynamic> Function(RouteSettings settings)> get routes {
-    return {
-      splashScreen: (settings) => MaterialPageRoute(
-            builder: (context) => const SplashScreen(),
-            settings: settings,
-          ),
-      onBording: (settings) => MaterialPageRoute(
-            builder: (context) => const OnBordingScreen(),
-            settings: settings,
-          ),
-      homePageProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const HomePageManager(),
-            settings: settings,
-          ),
-      addPetProfile: (settings) => MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => dpi<AddPetBloc>(),
-              child: const AddPetProfile(),
+  static final GoRouter router = GoRouter(
+    routes: [
+      GoRoute(
+        path: splashScreen,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: onBording,
+        builder: (context, state) => BlocProvider(
+          create: (context) => dpi<OnBordingCubit>(),
+          child: const OnBordingScreen(),
+        ),
+      ),
+      ShellRoute(
+        builder: (context, state, child) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => dpi<ProfileSetupCubit>()..getUser(),
             ),
-            settings: settings,
-          ),
-      shareProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const ShareProfile(),
-            settings: settings,
-          ),
-      qrCodeScan: (settings) => MaterialPageRoute(
-            builder: (context) => const QRCodeScan(),
-            settings: settings,
-          ),
-      addNewPetProfile: (settings) => MaterialPageRoute(
-            builder: (context) => const AddNewPetProfile(),
-            settings: settings,
-          ),
-      viewPetProfile: (settings) => MaterialPageRoute(
-            builder: (context) =>
-                ViewPetProfile(pet: settings.arguments as Pet),
-            settings: settings,
-          ),
-      petProfileHealthDetails: (settings) => MaterialPageRoute(
-            builder: (context) => PetProfileHealthDetails(
-              subTitle: settings.arguments as String,
+            BlocProvider(create: (context) => dpi<HealthCubit>()),
+            BlocProvider(create: (context) => dpi<AppointmentsCubit>()),
+            BlocProvider(
+              create: (context) =>
+                  dpi<PetStoreCubit>()..add(GetProductCategoriesEvent()),
             ),
-            settings: settings,
+          ],
+          child: child,
+        ),
+        routes: [
+          GoRoute(
+            path: homePageProfile,
+            builder: (context, state) => const HomePageManager(),
           ),
-      recipes: (settings) => MaterialPageRoute(
-            builder: (context) => const Recipes(),
-            settings: settings,
-          ),
-      contacts: (settings) => MaterialPageRoute(
-            builder: (context) => const Contacts(),
-            settings: settings,
-          ),
-      contactsDetails: (settings) => MaterialPageRoute(
-            builder: (context) => const ContactDetails(),
-            settings: settings,
-          ),
-      bookADate: (settings) => MaterialPageRoute(
-            builder: (context) => const BookADate(),
-            settings: settings,
-          ),
-      calendar: (settings) => MaterialPageRoute(
-            builder: (context) => const Calendar(),
-            settings: settings,
-          ),
-      settings: (settings) => MaterialPageRoute(
-            builder: (context) => const Settings(),
-            settings: settings,
-          ),
-      intoActivities: (settings) => MaterialPageRoute(
-            builder: (context) {
-              final args = ModalRoute.of(context)!.settings.arguments
-                  as ProfileActivityArguments;
-              return ProfileActivityManager(
-                subTitle: args.subTitle,
-                body: args.body,
-              );
+          GoRoute(
+            path: productDetailsPage,
+            builder: (context, state) {
+              final args = state.extra as Map<String, dynamic>;
+              return ProductDetailsPage(productId: args['productId']);
             },
-            settings: settings,
           ),
-      maps: (settings) => MaterialPageRoute(
-            builder: (context) {
-              final args =
-                  ModalRoute.of(context)!.settings.arguments as MapArguments;
-              return OpenMaps(
-                title: args.title,
-                subTitle: args.subTitle,
-              );
-            },
-            settings: settings,
-          ),
-    };
-  }
-
-  Route<dynamic> undefinedRoute() {
-    return MaterialPageRoute(
-      builder: (_) => const PageNotFound(),
-    );
-  }
-}
-
-class OnGenerateRoute {
-  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    final route = Routes().routes[settings.name];
-    if (route != null) {
-      return route(settings);
-    }
-    return Routes().undefinedRoute();
-  }
+        ],
+      ),
+      GoRoute(
+        path: addPetProfile,
+        builder: (context, state) => BlocProvider(
+          create: (context) => dpi<AddPetBloc>(),
+          child: const AddPetProfile(),
+        ),
+      ),
+      GoRoute(
+        path: addNewPetProfile,
+        builder: (context, state) => const AddNewPetProfile(),
+      ),
+      GoRoute(
+        path: shareProfile,
+        builder: (context, state) => const ShareProfile(),
+      ),
+      GoRoute(
+        path: qrCodeScan,
+        builder: (context, state) => const QRCodeScan(),
+      ),
+      GoRoute(
+        path: viewPetProfile,
+        builder: (context, state) => ViewPetProfile(pet: state.extra as Pet),
+      ),
+      GoRoute(
+        path: petProfileHealthDetails,
+        builder: (context, state) =>
+            PetProfileHealthDetails(subTitle: state.extra as String),
+      ),
+      GoRoute(
+        path: recipes,
+        builder: (context, state) => const Recipes(),
+      ),
+      GoRoute(
+        path: contacts,
+        builder: (context, state) => const Contacts(),
+      ),
+      GoRoute(
+        path: contactsDetails,
+        builder: (context, state) => const ContactDetails(),
+      ),
+      GoRoute(
+        path: bookADate,
+        builder: (context, state) => const BookADate(),
+      ),
+      GoRoute(
+        path: calendar,
+        builder: (context, state) => const Calendar(),
+      ),
+      GoRoute(
+        path: settings,
+        builder: (context, state) => const Settings(),
+      ),
+      GoRoute(
+        path: intoActivities,
+        builder: (context, state) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as ProfileActivityArguments;
+          return ProfileActivityManager(
+            subTitle: args.subTitle,
+            body: args.body,
+          );
+        },
+      ),
+      GoRoute(
+        path: maps,
+        builder: (context, state) {
+          final args =
+              ModalRoute.of(context)?.settings.arguments as MapArguments;
+          return OpenMaps(title: args.title, subTitle: args.subTitle);
+        },
+      ),
+    ],
+    errorBuilder: (context, state) => const PageNotFound(),
+  );
 }

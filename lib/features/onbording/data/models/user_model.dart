@@ -1,5 +1,5 @@
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
-import 'package:pet_app/features/profile/data/models/pet_model.dart';
+import 'package:pet_app/features/home/data/models/pet_model.dart';
 
 class UserModel extends User {
   UserModel({
