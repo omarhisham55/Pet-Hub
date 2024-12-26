@@ -33,7 +33,7 @@ class Routes {
   static const String splashScreen = '/';
   static const String onBording = '/OnBorder';
   static const String addPetProfile = '/AddPetProfile';
-  static const String homePageProfile = '/HomePageProfile';
+  static const String navigationManager = '/NavigationManager';
   static const String productDetailsPage = '/ProductDetailsPage';
   static const String shareProfile = '/ShareProfile';
   static const String qrCodeScan = '/qrCodeScan';
@@ -83,7 +83,7 @@ class Routes {
         ),
         routes: [
           GoRoute(
-            path: homePageProfile,
+            path: navigationManager,
             builder: (context, state) => const NavigationManager(),
           ),
           GoRoute(
