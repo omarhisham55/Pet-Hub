@@ -27,33 +27,34 @@ class ProductDetailsSection extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: SharedModeColors.grey500),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'category',
-                // cubit.state.categories
-                //     .where((category) => category.id == product.categoryId)
-                //     .first
-                //     .category,
+                cubit.state.categories
+                    .where((category) => category.id == product.categoryId)
+                    .first
+                    .category
+                    .toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
+            const SizedBox(width: 10),
             Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: SharedModeColors.grey500),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'subCategory',
-                // cubit.state.categories
-                //     .where((category) => category.id == product.categoryId)
-                //     .first
-                //     .subCategories
-                //     .where((category) => category.id == product.subCategoryId)
-                //     .first
-                //     .subCategory,
+                cubit.state.categories
+                    .where((category) => category.id == product.categoryId)
+                    .first
+                    .subCategories
+                    .where((category) => category.id == product.subCategoryId)
+                    .first
+                    .subCategory
+                    .toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),

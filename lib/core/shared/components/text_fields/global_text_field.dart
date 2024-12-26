@@ -5,6 +5,7 @@ import 'package:pet_app/core/utils/colors.dart';
 class GlobalTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
+  final TextStyle? style;
   final bool? isObscured;
   final String? Function(String?)? validator;
   final Function(String)? onFieldSubmitted;
@@ -20,6 +21,7 @@ class GlobalTextField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.controller,
+    this.style,
     this.isObscured = false,
     this.validator,
     this.onFieldSubmitted,
@@ -44,6 +46,7 @@ class GlobalTextField extends StatelessWidget {
       onChanged: onChanged,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
+      style: style,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(color: SharedModeColors.grey500),

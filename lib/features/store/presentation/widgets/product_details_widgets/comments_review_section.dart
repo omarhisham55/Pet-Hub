@@ -1,17 +1,16 @@
 part of 'package:pet_app/features/store/presentation/pages/product_details_page.dart';
 
 class CommentsReviewSection extends StatelessWidget {
-  final String productId;
-  final List<CommentReview> commentReviews;
-  const CommentsReviewSection(
-      {super.key, required this.productId, required this.commentReviews});
+  final Product product;
+  const CommentsReviewSection({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<PetStoreCubit, PetStoreState, ResponseStatus>(
-      selector: (state) => state.addCommentStatus,
+    return BlocSelector<PetStoreCubit, PetStoreState, List<ResponseStatus>>(
+      selector: (state) => [state.addCommentStatus, state.productsStatus],
       builder: (context, state) {
-        if (state == ResponseStatus.loading) {
+        final cubit = context.read<PetStoreCubit>();
+        if (state.any((s) => s == ResponseStatus.loading)) {
           return LoadingLogo(height: 100);
         }
         return Padding(
@@ -24,39 +23,74 @@ class CommentsReviewSection extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 10),
-              if (commentReviews.isEmpty)
+              if (product.commentReviews.isEmpty)
                 ErrorWidgetAndRetry(
                   errorMessage: MainStrings.emptyComments,
-                  retryFunction: () => context
-                      .read<PetStoreCubit>()
-                      .add(AddCommentToProductEvent(productId: productId)),
-                  // showRetryButton: false,
+                  retryFunction: () {},
+                  showRetryButton: false,
                 ),
-              if (commentReviews.isNotEmpty)
+              if (product.commentReviews.isNotEmpty)
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: commentReviews.length,
+                  itemCount: product.commentReviews.length > 3
+                      ? 3
+                      : product.commentReviews.length,
                   separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) =>
-                      _buildCommentReview(context, commentReviews[index]),
+                  itemBuilder: (context, index) => _buildCommentReview(
+                      context, product.commentReviews[index]),
                 ),
               const SizedBox(height: 10),
-              if (commentReviews.length > 3)
+              if (product.commentReviews.length > 3)
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: Text(
-                    MainStrings.seeMore,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: SharedModeColors.blue700,
-                        ),
+                  child: GestureDetector(
+                    onTap: () => showCommentsBottomSheet(
+                      context: context,
+                      product: product,
+                      item: _buildCommentReview,
+                    ),
+                    child: Text(
+                      MainStrings.seeMore,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: SharedModeColors.blue700,
+                          ),
+                    ),
                   ),
                 ),
               const SizedBox(height: 10),
-              GlobalTextField(
-                hintText: 'Add your comment...',
-                controller: context.read<PetStoreCubit>().commentController,
-              )
+              Row(
+                children: [
+                  Expanded(
+                    child: GlobalTextField(
+                      focusNode: cubit.commentFocusNode,
+                      controller: cubit.commentController,
+                      hintText: MainStrings.addCommentHint,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  CircleAvatar(
+                    radius: 25,
+                    child: IconButton(
+                      onPressed: () {
+                        cubit.commentFocusNode.unfocus();
+                        if (cubit.commentController.text.isNotEmpty) {
+                          showRatingDialog(
+                              context: context,
+                              onRatingComplete: () {
+                                cubit.add(
+                                  AddCommentToProductEvent(product: product),
+                                );
+                                Constants.pop(context);
+                              });
+                        }
+                      },
+                      icon: const Icon(Icons.send),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         );
@@ -91,7 +125,10 @@ class CommentsReviewSection extends StatelessWidget {
                     const SizedBox(width: 10),
                     Text(
                       commentReview.createdAt.toString(),
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(color: SharedModeColors.grey500),
                       textAlign: TextAlign.start,
                     ),
                     const Spacer(),

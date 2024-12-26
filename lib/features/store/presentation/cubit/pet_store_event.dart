@@ -28,9 +28,15 @@ final class GetProductsEvent extends PetStoreEvents {
   });
 }
 
+final class RemoveSelectedProductEvent extends PetStoreEvents {
+  final String productId;
+
+  RemoveSelectedProductEvent({required this.productId});
+}
+
 final class AddProductEvent extends PetStoreEvents {}
 
 final class AddCommentToProductEvent extends PetStoreEvents {
-  final String productId;
-  AddCommentToProductEvent({required this.productId});
+  final Product product;
+  AddCommentToProductEvent({required this.product});
 }

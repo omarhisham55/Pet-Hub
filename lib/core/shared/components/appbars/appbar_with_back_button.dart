@@ -4,10 +4,12 @@ import 'package:pet_app/core/shared/constants/constants.dart';
 class AppbarWithBackButton extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
+  final Function()? onBack;
   final List<Widget>? actions;
   const AppbarWithBackButton({
     super.key,
     required this.title,
+    this.onBack,
     this.actions,
   });
 
@@ -15,7 +17,10 @@ class AppbarWithBackButton extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () => Constants.pop(context),
+        onPressed: () {
+          onBack!();
+          Constants.pop(context);
+        },
         icon: Icon(Icons.adaptive.arrow_back),
       ),
       title: Text(

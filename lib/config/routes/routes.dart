@@ -7,24 +7,24 @@ import 'package:pet_app/features/appointments/presentation/cubit/appointments_cu
 import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
-import 'package:pet_app/features/profile/domain/entities/pet.dart';
-import 'package:pet_app/features/profile/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
-import 'package:pet_app/features/profile/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/calendar.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/book_a_date.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contact_details.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/contacts/contacts.dart';
-import 'package:pet_app/features/profile/presentation/pages/drawer_pages/settings.dart';
-import 'package:pet_app/features/profile/presentation/pages/home_page_manager.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/add_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/health/into_health.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/nutrition/recipes.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/pet_profile/view_profile.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/share_profile/qr_code.dart';
-import 'package:pet_app/features/profile/presentation/pages/manager_profile/share_profile/share_profile.dart';
+import 'package:pet_app/features/home/domain/entities/pet.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/calendar.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/book_a_date.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contact_details.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contacts.dart';
+import 'package:pet_app/features/home/presentation/pages/drawer_pages/settings.dart';
+import 'package:pet_app/features/home/presentation/pages/home_page_manager.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/health/into_health.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/nutrition/recipes.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/view_profile.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/share_profile/qr_code.dart';
+import 'package:pet_app/features/home/presentation/pages/manager_profile/share_profile/share_profile.dart';
 import 'package:pet_app/features/splash_screen/splash_screen.dart';
 import 'package:pet_app/features/store/presentation/cubit/pet_store_cubit.dart';
 import 'package:pet_app/features/store/presentation/pages/product_details_page.dart';
@@ -90,7 +90,7 @@ class Routes {
             path: productDetailsPage,
             builder: (context, state) {
               final args = state.extra as Map<String, dynamic>;
-              return ProductDetailsPage(product: args['product']);
+              return ProductDetailsPage(productId: args['productId']);
             },
           ),
         ],

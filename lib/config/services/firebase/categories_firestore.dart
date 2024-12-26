@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
-import 'package:pet_app/features/profile/data/models/pet_category_model.dart';
-import 'package:pet_app/features/profile/domain/entities/pet_category.dart';
+import 'package:pet_app/features/home/data/models/pet_category_model.dart';
+import 'package:pet_app/features/home/domain/entities/pet_category.dart';
 import 'package:pet_app/features/store/data/models/product_category_model.dart';
 import 'package:pet_app/features/store/domain/entities/product_category.dart';
 

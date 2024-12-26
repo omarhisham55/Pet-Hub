@@ -18,7 +18,7 @@ abstract class ProductsRepo {
   Future<Either<Failure, bool>> addProduct(ProductModel product);
 
   Future<Either<Failure, String>> addComment(
-    String productId,
+    Product product,
     CommentReviewModel comment,
   );
 }

@@ -5,6 +5,7 @@ class MainStrings {
   static const String undefinedRoute = 'undefined route';
   static const String retry = 'Retry';
   static const String edit = 'Edit';
+  static const String submit = 'Submit';
   static const String continueString = 'Continue';
   static const String kg = 'Kg';
   static const String lbs = 'lbs';
@@ -94,8 +95,12 @@ class MainStrings {
   static const String similarProductsTitle = 'Similar Products';
   static const String noSimilarProducts = 'No similar products found';
   static const String commentReviewsTitle = 'Comments & Reviews';
+  static const String addCommentHint = 'Add your comment...';
+  static const String ratingDialogTitle = 'This comment requires a rating';
+  static const String commentAdded = 'Comment added';
   static const String emptyComments =
       'No comments found for this product!\nBe the first to comment.';
+  static const String addToCart = 'Add to cart';
 
   //? drawer strings
   static const String drawerYourPets = 'Your Pets';

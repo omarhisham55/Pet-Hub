@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_app/core/shared/constants/common_functions.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
+import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/store/data/models/comment_review_model.dart';
 import 'package:pet_app/features/store/data/models/product_model.dart';
 import 'package:pet_app/features/store/domain/entities/product.dart';
@@ -47,6 +48,7 @@ class ProductFirestore {
         .collection(Constants.firestoreProductsCollection)
         .doc(productId)
         .collection(Constants.firestoreProductsCommentsAndReviewsCollection)
+        .orderBy('createdAt', descending: true)
         .get();
     if (response.docs.isEmpty) return [];
     for (var element in response.docs) {
@@ -58,13 +60,21 @@ class ProductFirestore {
   }
 
   Future<String> addComment(
-      String productId, CommentReviewModel comment) async {
-    final docRef = await client
+      Product product, CommentReviewModel newComment) async {
+    final productDocRef = await client
         .collection(Constants.firestoreProductsCollection)
-        .doc(productId)
+        .doc(product.id);
+    final commentDocRef = await productDocRef
         .collection(Constants.firestoreProductsCommentsAndReviewsCollection)
-        .add(comment.toMap());
-    await docRef.update({'id': docRef.id});
-    return 'Comment added';
+        .add(newComment.toMap());
+    double totalRating = newComment.rating.toDouble();
+    int totalComments = product.commentReviews.length + 1;
+    for (var comment in product.commentReviews) {
+      totalRating += comment.rating;
+    }
+    double newAverageRating = totalRating / totalComments;
+    await commentDocRef.update({'id': commentDocRef.id});
+    await productDocRef.update({'rating': newAverageRating});
+    return MainStrings.commentAdded;
   }
 }

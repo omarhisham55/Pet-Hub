@@ -63,11 +63,11 @@ class ProductsRepoImpl extends ProductsRepo
 
   @override
   Future<Either<Failure, String>> addComment(
-          String productId, CommentReviewModel comment) async =>
+          Product product, CommentReviewModel comment) async =>
       await checkNetworkConnection(
         () async => await checkFirestoreErrors(
           () async => Right(
-            await productsDatasource.addComment(productId, comment),
+            await productsDatasource.addComment(product, comment),
           ),
         ),
       );

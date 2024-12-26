@@ -13,7 +13,7 @@ abstract class ProductsDatasource {
   });
   Future<List<ProductCategory>> getCategories({String? id});
   Future<bool> addProduct(ProductModel product);
-  Future<String> addComment(String productId, CommentReviewModel comment);
+  Future<String> addComment(Product product, CommentReviewModel comment);
 }
 
 class ProductsDatasourceImpl implements ProductsDatasource {
@@ -46,6 +46,6 @@ class ProductsDatasourceImpl implements ProductsDatasource {
 
   @override
   Future<String> addComment(
-          String productId, CommentReviewModel comment) async =>
-      await productFirestore.addComment(productId, comment);
+          Product product, CommentReviewModel comment) async =>
+      await productFirestore.addComment(product, comment);
 }

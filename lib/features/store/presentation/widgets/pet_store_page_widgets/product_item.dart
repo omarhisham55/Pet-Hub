@@ -18,7 +18,7 @@ class ProductItem extends StatelessWidget {
         Constants.navigateTo(
           context,
           Routes.productDetailsPage,
-          arguments: {'product': product},
+          arguments: {'productId': product.id},
         );
       },
       child: Card(

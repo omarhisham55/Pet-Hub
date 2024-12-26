@@ -4,7 +4,7 @@ import 'package:pet_app/config/services/di/dpi.dart';
 // import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/features/onbording/data/models/user_model.dart';
-import 'package:pet_app/features/profile/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
 import 'package:pet_app/features/store/data/models/comment_review_model.dart';
 import 'package:pet_app/features/store/domain/entities/product.dart';
 import 'package:pet_app/features/store/domain/entities/product_category.dart';
@@ -32,6 +32,8 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
         ChangeProductCategoryEvent() => _changeProductCategory(event, emit),
         GetProductCategoriesEvent() => await _getProductCategories(event, emit),
         GetProductsEvent() => await _getProducts(event, emit),
+        RemoveSelectedProductEvent() =>
+          await _removeSelectedProduct(event, emit),
         AddProductEvent() => await _addProduct(emit),
         AddCommentToProductEvent() => await _addComment(event, emit)
       },
@@ -40,17 +42,26 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
 
   // final PagingController<int, Product> pagingController =
   //     PagingController<int, Product>(firstPageKey: 1);
+  final FocusNode commentFocusNode = FocusNode();
   final TextEditingController commentController = TextEditingController();
-  final double commentRating = 0;
+  double commentRating = 0;
+  bool initProductDetails = false;
 
   void _changeProductCategory(
       ChangeProductCategoryEvent event, Emitter<PetStoreState> emit) {
+    if (state.productCategory == event.category &&
+        state.productSubCategory == null &&
+        event.subCategory == null) return;
     emit(state.copyWith(
       writeCategories: true,
       productCategory: event.category,
       productSubCategory: event.subCategory,
     ));
-    add(GetProductsEvent(isFiltering: true));
+    add(GetProductsEvent(
+      isFiltering: true,
+      categoryId: state.productCategory?.id,
+      subCategoryId: state.productSubCategory?.id,
+    ));
   }
 
   Future<void> _getProductCategories(
@@ -70,32 +81,72 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
   Future<void> _getProducts(
       GetProductsEvent event, Emitter<PetStoreState> emit) async {
     emit(state.copyWith(productsStatus: ResponseStatus.loading));
-    final result = await getProductsUsecase([
-      event.productId,
-      state.productCategory?.id ?? event.categoryId,
-      state.productSubCategory?.id ?? event.subCategoryId,
-    ]);
+    final result = await getProductsUsecase(ProductParams(
+      productId: event.productId,
+      categoryId: event.categoryId,
+      subCategoryId: event.subCategoryId,
+    ));
     emit(result.fold(
       (failure) => state.copyWith(
           errorMessage: failure.message, productsStatus: ResponseStatus.error),
-      (products) => event.isFiltering
-          ? state.copyWith(
-              filteredProducts: products,
-              productsStatus: ResponseStatus.success,
-            )
-          : state.copyWith(
-              products: products,
-              filteredProducts: [],
-              productsStatus: ResponseStatus.success,
-            ),
+      (products) {
+        final selectedProduct = _getSelectedProduct(event.productId);
+        logger.f('selectedProduct: ${selectedProduct}');
+        return event.isFiltering
+            ? state.copyWith(
+                filteredProducts: products,
+                similarProducts: [],
+                selectedProducts: [],
+                productsStatus: ResponseStatus.success,
+              )
+            : event.productId != null
+                ? state.copyWith(
+                    selectedProducts: selectedProduct != null
+                        ? (List.from(state.selectedProducts)
+                          ..add(selectedProduct))
+                        : [],
+                    similarProducts: _getSimilarProducts(
+                        _getSelectedProduct(event.productId)),
+                    productsStatus: ResponseStatus.success,
+                  )
+                : state.copyWith(
+                    products: products,
+                    filteredProducts: [],
+                    similarProducts: [],
+                    selectedProducts: [],
+                    productsStatus: ResponseStatus.success,
+                  );
+      },
     ));
+    logger.t('${state.selectedProducts.map((p) => p.id).toList()}');
+    emit(state.copyWith(addCommentStatus: ResponseStatus.initial));
+  }
+
+  _removeSelectedProduct(
+      RemoveSelectedProductEvent event, Emitter<PetStoreState> emit) {
+    emit(state.copyWith(
+        selectedProducts: state.selectedProducts
+          ..removeWhere((p) => p.id == event.productId)));
+    logger.i('${state.selectedProducts.map((p) => p.id).toList()}');
+  }
+
+  Product? _getSelectedProduct(String? productId) {
+    return state.products.where((p) => p.id == productId).firstOrNull;
+  }
+
+  List<Product> _getSimilarProducts(Product? product) {
+    if (product == null) return [];
+    return state.products
+        .where((p) => p.categoryId == product.categoryId)
+        .toList()
+      ..removeWhere((p) => p.id == product.id);
   }
 
   Future<void> _addComment(
       AddCommentToProductEvent event, Emitter<PetStoreState> emit) async {
     emit(state.copyWith(addCommentStatus: ResponseStatus.loading));
     final result = await addCommentToProductUsecase([
-      event.productId,
+      event.product,
       CommentReviewModel(
         id: '',
         comment: commentController.text,
@@ -108,11 +159,16 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
         errorMessage: failure.message,
         addCommentStatus: ResponseStatus.error,
       ),
-      (successString) => state.copyWith(
-        addCommentStatus: ResponseStatus.success,
-        successMessage: successString,
-      ),
+      (successString) {
+        commentController.clear();
+        commentRating = 0;
+        return state.copyWith(
+          addCommentStatus: ResponseStatus.success,
+          successMessage: successString,
+        );
+      },
     ));
+    add(GetProductsEvent(productId: event.product.id));
   }
 
   Future<void> _addProduct(Emitter<PetStoreState> emit) async {
