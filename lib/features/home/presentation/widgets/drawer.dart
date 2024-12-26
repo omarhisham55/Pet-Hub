@@ -89,7 +89,9 @@ class ProfileDrawer extends StatelessWidget {
                                     Constants.navigateTo(
                                       context,
                                       Routes.viewPetProfile,
-                                      arguments: cubit.user?.ownedPets[index],
+                                      arguments: {
+                                        'pet': cubit.user?.ownedPets[index]
+                                      },
                                     ),
                                   };
                           },

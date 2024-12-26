@@ -64,7 +64,7 @@ class ViewPetProfile extends StatelessWidget {
   Widget _profile(BuildContext context) {
     return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
       builder: (context, state) {
-        final ProfileSetupCubit manager = context.read()<ProfileSetupCubit>();
+        final ProfileSetupCubit manager = context.read<ProfileSetupCubit>();
         WidgetsBinding.instance.addPostFrameCallback((_) {
           manager.infoListController.jumpTo(manager.currentProfileSection * 50);
         });
@@ -83,18 +83,19 @@ class ViewPetProfile extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) => __infoListItem(
                       context,
-                      viewProfileBody(context).keys.toList()[index],
+                      viewProfileBody(context, pet).keys.toList()[index],
                       index,
                       manager,
                     ),
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: 10),
-                    itemCount: viewProfileBody(context).length,
+                    itemCount: viewProfileBody(context, pet).length,
                   ),
                 ),
                 profileBody(
                   context,
-                  viewProfileBody(context)
+                  pet,
+                  viewProfileBody(context, pet)
                       .keys
                       .toList()[manager.currentProfileSection],
                 ),

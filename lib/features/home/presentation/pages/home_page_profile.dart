@@ -89,7 +89,7 @@ class HomePageProfile extends StatelessWidget {
         Constants.navigateTo(
           context,
           Routes.viewPetProfile,
-          arguments: pet,
+          arguments: {'pet': pet},
         );
       },
       child: Container(

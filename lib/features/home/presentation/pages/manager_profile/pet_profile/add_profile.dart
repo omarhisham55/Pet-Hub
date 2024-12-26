@@ -13,6 +13,7 @@ import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/home/domain/entities/pet.dart';
 import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
 
@@ -22,7 +23,8 @@ part 'package:pet_app/features/home/presentation/widgets/add_pet_profile/add_pet
 part 'package:pet_app/features/home/presentation/widgets/add_pet_profile/add_pet_profile_widgets/add_pet_important_dates.dart';
 
 class AddNewPetProfile extends StatelessWidget {
-  const AddNewPetProfile({super.key});
+  final Pet pet;
+  const AddNewPetProfile({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class AddNewPetProfile extends StatelessWidget {
           title: MainStrings.addProfile,
           centerTitle: true,
         ),
-        body: profile(context),
+        body: profile(context, pet),
         bottomSheet: BlocSelector<AddPetBloc, AddPetState, ResponseStatus>(
           selector: (state) => state.responseStatus ?? ResponseStatus.success,
           builder: (context, status) => status == ResponseStatus.loading
@@ -63,18 +65,17 @@ class AddNewPetProfile extends StatelessWidget {
     );
   }
 
-  Widget profile(BuildContext context, {bool? canEdit = false}) {
-    final AddPetState newPet = context.read<AddPetBloc>().state;
+  Widget profile(BuildContext context, Pet pet, {bool? canEdit = false}) {
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.only(bottom: 60),
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            AddPetOverView(state: newPet),
-            AddPetDetails(state: newPet),
-            AddPetImportantDates(state: newPet),
-            AddPetCaretakes(state: newPet),
+            AddPetOverView(pet: pet),
+            AddPetDetails(pet: pet),
+            AddPetImportantDates(pet: pet),
+            AddPetCaretakes(pet: pet),
           ],
         ),
       ),

@@ -91,7 +91,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
           errorMessage: failure.message, productsStatus: ResponseStatus.error),
       (products) {
         final selectedProduct = _getSelectedProduct(event.productId);
-        logger.f('selectedProduct: ${selectedProduct}');
         return event.isFiltering
             ? state.copyWith(
                 filteredProducts: products,
@@ -118,7 +117,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
                   );
       },
     ));
-    logger.t('${state.selectedProducts.map((p) => p.id).toList()}');
     emit(state.copyWith(addCommentStatus: ResponseStatus.initial));
   }
 
@@ -127,7 +125,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
     emit(state.copyWith(
         selectedProducts: state.selectedProducts
           ..removeWhere((p) => p.id == event.productId)));
-    logger.i('${state.selectedProducts.map((p) => p.id).toList()}');
   }
 
   Product? _getSelectedProduct(String? productId) {

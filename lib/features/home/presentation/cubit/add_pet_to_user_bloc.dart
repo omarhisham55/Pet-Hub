@@ -15,6 +15,7 @@ import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/core/shared/constants/usecase.dart';
 import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/home/domain/entities/pet.dart';
 import 'package:pet_app/features/onbording/data/models/user_model.dart';
 import 'package:pet_app/features/onbording/domain/usecases/update_user_usecase.dart';
 import 'package:pet_app/features/home/data/models/pet_model.dart';
@@ -242,7 +243,8 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
                     adoptionDate: state.adoptionDate,
                   )),
                   state.printState(),
-                  Constants.navigateTo(context, Routes.addNewPetProfile),
+                  // Constants.navigateTo(context, Routes.addNewPetProfile,
+                  //     arguments: {'pet': state.toPet()}),
                 };
           break;
         case AddPetStep.careTakers:

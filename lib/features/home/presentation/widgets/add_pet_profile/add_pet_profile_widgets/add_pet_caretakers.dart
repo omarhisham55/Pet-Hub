@@ -1,9 +1,9 @@
 part of 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
 
 class AddPetCaretakes extends StatelessWidget {
-  final AddPetState state;
+  final Pet pet;
 
-  const AddPetCaretakes({super.key, required this.state});
+  const AddPetCaretakes({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
