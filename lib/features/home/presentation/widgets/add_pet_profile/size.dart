@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/body_manager.dart';
 
 class PetSize extends StatelessWidget {

@@ -27,7 +27,7 @@ class ProductModel extends Product {
       categoryId: json['categoryId'] ?? '',
       subCategoryId: json['subCategoryId'] ?? '',
       rating: json['rating'] ?? 0,
-      image: base64Decode(json['imgUrl'] ?? ''),
+      image: json['imgUrl'] == null ? null : base64Decode(json['imgUrl']),
       commentReviews: commentReview,
     );
   }

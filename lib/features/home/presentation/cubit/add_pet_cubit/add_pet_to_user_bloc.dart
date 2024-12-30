@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' show Random;
 import 'dart:typed_data';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,7 +21,7 @@ import 'package:pet_app/features/onbording/domain/usecases/update_user_usecase.d
 import 'package:pet_app/features/home/data/models/pet_model.dart';
 import 'package:pet_app/features/home/domain/entities/pet_category.dart';
 import 'package:pet_app/features/home/domain/usecases/get_pets_categories_usecase.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/breed.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/category.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/important_dates.dart';
@@ -78,14 +79,13 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
             adoptionAge: event.adoptionAge,
           )),
         CareTakerEvent() => null,
-        AddPetToUserEvent() => await _addPetToProfile(emit),
+        AddPetToUserEvent() => await _addPetToProfile(emit, event),
       },
     );
   }
-
+  bool initCategories = false;
   List<PetCategory> petsCategories = [];
   XFile? imageFile;
-  final petNameFormKey = GlobalKey<FormState>();
   final TextEditingController petNameController = TextEditingController();
   RulerScalePickerController<int> scalePickerController =
       NumericRulerScalePickerController(lastValue: 120, firstValue: 0);
@@ -106,7 +106,6 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
         ),
         (r) {
           petsCategories = r;
-          logger.d('${r.length} ${r.map((p) => p.breeds.length).toList()}');
           return state.copyWith(responseStatus: ResponseStatus.success);
         },
       ),
@@ -123,12 +122,15 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
   Future<void> _changeStep(
       Emitter<AddPetState> emit, ChangeStepEvent event) async {
     if (event.stepNumber < 0) {
-      await showAddPetExitDialog(
+      await showExitDialog(
         context: event.context,
+        title: MainStrings.addPetExitDialogTitle,
+        content: MainStrings.addPetExitDialogContent,
         onAgreeClick: () {
           emit(state.clear());
-          Constants.pop(event.context);
-          Constants.pop(event.context);
+          Constants.removeAllAndAddNewRoute(
+              event.context, Routes.navigationManager);
+          initCategories = false;
         },
       );
       return;
@@ -209,12 +211,17 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
               : add(BreedEvent(breed: state.breed));
           break;
         case AddPetStep.name:
-          if (petNameFormKey.currentState!.validate()) {
-            add(NameAndGenderEvent(
-              name: petNameController.text,
-              gender: state.gender,
-            ));
-          }
+          petNameController.text.isEmpty
+              ? showToast(
+                  text: 'select a valid name',
+                  state: ToastStates.warning,
+                  toastLength: Toast.LENGTH_SHORT,
+                )
+              : add(NameAndGenderEvent(
+                  name: petNameController.text,
+                  gender: state.gender,
+                ));
+
           break;
         case AddPetStep.size:
           add(SizeEvent(carouselIndex: state.carouselIndex));
@@ -242,7 +249,26 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
                     adoptionDate: state.adoptionDate,
                   )),
                   state.printState(),
-                  Constants.navigateTo(context, Routes.addNewPetProfile),
+                  Constants.navigateTo(context, Routes.addNewPetProfile,
+                      arguments: {
+                        'pet': PetModel(
+                          id: generateId(),
+                          category: state.category,
+                          breed: state.breed,
+                          name: state.name,
+                          gender: state.gender
+                              ? MainStrings.male
+                              : MainStrings.female,
+                          size: MainStrings.sizeInfo.keys
+                              .toList()[state.carouselIndex],
+                          weight: state.weight,
+                          age: state.age,
+                          birthDate: state.birthDate,
+                          adoptionAge: state.adoptionAge,
+                          adoptionDate: state.adoptionDate,
+                          imgUrl: state.imgBytes,
+                        )
+                      }),
                 };
           break;
         case AddPetStep.careTakers:
@@ -252,24 +278,11 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
     });
   }
 
-  Future<void> _addPetToProfile(Emitter<AddPetState> emit) async {
+  Future<void> _addPetToProfile(
+      Emitter<AddPetState> emit, AddPetToUserEvent event) async {
     emit(state.copyWith(responseStatus: ResponseStatus.loading));
-    final user = dpi<ProfileSetupCubit>().user as UserModel;
-    final PetModel pet = PetModel(
-      id: generateId(),
-      category: state.category,
-      breed: state.breed,
-      name: state.name,
-      gender: state.gender ? MainStrings.male : MainStrings.female,
-      size: MainStrings.sizeInfo.keys.toList()[state.carouselIndex],
-      weight: state.weight,
-      age: state.age,
-      birthDate: state.birthDate,
-      adoptionAge: state.adoptionAge,
-      adoptionDate: state.adoptionDate,
-      imgUrl: state.imgBytes,
-    );
-    final List<PetModel> pets = List.from(user.ownedPets)..add(pet);
+    final user = dpi<PetProfileCubit>().user as UserModel;
+    final List<PetModel> pets = List.from(user.ownedPets)..add(event.pet);
     final editedUser = UserModel(
       id: user.id,
       email: user.email,
@@ -277,15 +290,18 @@ class AddPetBloc extends Bloc<AddPetEvents, AddPetState> {
       ownedPets: pets,
     );
     final response = await updateUserUsecase(editedUser);
-    response.fold(
-      (l) => emit(state.copyWith(
-          responseStatus: ResponseStatus.error, messageError: l.message)),
+    emit(response.fold(
+      (l) => state.copyWith(
+        responseStatus: ResponseStatus.error,
+        messageError: l.message,
+      ),
       (r) {
         petNameController.clear();
         emit(state.clear());
-        emit(state.copyWith(responseStatus: ResponseStatus.success));
+        dpi<PetProfileCubit>().getUser();
+        return state.copyWith(responseStatus: ResponseStatus.success);
       },
-    );
+    ));
   }
 
   @override

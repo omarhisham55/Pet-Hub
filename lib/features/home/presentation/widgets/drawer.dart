@@ -8,11 +8,11 @@ import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/home/domain/entities/pet.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class AdvancedPetDrawer extends StatelessWidget {
   final Scaffold scaffold;
-  final ProfileSetupCubit controller;
+  final AdvancedDrawerController controller;
   const AdvancedPetDrawer({
     super.key,
     required this.scaffold,
@@ -22,7 +22,7 @@ class AdvancedPetDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
-      controller: controller.drawerScaffoldKey,
+      controller: controller,
       backdrop: Container(
         width: double.infinity,
         height: double.infinity,
@@ -61,9 +61,9 @@ class ProfileDrawer extends StatelessWidget {
                       color: SharedModeColors.white,
                     ),
               ),
-              BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+              BlocBuilder<PetProfileCubit, PetProfileState>(
                 builder: (context, state) {
-                  final cubit = context.read<ProfileSetupCubit>();
+                  final cubit = context.read<PetProfileCubit>();
                   final int petsLength = cubit.user?.ownedPets.length ?? 0;
                   return SizedBox(
                     height: 100,
@@ -84,12 +84,14 @@ class ProfileDrawer extends StatelessWidget {
                                     Routes.addPetProfile,
                                   )
                                 : {
-                                    ProfileSetupCubit.get(context)
+                                    PetProfileCubit.get(context)
                                         .changePetProfileView(0),
                                     Constants.navigateTo(
                                       context,
                                       Routes.viewPetProfile,
-                                      arguments: cubit.user?.ownedPets[index],
+                                      arguments: {
+                                        'pet': cubit.user?.ownedPets[index]
+                                      },
                                     ),
                                   };
                           },
@@ -112,23 +114,7 @@ class ProfileDrawer extends StatelessWidget {
                         text: title.key,
                         icon: title.value,
                         onTap: () {
-                          final String? route = () {
-                            if (title.key ==
-                                MainStrings.drawerTitles.keys.toList()[0])
-                              return null;
-                            else if (title.key ==
-                                MainStrings.drawerTitles.keys.toList()[1])
-                              return Routes.contacts;
-                            else if (title.key ==
-                                MainStrings.drawerTitles.keys.toList()[2])
-                              return Routes.calendar;
-                            else if (title.key ==
-                                MainStrings.drawerTitles.keys.toList()[3])
-                              return null;
-                            else if (title.key ==
-                                MainStrings.drawerTitles.keys.toList()[4])
-                              return Routes.settings;
-                          }();
+                          final route = _drawerActions(title);
                           if (route != null) {
                             Constants.navigateTo(context, route);
                           }
@@ -143,6 +129,20 @@ class ProfileDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? _drawerActions(MapEntry<String, IconData> title) {
+    if (title.key == MainStrings.drawerTitles.keys.toList()[0])
+      return null;
+    else if (title.key == MainStrings.drawerTitles.keys.toList()[1])
+      return Routes.contacts;
+    else if (title.key == MainStrings.drawerTitles.keys.toList()[2])
+      return Routes.calendar;
+    else if (title.key == MainStrings.drawerTitles.keys.toList()[3])
+      return null;
+    else if (title.key == MainStrings.drawerTitles.keys.toList()[4])
+      return Routes.settings;
+    return null;
   }
 
   Widget _petItem({

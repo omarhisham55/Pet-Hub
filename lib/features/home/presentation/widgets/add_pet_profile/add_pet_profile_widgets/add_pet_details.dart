@@ -1,9 +1,9 @@
 part of 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
 
 class AddPetDetails extends StatelessWidget {
-  final AddPetState state;
+  final Pet pet;
 
-  const AddPetDetails({super.key, required this.state});
+  const AddPetDetails({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +21,12 @@ class AddPetDetails extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           CustomDetailedRow(
-            value: MapEntry(
-              MainStrings.gender,
-              state.gender ? MainStrings.male : MainStrings.female,
-            ),
+            value: MapEntry(MainStrings.gender, pet.gender),
           ),
           const Divider(),
-          CustomDetailedRow(
-              value: MapEntry(MainStrings.size,
-                  MainStrings.sizeInfo.keys.toList()[state.carouselIndex])),
+          CustomDetailedRow(value: MapEntry(MainStrings.size, pet.size)),
           const Divider(),
-          CustomDetailedRow(value: MapEntry(MainStrings.weight, state.weight)),
+          CustomDetailedRow(value: MapEntry(MainStrings.weight, pet.weight)),
         ],
       ),
     );

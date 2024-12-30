@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,38 +11,25 @@ import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
-import 'package:pet_app/features/appointments/presentation/pages/pet_appointment_page.dart';
-import 'package:pet_app/features/health/presentation/pages/pet_health_page.dart';
+import 'package:pet_app/features/onbording/data/models/user_model.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
-import 'package:pet_app/features/home/presentation/pages/empty_profile.dart';
-import 'package:pet_app/features/home/presentation/pages/home_page_profile.dart';
-import 'package:pet_app/features/store/presentation/cubit/pet_store_cubit.dart';
-import 'package:pet_app/features/store/presentation/pages/pet_store_page.dart';
+import 'package:pet_app/features/onbording/domain/usecases/update_user_usecase.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-part 'profile_setup_state.dart';
+part 'pet_profile_state.dart';
 
-class ProfileSetupCubit extends Cubit<ProfileSetupState> {
-  ProfileSetupCubit() : super(ProfileSetupInitial());
+class PetProfileCubit extends Cubit<PetProfileState> {
+  final UpdateUserUsecase updateUserUsecase;
+  PetProfileCubit(
+    this.updateUserUsecase,
+  ) : super(ProfileSetupInitial());
 
-  static ProfileSetupCubit get(context) => BlocProvider.of(context);
+  static PetProfileCubit get(context) => BlocProvider.of(context);
 
   User? user;
 
   late final PageController petProfilesCarouselController =
       PageController(initialPage: user?.ownedPets.length ?? 1 - 1);
-
-  final AdvancedDrawerController drawerScaffoldKey = AdvancedDrawerController();
-  int currentBottomSheetIndex = 0;
-
-  late final List<Widget> pages = [
-    user!.ownedPets.isNotEmpty
-        ? const HomePageProfile()
-        : const EmptyProfileStartUp(),
-    PetHealthPage(),
-    PetAppointmentPage(),
-    PetStorePage(),
-  ];
 
   void getUser() async {
     emit(SavedUserFound(user: user, responseStatus: ResponseStatus.loading));
@@ -55,26 +41,33 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
       ),
     );
     if (user != null) {
-      emit(SavedUserFound(user: user!, responseStatus: ResponseStatus.success));
+      emit(SavedUserFound(user: user, responseStatus: ResponseStatus.success));
+      log('user from local: ${user?.name.toString()}');
     } else {
       emit(SavedUserFound(
-        user: user!,
+        user: user,
         responseStatus: ResponseStatus.error,
         errorMessage: 'No user found',
       ));
     }
   }
 
-  void changeBottomSheet(int index) {
-    switch (index) {
-      case 3:
-        if (currentBottomSheetIndex == index) {
-          dpi<PetStoreCubit>().add(GetProductCategoriesEvent());
-        }
-        break;
-    }
-    currentBottomSheetIndex = index;
-    emit(ChangeBottomCurrentIndexState(index));
+  Future<void> deletePetFromUser(String petId) async {
+    if (user == null) return;
+    final editedUser = UserModel(
+      id: user!.id,
+      email: user!.email,
+      name: user!.name,
+      ownedPets: user!.ownedPets..removeWhere((pet) => pet.id == petId),
+    );
+    final response = await updateUserUsecase(editedUser);
+    emit(response.fold(
+      (l) => DeletePetErrorState(l.message),
+      (r) {
+        dpi<PetProfileCubit>().getUser();
+        return DeletePetSuccessState();
+      },
+    ));
   }
 
   //* Contacts
@@ -117,7 +110,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
   void insuranceNextStep(BuildContext context) {
     if (insuranceCurrentStep + 1 == insuranceMaxSteps) {
       insuranceCurrentStep = 0;
-      Constants.replaceWithAndRemoveUntil(context, Routes.viewPetProfile);
+      Constants.removeAllAndAddNewRoute(context, Routes.viewPetProfile);
       changePanel();
     } else {
       insuranceCurrentStep++;

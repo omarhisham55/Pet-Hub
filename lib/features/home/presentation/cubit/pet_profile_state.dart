@@ -1,15 +1,15 @@
-part of 'profile_setup_cubit.dart';
+part of 'pet_profile_cubit.dart';
 
-abstract class ProfileSetupState extends Equatable {
-  const ProfileSetupState();
+abstract class PetProfileState extends Equatable {
+  const PetProfileState();
 
   @override
   List<Object?> get props => [];
 }
 
-class ProfileSetupInitial extends ProfileSetupState {}
+class ProfileSetupInitial extends PetProfileState {}
 
-class SavedUserFound extends ProfileSetupState {
+class SavedUserFound extends PetProfileState {
   final User? user;
   final String errorMessage;
   final ResponseStatus responseStatus;
@@ -19,18 +19,19 @@ class SavedUserFound extends ProfileSetupState {
     required this.responseStatus,
     this.errorMessage = '',
   });
+
   @override
   List<Object?> get props => [user];
 }
 
-class ChangeBottomCurrentIndexState extends ProfileSetupState {
-  final int index;
-  const ChangeBottomCurrentIndexState(this.index);
-  @override
-  List<Object> get props => [index];
+class DeletePetErrorState extends PetProfileState {
+  final String message;
+  const DeletePetErrorState(this.message);
 }
 
-class StepsState extends ProfileSetupState {
+class DeletePetSuccessState extends PetProfileState {}
+
+class StepsState extends PetProfileState {
   final int step;
 
   const StepsState({required this.step});
@@ -38,7 +39,7 @@ class StepsState extends ProfileSetupState {
   List<Object> get props => [step];
 }
 
-class ChangeFocusState extends ProfileSetupState {
+class ChangeFocusState extends PetProfileState {
   final int unit;
 
   const ChangeFocusState({required this.unit});
@@ -46,7 +47,7 @@ class ChangeFocusState extends ProfileSetupState {
   List<Object?> get props => [unit];
 }
 
-class ChangeDate extends ProfileSetupState {
+class ChangeDate extends PetProfileState {
   final String date;
 
   const ChangeDate({required this.date});
@@ -54,7 +55,7 @@ class ChangeDate extends ProfileSetupState {
   List<Object> get props => [date];
 }
 
-class ChangeViewState extends ProfileSetupState {
+class ChangeViewState extends PetProfileState {
   final int page;
 
   const ChangeViewState({required this.page});
@@ -62,7 +63,7 @@ class ChangeViewState extends ProfileSetupState {
   List<Object> get props => [page];
 }
 
-class ChangeColor extends ProfileSetupState {
+class ChangeColor extends PetProfileState {
   final bool state;
 
   const ChangeColor({required this.state});
@@ -70,7 +71,7 @@ class ChangeColor extends ProfileSetupState {
   List<Object> get props => [state];
 }
 
-class ToggleState extends ProfileSetupState {
+class ToggleState extends PetProfileState {
   final bool state;
   final int index;
 
@@ -79,7 +80,7 @@ class ToggleState extends ProfileSetupState {
   List<Object> get props => [state, index];
 }
 
-class SetMarkersState extends ProfileSetupState {
+class SetMarkersState extends PetProfileState {
   final dynamic position;
 
   const SetMarkersState({required this.position});

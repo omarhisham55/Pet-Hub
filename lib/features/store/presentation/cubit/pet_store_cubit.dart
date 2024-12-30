@@ -4,7 +4,7 @@ import 'package:pet_app/config/services/di/dpi.dart';
 // import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/features/onbording/data/models/user_model.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/store/data/models/comment_review_model.dart';
 import 'package:pet_app/features/store/domain/entities/product.dart';
 import 'package:pet_app/features/store/domain/entities/product_category.dart';
@@ -91,7 +91,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
           errorMessage: failure.message, productsStatus: ResponseStatus.error),
       (products) {
         final selectedProduct = _getSelectedProduct(event.productId);
-        logger.f('selectedProduct: ${selectedProduct}');
         return event.isFiltering
             ? state.copyWith(
                 filteredProducts: products,
@@ -118,7 +117,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
                   );
       },
     ));
-    logger.t('${state.selectedProducts.map((p) => p.id).toList()}');
     emit(state.copyWith(addCommentStatus: ResponseStatus.initial));
   }
 
@@ -127,7 +125,6 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
     emit(state.copyWith(
         selectedProducts: state.selectedProducts
           ..removeWhere((p) => p.id == event.productId)));
-    logger.i('${state.selectedProducts.map((p) => p.id).toList()}');
   }
 
   Product? _getSelectedProduct(String? productId) {
@@ -150,7 +147,7 @@ class PetStoreCubit extends Bloc<PetStoreEvents, PetStoreState> {
       CommentReviewModel(
         id: '',
         comment: commentController.text,
-        user: dpi<ProfileSetupCubit>().user as UserModel,
+        user: dpi<PetProfileCubit>().user as UserModel,
         rating: commentRating,
       )
     ]);

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/features/onbording/data/models/user_model.dart';
 import 'package:pet_app/features/onbording/domain/entities/user.dart';
@@ -13,9 +12,9 @@ class UserFirestore {
         .collection(Constants.firestoreUserCollection)
         .doc(id)
         .get();
-    logger.f('current user: ${response.data()}');
     if (response.data() != null) {
-      return UserModel.fromJson(response.data()!);
+      final user = UserModel.fromJson(response.data()!);
+      return user;
     }
     return null;
   }

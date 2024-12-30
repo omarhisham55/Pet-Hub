@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/home/presentation/widgets/bottom_sheets/vaccine_bottomsheet.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -11,7 +11,7 @@ class Vaccines extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
-      controller: ProfileSetupCubit.get(context).panelVaccineController,
+      controller: PetProfileCubit.get(context).panelVaccineController,
       minHeight: 0,
       color: Theme.of(context).bottomSheetTheme.backgroundColor ??
           SharedModeColors.grey500,
@@ -102,7 +102,7 @@ class Vaccines extends StatelessWidget {
 
   Widget _vaccineitem(BuildContext context) {
     return ModedContainer(
-      onTap: () => ProfileSetupCubit.get(context).panelVaccineController.open(),
+      onTap: () => PetProfileCubit.get(context).panelVaccineController.open(),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

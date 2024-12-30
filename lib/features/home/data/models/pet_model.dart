@@ -34,7 +34,7 @@ class PetModel extends Pet {
       birthDate: json['birthDate'],
       adoptionAge: json['adoptionAge'],
       adoptionDate: json['adoptionDate'],
-      imgUrl: base64Decode(json['imgUrl']??''),
+      imgUrl: json['imgUrl'] == null ? null : base64Decode(json['imgUrl']),
     );
   }
 

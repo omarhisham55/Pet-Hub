@@ -4,7 +4,7 @@ import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/body_manager.dart';
 
 class AddPetProfile extends StatelessWidget {
@@ -15,6 +15,12 @@ class AddPetProfile extends StatelessWidget {
     return BlocBuilder<AddPetBloc, AddPetState>(
       builder: (context, state) {
         final AddPetBloc cubit = context.read<AddPetBloc>();
+        Future.microtask(() {
+          if (!cubit.initCategories) {
+            cubit.add(GetCategoriesEvent());
+            cubit.initCategories = true;
+          }
+        });
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: TwoTitleAppbar(

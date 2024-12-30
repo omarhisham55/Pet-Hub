@@ -1,9 +1,9 @@
 part of 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
 
 class AddPetOverView extends StatelessWidget {
-  final AddPetState state;
+  final Pet pet;
   final bool canEdit;
-  const AddPetOverView({super.key, required this.state, this.canEdit = false});
+  const AddPetOverView({super.key, required this.pet, this.canEdit = false});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class AddPetOverView extends StatelessWidget {
         Expanded(
           child: ClipOval(
             child: ImageHandler(
-              imageBytes: state.imgBytes,
+              imageBytes: pet.imgUrl,
               errorImage: ProfileImages.noProfileSetup,
             ),
           ),
@@ -27,7 +27,7 @@ class AddPetOverView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    state.name,
+                    pet.name,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Visibility(
@@ -46,8 +46,8 @@ class AddPetOverView extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text('${state.category} | '),
-                  Text(state.breed),
+                  Text('${pet.category} | '),
+                  Text(pet.breed),
                 ],
               ),
             ],

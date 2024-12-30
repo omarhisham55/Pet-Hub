@@ -5,12 +5,12 @@ import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
 import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
 import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
 import 'package:pet_app/features/home/presentation/pages/navigation_manager.dart';
 import 'package:pet_app/features/onbording/presentation/cubit/on_bording_cubit.dart';
 import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.dart';
-import 'package:pet_app/features/home/domain/entities/pet.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/home/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
 import 'package:pet_app/features/home/presentation/pages/drawer_pages/calendar.dart';
 import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/book_a_date.dart';
@@ -69,9 +69,9 @@ class Routes {
       ShellRoute(
         builder: (context, state, child) => MultiBlocProvider(
           providers: [
+            BlocProvider(create: (context) => dpi<NavigationCubit>()),
             BlocProvider(
-              create: (context) => dpi<ProfileSetupCubit>()..getUser(),
-            ),
+                create: (context) => dpi<PetProfileCubit>()..getUser()),
             BlocProvider(create: (context) => dpi<HealthCubit>()),
             BlocProvider(create: (context) => dpi<AppointmentsCubit>()),
             BlocProvider(
@@ -87,24 +87,39 @@ class Routes {
             builder: (context, state) => const NavigationManager(),
           ),
           GoRoute(
+            path: viewPetProfile,
+            builder: (context, state) {
+              final args = state.extra as Map<String, dynamic>;
+              return ViewPetProfile(pet: args['pet']);
+            },
+          ),
+          GoRoute(
             path: productDetailsPage,
             builder: (context, state) {
               final args = state.extra as Map<String, dynamic>;
               return ProductDetailsPage(productId: args['productId']);
             },
           ),
+          ShellRoute(
+            builder: (context, state, child) => BlocProvider.value(
+              value: dpi<AddPetBloc>(),
+              child: child,
+            ),
+            routes: [
+              GoRoute(
+                path: addPetProfile,
+                builder: (context, state) => const AddPetProfile(),
+              ),
+              GoRoute(
+                path: addNewPetProfile,
+                builder: (context, state) {
+                  final args = state.extra as Map<String, dynamic>;
+                  return AddNewPetProfile(pet: args['pet']);
+                },
+              ),
+            ],
+          ),
         ],
-      ),
-      GoRoute(
-        path: addPetProfile,
-        builder: (context, state) => BlocProvider(
-          create: (context) => dpi<AddPetBloc>(),
-          child: const AddPetProfile(),
-        ),
-      ),
-      GoRoute(
-        path: addNewPetProfile,
-        builder: (context, state) => const AddNewPetProfile(),
       ),
       GoRoute(
         path: shareProfile,
@@ -113,10 +128,6 @@ class Routes {
       GoRoute(
         path: qrCodeScan,
         builder: (context, state) => const QRCodeScan(),
-      ),
-      GoRoute(
-        path: viewPetProfile,
-        builder: (context, state) => ViewPetProfile(pet: state.extra as Pet),
       ),
       GoRoute(
         path: petProfileHealthDetails,

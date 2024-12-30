@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/utils/strings.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ProfileSetupCubit cubit = context.read<ProfileSetupCubit>();
+    final NavigationCubit cubit = context.read<NavigationCubit>();
     final List<BottomNavigationBarItem> items =
         MainStrings.bottomNavbarItems.entries
             .map((item) => BottomNavigationBarItem(
@@ -17,12 +17,11 @@ class BottomNavBar extends StatelessWidget {
                 ))
             .toList();
 
-    return BlocSelector<ProfileSetupCubit, ProfileSetupState, int>(
-      selector: (state) => cubit.currentBottomSheetIndex,
-      builder: (context, index) {
+    return BlocBuilder<NavigationCubit, NavigationCubitState>(
+      builder: (context, state) {
         return BottomNavigationBar(
-          currentIndex: index,
-          onTap: cubit.changeBottomSheet,
+          currentIndex: state.index,
+          onTap: cubit.changeNavbarIndex,
           items: items,
         );
       },

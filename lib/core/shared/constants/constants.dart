@@ -28,8 +28,12 @@ class Constants {
   static void replaceWith(BuildContext context, String route) =>
       GoRouter.of(context).pushReplacement(route);
 
-  static void replaceWithAndRemoveUntil(BuildContext context, String route) =>
-      GoRouter.of(context).replace(route);
+  static void removeAllAndAddNewRoute(
+    BuildContext context,
+    String route, {
+    dynamic arguments,
+  }) =>
+      GoRouter.of(context).go(route, extra: arguments);
 
   static void pop(BuildContext context) => GoRouter.of(context).pop();
 }

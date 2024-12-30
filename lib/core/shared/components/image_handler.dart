@@ -28,7 +28,7 @@ class ImageHandler extends StatelessWidget {
     return Container(
       color: color,
       child: () {
-        if (imageBytes != null) {
+        if (imageBytes != null && imageBytes!.isNotEmpty) {
           return Image.memory(
             imageBytes!,
             fit: fit,
