@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/components/image_handler.dart';
@@ -8,7 +9,9 @@ import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/features/home/domain/entities/pet.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
+import 'package:pet_app/features/home/presentation/pages/empty_profile.dart';
+import 'package:pet_app/features/onbording/domain/entities/user.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
@@ -17,71 +20,83 @@ class HomePageProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _petCarousel(context),
-          _gridView(context),
-        ],
-      ),
+    return BlocBuilder<PetProfileCubit, PetProfileState>(
+      builder: (context, state) {
+        final cubit = context.read<PetProfileCubit>();
+        final int petsLength = cubit.user?.ownedPets.length ?? 0;
+        if (cubit.user == null) return Lottie.asset(LoadingLotties.paws);
+        return petsLength != 0
+            ? Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _petCarousel(context, cubit),
+                    _gridView(context),
+                  ],
+                ),
+              )
+            : const EmptyProfileStartUp();
+      },
     );
   }
 
-  Widget _petCarousel(BuildContext context) {
-    final cubit = context.read<ProfileSetupCubit>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          MainStrings.drawerYourPets,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        if (cubit.user?.ownedPets.length != null)
-          Row(
-            children: [
-              SmoothPageIndicator(
-                axisDirection: Axis.vertical,
-                controller: cubit.petProfilesCarouselController,
-                count: cubit.user?.ownedPets.length ?? 0,
-                effect: const ExpandingDotsEffect(
-                  expansionFactor: 3,
-                  dotHeight: 10,
-                  dotWidth: 10,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: SizedBox(
-                  height: 170,
-                  child: StackedCardCarousel(
-                    pageController: cubit.petProfilesCarouselController,
-                    type: StackedCardCarouselType.cardsStack,
-                    initialOffset: cubit
-                        .petProfilesCarouselController.initialPage
-                        .toDouble(),
-                    items: cubit.user?.ownedPets.map((pet) {
+  Widget _petCarousel(BuildContext context, PetProfileCubit cubit) {
+    return BlocSelector<PetProfileCubit, PetProfileState, User?>(
+      selector: (state) => cubit.user,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              MainStrings.drawerYourPets,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            if (state != null)
+              Row(
+                children: [
+                  SmoothPageIndicator(
+                    axisDirection: Axis.vertical,
+                    controller: cubit.petProfilesCarouselController,
+                    count: state.ownedPets.length,
+                    effect: const ExpandingDotsEffect(
+                      expansionFactor: 3,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SizedBox(
+                      height: 170,
+                      child: StackedCardCarousel(
+                        pageController: cubit.petProfilesCarouselController,
+                        type: StackedCardCarouselType.cardsStack,
+                        initialOffset: cubit
+                            .petProfilesCarouselController.initialPage
+                            .toDouble(),
+                        items: state.ownedPets.map((pet) {
                           return _carouselPetItem(
                             context: context,
                             pet: pet,
                             cubit: cubit,
                           );
-                        }).toList() ??
-                        [],
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 
   Widget _carouselPetItem({
     required BuildContext context,
     required Pet pet,
-    required ProfileSetupCubit cubit,
+    required PetProfileCubit cubit,
   }) {
     return GestureDetector(
       onTap: () {
@@ -187,7 +202,7 @@ class HomePageProfile extends StatelessWidget {
             ),
           ],
           () {
-            ProfileSetupCubit.get(context).changePetProfileView(2);
+            PetProfileCubit.get(context).changePetProfileView(2);
             Constants.navigateTo(context, Routes.viewPetProfile);
           },
         ),
@@ -201,7 +216,7 @@ class HomePageProfile extends StatelessWidget {
             ),
           ],
           () {
-            ProfileSetupCubit.get(context).changePetProfileView(1);
+            PetProfileCubit.get(context).changePetProfileView(1);
             Constants.navigateTo(context, Routes.viewPetProfile);
           },
         ),
@@ -215,7 +230,7 @@ class HomePageProfile extends StatelessWidget {
             ),
           ],
           () {
-            ProfileSetupCubit.get(context).changePetProfileView(3);
+            PetProfileCubit.get(context).changePetProfileView(3);
             Constants.navigateTo(context, Routes.viewPetProfile);
           },
         ),

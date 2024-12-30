@@ -3,7 +3,7 @@ import 'package:pet_app/core/utils/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/shared/components/image_handler.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/wave_image_background_animation.dart';
 
 addPetProfileBodyContent(AddPetBloc manager) {
@@ -14,19 +14,19 @@ class SetProfileBodyMainContent extends StatelessWidget {
   final String title;
   final Widget child;
   final String subTitle;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   const SetProfileBodyMainContent({
     super.key,
     required this.title,
     required this.child,
     this.subTitle = "",
-    this.padding = EdgeInsets.zero,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: padding ?? const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,37 +34,38 @@ class SetProfileBodyMainContent extends StatelessWidget {
           BlocBuilder<AddPetBloc, AddPetState>(
             builder: (context, state) {
               final manager = context.read<AddPetBloc>();
-              return Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                child: state.imgBytes == null
-                    ? Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          CircularAudioWave(
-                            width: 200,
-                            child: ClipOval(
-                              child: Image.asset(
-                                ProfileImages.noProfileSetup,
-                              ),
+              return state.imgBytes == null
+                  ? Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        CircularAudioWave(
+                          width: 200,
+                          child: ClipOval(
+                            child: Image.asset(
+                              ProfileImages.noProfileSetup,
                             ),
                           ),
-                          if (manager.state.progress == AddPetStep.name)
-                            GestureDetector(
-                              onTap: () => manager.add(ImageEvent()),
-                              child: Container(
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  color: SharedModeColors.white,
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                child: const Icon(
-                                    Icons.add_photo_alternate_outlined),
+                        ),
+                        if (manager.state.progress == AddPetStep.name)
+                          GestureDetector(
+                            onTap: () => manager.add(ImageEvent()),
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: SharedModeColors.white,
+                                borderRadius: BorderRadius.circular(24),
                               ),
+                              child: const Icon(
+                                  Icons.add_photo_alternate_outlined),
                             ),
-                        ],
-                      )
-                    : ClipOval(child: ImageHandler(imageBytes: state.imgBytes)),
-              );
+                          ),
+                      ],
+                    )
+                  : ClipOval(
+                      child: ImageHandler(
+                      imageBytes: state.imgBytes,
+                      height: 200,
+                    ));
             },
           ),
           Text(

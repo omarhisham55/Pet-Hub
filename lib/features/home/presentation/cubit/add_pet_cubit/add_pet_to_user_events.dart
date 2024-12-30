@@ -68,8 +68,10 @@ final class ImportantDatesEvent extends AddPetEvents {
 
 final class CareTakerEvent extends AddPetEvents {
   final String? careTaker;
-
   CareTakerEvent({required this.careTaker});
 }
 
-final class AddPetToUserEvent extends AddPetEvents {}
+final class AddPetToUserEvent extends AddPetEvents {
+  final PetModel pet;
+  AddPetToUserEvent({required this.pet});
+}

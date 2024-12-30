@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pet_app/config/services/di/dpi.dart';
+import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
@@ -13,9 +13,10 @@ import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/home/data/models/pet_model.dart';
 import 'package:pet_app/features/home/domain/entities/pet.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
 
 part 'package:pet_app/features/home/presentation/widgets/add_pet_profile/add_pet_profile_widgets/add_pet_caretakers.dart';
 part 'package:pet_app/features/home/presentation/widgets/add_pet_profile/add_pet_profile_widgets/add_pet_details.dart';
@@ -34,11 +35,9 @@ class AddNewPetProfile extends StatelessWidget {
           showToast(text: state.messageError ?? '', state: ToastStates.error);
         }
         if (state.responseStatus == ResponseStatus.success) {
-          Constants.pop(context);
-          Constants.pop(context);
-          dpi<ProfileSetupCubit>().getUser();
+          Constants.removeAllAndAddNewRoute(context, Routes.navigationManager);
           showToast(text: MainStrings.petAdded, state: ToastStates.success);
-          dpi<ProfileSetupCubit>().drawerScaffoldKey.hideDrawer();
+          context.read<NavigationCubit>().drawerScaffoldKey.hideDrawer();
         }
       },
       child: Scaffold(
@@ -46,39 +45,41 @@ class AddNewPetProfile extends StatelessWidget {
           title: MainStrings.addProfile,
           centerTitle: true,
         ),
-        body: profile(context, pet),
-        bottomSheet: BlocSelector<AddPetBloc, AddPetState, ResponseStatus>(
-          selector: (state) => state.responseStatus ?? ResponseStatus.success,
-          builder: (context, status) => status == ResponseStatus.loading
-              ? Lottie.asset(LoadingLotties.paws,
-                  height: 100, width: double.infinity)
-              : GlobalButton(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.all(20),
-                  text: MainStrings.addToAccount,
-                  onPressed: () {
-                    context.read<AddPetBloc>().add(AddPetToUserEvent());
-                  },
-                ),
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            profile(context, pet),
+            BlocSelector<AddPetBloc, AddPetState, ResponseStatus>(
+              selector: (state) =>
+                  state.responseStatus ?? ResponseStatus.success,
+              builder: (context, status) => status == ResponseStatus.loading
+                  ? Lottie.asset(LoadingLotties.paws,
+                      height: 100, width: double.infinity)
+                  : GlobalButton(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
+                      text: MainStrings.addToAccount,
+                      onPressed: () {
+                        context
+                            .read<AddPetBloc>()
+                            .add(AddPetToUserEvent(pet: pet as PetModel));
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget profile(BuildContext context, Pet pet, {bool? canEdit = false}) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 60),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            AddPetOverView(pet: pet),
-            AddPetDetails(pet: pet),
-            AddPetImportantDates(pet: pet),
-            AddPetCaretakes(pet: pet),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        AddPetOverView(pet: pet),
+        AddPetDetails(pet: pet),
+        AddPetImportantDates(pet: pet),
+        AddPetCaretakes(pet: pet),
+      ],
     );
   }
 }

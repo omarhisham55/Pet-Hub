@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/colors.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 List insuranceBottomSheets(int index) {
   return switch (index) {
@@ -28,9 +28,9 @@ class InsurancePackages extends StatelessWidget {
   }
 
   Widget packageItem(BuildContext context, int index) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+    return BlocBuilder<PetProfileCubit, PetProfileState>(
       builder: (context, state) {
-        ProfileSetupCubit manager = ProfileSetupCubit.get(context);
+        PetProfileCubit manager = PetProfileCubit.get(context);
         return ModedContainer(
           onTap: () => manager.changeInsurancePackage(index),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),

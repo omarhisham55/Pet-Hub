@@ -4,7 +4,7 @@ import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart
 import 'package:pet_app/core/shared/components/buttons/global_outlined_button.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/home/presentation/widgets/bottom_sheets/insurance_bottomsheets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -13,9 +13,9 @@ class Insurance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+    return BlocBuilder<PetProfileCubit, PetProfileState>(
       builder: (context, state) {
-        ProfileSetupCubit manager = ProfileSetupCubit.get(context);
+        PetProfileCubit manager = PetProfileCubit.get(context);
         return SlidingUpPanel(
           controller: manager.panelInsuranceController,
           backdropColor: SharedModeColors.black,
@@ -61,7 +61,7 @@ class Insurance extends StatelessWidget {
     );
   }
 
-  Widget _insuranceButton(BuildContext context, ProfileSetupCubit manager) {
+  Widget _insuranceButton(BuildContext context, PetProfileCubit manager) {
     return Container(
       margin: const EdgeInsets.all(20),
       child: OutlinedGlobalButton(
@@ -78,8 +78,8 @@ class Insurance extends StatelessWidget {
     );
   }
 
-  Widget _header(BuildContext context, ProfileSetupCubit manager) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+  Widget _header(BuildContext context, PetProfileCubit manager) {
+    return BlocBuilder<PetProfileCubit, PetProfileState>(
       builder: (context, state) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -152,9 +152,9 @@ class Insurance extends StatelessWidget {
                       child: LinearProgressIndicator(
                         borderRadius: BorderRadius.circular(24),
                         minHeight: 8,
-                        value: ProfileSetupCubit.get(context)
+                        value: PetProfileCubit.get(context)
                                 .insuranceCurrentStep /
-                            ProfileSetupCubit.get(context).insuranceMaxSteps,
+                            PetProfileCubit.get(context).insuranceMaxSteps,
                         color: SharedModeColors.yellow500,
                       ),
                     ),
@@ -168,7 +168,7 @@ class Insurance extends StatelessWidget {
     );
   }
 
-  Widget _insurancePanel(BuildContext context, ProfileSetupCubit manager) {
+  Widget _insurancePanel(BuildContext context, PetProfileCubit manager) {
     return manager.isInsurancePanelOpen
         ? SingleChildScrollView(
             child: Padding(

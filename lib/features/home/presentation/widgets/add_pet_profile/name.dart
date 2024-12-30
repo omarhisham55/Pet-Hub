@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/shared/components/text_fields/global_text_field.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/strings.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/widgets/add_pet_profile/body_manager.dart';
 
 class PetNameGenderAndImage extends StatelessWidget {
@@ -24,15 +24,13 @@ class PetNameGenderAndImage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Form(
-                key: cubit.petNameFormKey,
-                child: GlobalTextField(
-                  hintText: MainStrings.addPetNameHint,
-                  validator: (value) =>
-                      value!.isEmpty ? ErrorStrings.addPetEmptyNameError : null,
-                  controller: cubit.petNameController,
-                ),
+              GlobalTextField(
+                hintText: MainStrings.addPetNameHint,
+                validator: (value) =>
+                    value!.isEmpty ? ErrorStrings.addPetEmptyNameError : null,
+                controller: cubit.petNameController,
               ),
+              
               const SizedBox(height: 40),
               BlocSelector<AddPetBloc, AddPetState, bool>(
                 selector: (state) => state.gender,

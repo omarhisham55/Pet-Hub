@@ -5,7 +5,7 @@ import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class ShareProfile extends StatelessWidget {
   const ShareProfile({super.key});
@@ -65,7 +65,7 @@ class ShareProfile extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount:
-                    context.read<ProfileSetupCubit>().user?.ownedPets.length,
+                    context.read<PetProfileCubit>().user?.ownedPets.length,
                 itemBuilder: (context, index) => _petProfile(context),
               ),
               const Text(

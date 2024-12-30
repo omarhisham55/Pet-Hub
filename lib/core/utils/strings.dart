@@ -4,7 +4,10 @@ class MainStrings {
   static const String title = 'Paw Buddy';
   static const String undefinedRoute = 'undefined route';
   static const String retry = 'Retry';
+  static const String manage = 'Manage';
   static const String edit = 'Edit';
+  static const String delete = 'Delete';
+  static const String share = 'Share';
   static const String submit = 'Submit';
   static const String continueString = 'Continue';
   static const String kg = 'Kg';
@@ -85,6 +88,14 @@ class MainStrings {
   static const String userEmptyPets =
       'Uh Oh!\nLooks like you have no profiles set up at this moment, add your pet now';
   static const String activePetProfile = 'Active pet profile';
+  static const String swipeToAddPet = 'Swipe to add a your first pet';
+  static const String petDeleted = 'Pet deleted';
+  static const List<String> viewProfileBodyTitles = [
+    'About',
+    'Health',
+    'Nutrition',
+    'Activities',
+  ];
 
   //? store strings
   static const String noCategories =
@@ -105,7 +116,7 @@ class MainStrings {
   //? drawer strings
   static const String drawerYourPets = 'Your Pets';
   static const String drawerAddNew = 'add new';
-  static const Map<String, IconData> drawerTitles = {
+  static const Map<String, IconData> drawerTitles = const {
     'Dashboard': Icons.dashboard_customize_outlined,
     'Contacts': Icons.contacts_outlined,
     'Calendar': Icons.calendar_today_outlined,
@@ -118,6 +129,8 @@ class MainStrings {
   static const String yes = 'Yes';
   static const String addPetExitDialogTitle = 'Are you sure you want to exit?';
   static const String addPetExitDialogContent = 'All data will be lost!';
+  static const String deletePetExitDialogTitle =
+      'Are you sure you want to delete your pet?';
 }
 
 class ErrorStrings {

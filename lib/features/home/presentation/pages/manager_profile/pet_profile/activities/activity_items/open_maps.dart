@@ -6,7 +6,7 @@ import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class OpenMaps extends StatelessWidget {
   final String title;
@@ -34,8 +34,8 @@ class OpenMaps extends StatelessWidget {
               zoom: 14.4746,
             ),
             onMapCreated: (controller) =>
-                ProfileSetupCubit.get(context).setMapMarkers(),
-            markers: ProfileSetupCubit.get(context).markers,
+                PetProfileCubit.get(context).setMapMarkers(),
+            markers: PetProfileCubit.get(context).markers,
           ),
           _loactionDetails(context),
         ],
@@ -118,8 +118,8 @@ class MapSmallView extends StatelessWidget {
           ),
         ),
         onMapCreated: (controller) =>
-            ProfileSetupCubit.get(context).setMapMarkers(),
-        markers: ProfileSetupCubit.get(context).markers,
+            PetProfileCubit.get(context).setMapMarkers(),
+        markers: PetProfileCubit.get(context).markers,
       ),
     );
   }

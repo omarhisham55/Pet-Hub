@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/shared/components/error_and_retry.dart';
 import 'package:pet_app/core/shared/components/loading_logo.dart';
 import 'package:pet_app/core/shared/components/toast.dart';
@@ -26,7 +25,6 @@ class PetStorePage extends StatelessWidget {
         if (state.categoriesStatus == ResponseStatus.error ||
             state.productsStatus == ResponseStatus.error) {
           showToast(text: state.errorMessage, state: ToastStates.error);
-          logger.w(state.errorMessage);
         }
       },
       child: const Padding(

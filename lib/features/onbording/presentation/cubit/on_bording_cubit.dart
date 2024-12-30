@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
@@ -82,7 +81,7 @@ class OnBordingCubit extends Cubit<OnBordingState> {
     LocalSharedPreferences.write(Constants.localIsOnBoardingComplete, true);
     LocalSharedPreferences.write(Constants.localIsCreateAccountComplete, true);
     LocalSharedPreferences.write(Constants.localUserId, userId);
-    Constants.replaceWithAndRemoveUntil(context, Routes.navigationManager);
+    Constants.removeAllAndAddNewRoute(context, Routes.navigationManager);
   }
 
   void createAccount() async {
@@ -93,12 +92,10 @@ class OnBordingCubit extends Cubit<OnBordingState> {
           emailController.text,
           passwordController.text,
         ]);
-        result.fold((l) {
-          logger.e(l.message);
-          emit(AuthError(message: l.message));
-        }, (r) {
-          emit(AuthSuccess());
-        });
+        emit(result.fold(
+          (l) => AuthError(message: l.message),
+          (r) => AuthSuccess(),
+        ));
       } else {
         emit(AuthError(message: 'unmarked checkbox'));
       }
@@ -112,12 +109,10 @@ class OnBordingCubit extends Cubit<OnBordingState> {
         emailController.text,
         passwordController.text,
       ]);
-      result.fold((l) {
-        logger.e(l.message);
-        emit(AuthError(message: l.message));
-      }, (r) {
-        emit(AuthSuccess(user: r));
-      });
+      emit(result.fold(
+        (l) => AuthError(message: l.message),
+        (r) => AuthSuccess(user: r),
+      ));
     }
   }
 }

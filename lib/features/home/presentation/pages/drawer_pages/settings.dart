@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -17,9 +17,9 @@ class Settings extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+      body: BlocBuilder<PetProfileCubit, PetProfileState>(
         builder: (context, state) {
-          ProfileSetupCubit manager = ProfileSetupCubit.get(context);
+          PetProfileCubit manager = PetProfileCubit.get(context);
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -38,7 +38,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _personalisation(BuildContext context, ProfileSetupCubit manager) {
+  Widget _personalisation(BuildContext context, PetProfileCubit manager) {
     return _settingItems(
       context: context,
       title: 'Personalisation',
@@ -65,7 +65,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _access(BuildContext context, ProfileSetupCubit manager) {
+  Widget _access(BuildContext context, PetProfileCubit manager) {
     return _settingItems(
       context: context,
       title: 'Access',
@@ -90,7 +90,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _notifications(BuildContext context, ProfileSetupCubit manager) {
+  Widget _notifications(BuildContext context, PetProfileCubit manager) {
     return _settingItems(
       context: context,
       title: 'Notifications',

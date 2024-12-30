@@ -5,7 +5,7 @@ import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class NutritionPetProfile extends StatelessWidget {
   const NutritionPetProfile({super.key});
@@ -146,12 +146,12 @@ class NutritionPetProfile extends StatelessWidget {
                 ],
               ),
             ),
-            BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+            BlocBuilder<PetProfileCubit, PetProfileState>(
               builder: (context, state) {
                 return settingSwitch(
-                  value: ProfileSetupCubit.get(context).isSwitchedOn[index],
+                  value: PetProfileCubit.get(context).isSwitchedOn[index],
                   onChanged: (value) =>
-                      ProfileSetupCubit.get(context).toggleSwitch(index),
+                      PetProfileCubit.get(context).toggleSwitch(index),
                 );
               },
             ),

@@ -1,6 +1,6 @@
 part of 'add_pet_to_user_bloc.dart';
 
-class AddPetState {
+class AddPetState extends Equatable {
   final AddPetStep progress;
   final String category;
   final String breed;
@@ -79,4 +79,24 @@ class AddPetState {
         responseStatus: responseStatus,
         messageError: messageError,
       );
+
+  @override
+  List<Object?> get props => [
+        'progress: $progress',
+        'category: $category',
+        'breed: $breed',
+        'name: $name',
+        'gender: $gender',
+        'carouselIndex: $carouselIndex',
+        'weight: $weight',
+        'isKg: $isKg',
+        'age: $age',
+        'birthDate: $birthDate',
+        'adoptionAge: $adoptionAge',
+        'adoptionDate: $adoptionDate',
+        'careTakers: $careTakers',
+        'imgBytes: ${imgBytes.runtimeType}',
+        'responseStatus: $responseStatus',
+        'messageError: $messageError',
+      ];
 }

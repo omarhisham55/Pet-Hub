@@ -11,6 +11,7 @@ import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/internet_check.dart';
 import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
 import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
 import 'package:pet_app/features/onbording/data/datasources/auth_datasource.dart';
 import 'package:pet_app/features/onbording/data/repositories/auth_repo_impl.dart';
 import 'package:pet_app/features/onbording/domain/repositories/auth_repo.dart';
@@ -22,8 +23,8 @@ import 'package:pet_app/features/home/data/datasources/pets_categories_datasourc
 import 'package:pet_app/features/home/data/repositories/pets_categories_repo_impl.dart';
 import 'package:pet_app/features/home/domain/repositories/pets_categories_repo.dart';
 import 'package:pet_app/features/home/domain/usecases/get_pets_categories_usecase.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/store/data/datasources/products_datasource.dart';
 import 'package:pet_app/features/store/data/repositories/product_repo_impl.dart';
 import 'package:pet_app/features/store/domain/repositories/product_repo.dart';
@@ -63,9 +64,10 @@ class Dpi {
 
   void registerCubits() {
     dpi.registerLazySingleton(() => ThemeManager());
+    dpi.registerLazySingleton(() => NavigationCubit());
     dpi.registerLazySingleton(() => OnBordingCubit(dpi(), dpi()));
     dpi.registerLazySingleton(() => AddPetBloc(dpi(), dpi()));
-    dpi.registerLazySingleton(() => ProfileSetupCubit());
+    dpi.registerLazySingleton(() => PetProfileCubit(dpi()));
     dpi.registerLazySingleton(() => HealthCubit());
     dpi.registerLazySingleton(() => AppointmentsCubit());
     dpi.registerLazySingleton(() => PetStoreCubit(dpi(), dpi(), dpi(), dpi()));

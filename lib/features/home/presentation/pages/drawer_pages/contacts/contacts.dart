@@ -5,7 +5,7 @@ import 'package:pet_app/core/shared/components/buttons/global_outlined_button.da
 import 'package:pet_app/core/shared/components/components.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class Contacts extends StatelessWidget {
   const Contacts({super.key});
@@ -68,9 +68,9 @@ class Contacts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileSetupCubit, ProfileSetupState>(
+    return BlocBuilder<PetProfileCubit, PetProfileState>(
       builder: (context, state) {
-        ProfileSetupCubit manager = ProfileSetupCubit.get(context);
+        PetProfileCubit manager = PetProfileCubit.get(context);
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -127,7 +127,7 @@ class Contacts extends StatelessWidget {
     BuildContext context,
     String title,
     int index,
-    ProfileSetupCubit manager,
+    PetProfileCubit manager,
   ) {
     return ModedContainer(
       onTap: () => manager.changeContactsView(index),

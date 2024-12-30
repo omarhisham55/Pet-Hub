@@ -3,16 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
-import 'package:pet_app/features/home/presentation/cubit/add_pet_to_user_bloc.dart';
-import 'package:pet_app/features/home/presentation/cubit/profile_setup_cubit.dart';
+import 'package:pet_app/core/utils/strings.dart';
+import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 
 class SlideToContinueButton extends StatelessWidget {
   const SlideToContinueButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final profileSteupCubit = context.read<ProfileSetupCubit>();
-    final addPetCubit = context.read<AddPetBloc>();
+    final profileSteupCubit = context.read<PetProfileCubit>();
     return Stack(
       children: [
         Container(
@@ -25,7 +24,7 @@ class SlideToContinueButton extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              'Swipe to continue',
+              MainStrings.swipeToAddPet,
               style: Theme.of(context)
                   .textTheme
                   .titleSmall!
@@ -36,10 +35,7 @@ class SlideToContinueButton extends StatelessWidget {
         Draggable(
           axis: Axis.horizontal,
           onDragUpdate: (details) => details.globalPosition.dx > 340
-              ? {
-                  addPetCubit.add(GetCategoriesEvent()),
-                  Constants.navigateTo(context, Routes.addPetProfile)
-                }
+              ? {Constants.navigateTo(context, Routes.addPetProfile)}
               : null,
           childWhenDragging: Container(),
           feedbackOffset: Offset.infinite,
