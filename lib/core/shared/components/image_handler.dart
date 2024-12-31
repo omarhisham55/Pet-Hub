@@ -12,6 +12,7 @@ class ImageHandler extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Color? color;
+  final bool isAsset;
   const ImageHandler({
     super.key,
     this.image,
@@ -21,6 +22,7 @@ class ImageHandler extends StatelessWidget {
     this.height,
     this.fit = BoxFit.contain,
     this.color,
+    this.isAsset = false,
   });
 
   @override
@@ -48,6 +50,8 @@ class ImageHandler extends StatelessWidget {
             // If the image is SVG, use SvgPicture
             return SvgPicture.asset(image!,
                 fit: fit, width: width, height: height);
+          } else if (isAsset) {
+            return Image.asset(image!, fit: fit, width: width, height: height);
           } else {
             // If the image is not base64 or SVG, use CachedNetworkImage
             return CachedNetworkImage(

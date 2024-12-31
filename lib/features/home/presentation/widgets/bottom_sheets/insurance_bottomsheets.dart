@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 

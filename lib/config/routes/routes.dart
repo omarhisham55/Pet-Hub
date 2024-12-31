@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/core/error/page_not_found.dart';
 import 'package:pet_app/features/appointments/presentation/cubit/appointments_cubit.dart';
+import 'package:pet_app/features/drawer/presentation/cubit/settings_bloc/settings_bloc.dart';
 import 'package:pet_app/features/health/presentation/cubit/health_cubit.dart';
 import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
 import 'package:pet_app/features/home/presentation/pages/navigation_manager.dart';
@@ -12,11 +13,11 @@ import 'package:pet_app/features/onbording/presentation/pages/on_bording_screen.
 import 'package:pet_app/features/home/presentation/cubit/add_pet_cubit/add_pet_to_user_bloc.dart';
 import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';
 import 'package:pet_app/features/home/presentation/pages/add_pet_profile_steps/add_pet_profile.dart';
-import 'package:pet_app/features/home/presentation/pages/drawer_pages/calendar.dart';
-import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/book_a_date.dart';
-import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contact_details.dart';
-import 'package:pet_app/features/home/presentation/pages/drawer_pages/contacts/contacts.dart';
-import 'package:pet_app/features/home/presentation/pages/drawer_pages/settings.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer_pages/calendar.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer_pages/contacts/book_a_date.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer_pages/contacts/contact_details.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer_pages/contacts/contacts.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer_pages/settings.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/open_maps.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/activities/activity_items/profile_activity_manager.dart';
 import 'package:pet_app/features/home/presentation/pages/manager_profile/pet_profile/add_profile.dart';
@@ -156,7 +157,10 @@ class Routes {
       ),
       GoRoute(
         path: settings,
-        builder: (context, state) => const Settings(),
+        builder: (context, state) => BlocProvider.value(
+          value: SettingsBloc(),
+          child: const Settings(),
+        ),
       ),
       GoRoute(
         path: intoActivities,

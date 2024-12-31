@@ -4,6 +4,7 @@ import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/components/appbars/contact_sliver_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/global_filled_button.dart';
 import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/utils/colors.dart';
