@@ -6,6 +6,7 @@ class MainStrings {
   static const String undefinedRoute = 'undefined route';
   static const String retry = 'Retry';
   static const String manage = 'Manage';
+  static const String all = 'All';
   static const String edit = 'Edit';
   static const String delete = 'Delete';
   static const String share = 'Share';
@@ -98,6 +99,15 @@ class MainStrings {
     'Activities',
   ];
 
+  //? health strings
+  static const String upcommingVetVisits = 'Upcoming Vet Visits';
+  static const String noUpcommingVetVisits = 'No upcoming Vet Visits';
+  static const String setReminder = 'Set reminder';
+  static const String scheduleAnAppointment = 'Schedule an appointment';
+  static const String medicalSchedule = 'Medical Schedule';
+  static const String allRecords = 'All records';
+  static const String findAVet = 'Find a vet';
+
   //? store strings
   static const String noCategories =
       'An error happened while fetching categories';
@@ -132,6 +142,10 @@ class MainStrings {
   static const String addPetExitDialogContent = 'All data will be lost!';
   static const String deletePetExitDialogTitle =
       'Are you sure you want to delete your pet?';
+
+  //? search strings
+  static const String healthSearchText =
+      'Search veterinarians, appointments,...';
 
 //? settings strings
   static const String settings = 'Settings';

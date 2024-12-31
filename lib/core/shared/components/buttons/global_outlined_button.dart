@@ -12,6 +12,7 @@ class OutlinedGlobalButton extends StatelessWidget {
   final TextStyle? style;
   final double borderRadius;
   final BorderSide? border;
+  final bool expanded;
   const OutlinedGlobalButton({
     super.key,
     required this.text,
@@ -23,12 +24,13 @@ class OutlinedGlobalButton extends StatelessWidget {
     this.borderRadius = 14,
     this.style,
     this.border,
+    this.expanded = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: expanded ? double.infinity : null,
       margin: margin,
       child: OutlinedButton(
         onPressed: onPressed,

@@ -10,6 +10,7 @@ class GlobalButton extends StatelessWidget {
   final Color? color;
   final TextStyle? style;
   final BorderSide? border;
+  final bool expanded;
   const GlobalButton({
     super.key,
     required this.text,
@@ -20,6 +21,7 @@ class GlobalButton extends StatelessWidget {
     this.color,
     this.style,
     this.border = BorderSide.none,
+    this.expanded = true,
   });
 
   @override
@@ -28,7 +30,7 @@ class GlobalButton extends StatelessWidget {
       padding: margin!,
       child: MaterialButton(
         onPressed: onPressed,
-        minWidth: double.infinity,
+        minWidth: expanded ? double.infinity : null,
         shape: ContinuousRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: border!,

@@ -9,12 +9,14 @@ class ErrorWidgetAndRetry extends StatelessWidget {
   final Function() retryFunction;
   final bool showErrorImg;
   final bool showRetryButton;
+  final String buttonText;
   const ErrorWidgetAndRetry({
     super.key,
     required this.errorMessage,
     required this.retryFunction,
     this.showErrorImg = false,
     this.showRetryButton = true,
+    this.buttonText = MainStrings.retry,
   });
 
   @override
@@ -27,9 +29,10 @@ class ErrorWidgetAndRetry extends StatelessWidget {
         Text(errorMessage),
         if (showRetryButton)
           OutlinedGlobalButton(
-            text: MainStrings.retry,
+            text: buttonText,
             onPressed: retryFunction,
-            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 140),
+            expanded: false,
+            margin: EdgeInsets.symmetric(vertical: 20),
             padding: EdgeInsets.zero,
             borderRadius: 8,
           ),
