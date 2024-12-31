@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/utils/colors.dart';
 import 'package:pet_app/core/utils/image_manager.dart';
 import 'package:qr_flutter/qr_flutter.dart';

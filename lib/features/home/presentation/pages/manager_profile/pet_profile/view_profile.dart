@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/core/shared/components/buttons/dropdown_button.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/shared/components/dialogs/exit_dialog.dart';
 import 'package:pet_app/core/shared/components/toast.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';

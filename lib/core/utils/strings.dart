@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/utils/image_manager.dart';
 
 class MainStrings {
   static const String title = 'Paw Buddy';
@@ -131,6 +132,45 @@ class MainStrings {
   static const String addPetExitDialogContent = 'All data will be lost!';
   static const String deletePetExitDialogTitle =
       'Are you sure you want to delete your pet?';
+
+//? settings strings
+  static const String settings = 'Settings';
+  static Map<String, Map<String, Map<String, dynamic>>> settingsItems = {
+    'Personalization': {
+      'TimeZone': {
+        'image': SettingsImages.timeZone,
+        'subTitle': 'Choose your timezone',
+      },
+      'Language': {
+        'image': SettingsImages.language,
+        'subTitle': 'Set the app language',
+      },
+      'Dark mode': {
+        'image': SettingsImages.darkMode,
+        'subTitle': 'Choose view mode',
+      },
+    },
+    'Access': {
+      'Location access': {
+        'image': SettingsImages.locationAccess,
+        'subTitle': 'Access to your location',
+      },
+      'Photo access': {
+        'image': SettingsImages.photoAccess,
+        'subTitle': 'Access to your media',
+      },
+    },
+    'Notifications': {
+      'App Notifications': {
+        'image': SettingsImages.appNotifications,
+        'subTitle': 'Get push notifications',
+      },
+      'Email Notifications': {
+        'image': SettingsImages.emailNotifications,
+        'subTitle': 'Get general updates',
+      },
+    },
+  };
 }
 
 class ErrorStrings {

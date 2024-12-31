@@ -8,7 +8,6 @@ import 'package:pet_app/config/services/di/dpi.dart';
 import 'package:pet_app/config/services/firebase/user_firestore.dart';
 import 'package:pet_app/config/services/preferences/shared_preferences.dart';
 import 'package:pet_app/config/routes/routes.dart';
-import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/core/shared/constants/enums.dart';
 import 'package:pet_app/features/onbording/data/models/user_model.dart';
@@ -156,26 +155,4 @@ class PetProfileCubit extends Cubit<PetProfileState> {
     );
     emit(SetMarkersState(position: markers));
   }
-
-  //*SETTINGS
-  bool darkModeSwitch = LocalSharedPreferences.isDarkTheme();
-  void darkModeSwitchAction(BuildContext context) {
-    darkModeSwitch = !darkModeSwitch;
-    darkModeSwitch
-        ? ThemeManager.get(context).toggleTheme(ThemeEvent.darkTheme)
-        : ThemeManager.get(context).toggleTheme(ThemeEvent.lightTheme);
-  }
-
-  bool locationAccessSwitch = false;
-  void locationAccessSwitchAction() {
-    locationAccessSwitch = !locationAccessSwitch;
-    emit(ToggleState(state: locationAccessSwitch, index: 1));
-  }
-
-  bool photoAccessSwitch = false;
-  void phoneAccessSwitchAction() {}
-  bool appNoitfySwitch = false;
-  void appNotifySwitchAction() {}
-  bool emailNotifySwitch = false;
-  void emailNotifySwitchAction() {}
 }

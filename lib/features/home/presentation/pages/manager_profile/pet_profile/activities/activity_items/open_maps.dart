@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/config/routes/routes.dart';
 import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/shared/components/custom_detailed_row.dart';
 import 'package:pet_app/core/shared/constants/constants.dart';
 import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';

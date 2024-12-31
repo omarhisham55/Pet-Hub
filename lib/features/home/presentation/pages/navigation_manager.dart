@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/core/utils/strings.dart';
 import 'package:pet_app/config/theme/theme_manager.dart';
 import 'package:pet_app/features/home/presentation/cubit/navigation_cubit/navigation_cubit.dart';
-import 'package:pet_app/features/home/presentation/widgets/drawer.dart';
+import 'package:pet_app/features/drawer/presentation/pages/drawer.dart';
 import 'package:pet_app/core/shared/components/appbars/two_title_appbar.dart';
 import 'package:pet_app/features/home/presentation/widgets/bottom_nav_bar.dart';
 import 'package:pet_app/features/home/presentation/cubit/pet_profile_cubit.dart';

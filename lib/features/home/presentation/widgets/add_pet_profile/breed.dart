@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/core/shared/components/components.dart';
+import 'package:pet_app/core/shared/components/containers/moded_container.dart';
 import 'package:pet_app/core/shared/components/error_and_retry.dart';
 import 'package:pet_app/core/shared/components/image_handler.dart';
 import 'package:pet_app/core/utils/colors.dart';
